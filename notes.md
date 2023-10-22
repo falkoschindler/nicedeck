@@ -4,14 +4,22 @@
 
 # Random thoughts about NiceGUI's niceness
 
-- `with` contexts
-- event handler mit/ohne args, sync oder async, async lambdas, mit Kontext
+- `with` contexts vs. `add()` methods
+- lambda-friendly events:
+  - with/without args
+  - with context
+  - sync or async
+  - async lambdas
 - builder pattern: `.style`, `.classes`, `.props`
-- CSS, Quasar, Tailwind
+- access to underlying frameworks:
+  - Quasar props
+  - other Quasar elements
+  - Tailwind classes
+  - CSS style
+  - HTML elements
 - Tailwind API
-- lambda-friendly event registration
 - binding
-- `ui.refreshable`
+- `ui.refreshable`, `ui.state`
 - `ui.markdown` with indented multiline string
 
 # Outline

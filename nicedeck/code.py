@@ -4,8 +4,8 @@ from nicegui import ui
 class Code(ui.code):
     """A code block."""
 
-    def __init__(self, code: str) -> None:
-        super().__init__(code)
+    def __init__(self, code: str, *, language: str = 'python') -> None:
+        super().__init__(code, language=language)
         self._classes.append('p-2')
         self.copy_button.set_visibility(False)
 

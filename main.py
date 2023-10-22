@@ -27,16 +27,33 @@ with nd.deck():
                     ui.label('github.com/zauberzeug').classes('text-2xl text-gray-600')
 
     with nd.slide():
-        with ui.row().classes('absolute-center items-center'):
-            code = nd.code('''
-                from nicegui import app, ui
-
-                ui.label('Hello World')
-
-                ui.run()
-            ''')
+        nd.heading('Embrace Indentation')
+        with nd.center_row():
+            with nd.step(0):
+                ui.label('HTML').classes('text-2xl text-gray-600')
+                nd.code('''
+                    <div id="container">
+                        <div id="box">
+                            <p>Hello world!</p>
+                        </div>
+                    </div>
+                ''', language='html')
             with nd.step():
-                nd.code_result(code)
+                ui.label('NiceGUI').classes('text-2xl text-gray-600')
+                nicegui_code = nd.code('''
+                    with ui.card():
+                        with ui.row():
+                            ui.label('Hello world!')
+                ''').classes('flex-grow')
+            with nd.step():
+                ui.label('JustPy').classes('text-2xl text-gray-600')
+                nd.code('''
+                    container = Div()
+                    box = Div()
+                    label = Div(text='Hello world!')
+                    box.add(label)
+                    container.add(box)
+                ''')
 
     with nd.slide():
         with ui.row().classes('absolute-center items-center'):
