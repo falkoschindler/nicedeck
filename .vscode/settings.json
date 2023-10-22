@@ -1,0 +1,17 @@
+{
+  "autopep8.args": ["--max-line-length=120"],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "isort.args": ["--line-length", "120"],
+  "prettier.printWidth": 120,
+  "pylint.args": [
+    "--disable=C0103", // Invalid name
+    "--disable=C0114" // Missing module docstring
+  ],
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.autopep8",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    }
+  }
+}
