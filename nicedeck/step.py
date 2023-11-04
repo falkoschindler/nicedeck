@@ -20,7 +20,7 @@ class Step(ui.column):
         if min is None:
             min = Slide.current.steps - 1
         if max is None:
-            max = float('inf')
+            max = 999
         self.bind_visibility_from(Slide.current, 'step', lambda s: min <= s <= max)
 
     def handle_visibility_change(self) -> None:

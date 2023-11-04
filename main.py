@@ -25,9 +25,39 @@ with nd.deck():
                 with ui.row().classes('gap-2 items-center'):
                     ui.html((Path(__file__).parent / 'assets' / 'github.svg').read_text()).classes('opacity-70')
                     ui.label('github.com/zauberzeug').classes('text-2xl text-gray-600')
+    with nd.slide():
+        nd.heading('Three-line Hello World')
+        with nd.center_row():
+            with ui.column():
+                with ui.row():
+                    code = nd.code('''
+                        from nicegui import ui
+
+                        ui.label('Hello world!')
+
+                        ui.run()
+                    ''')
+                    nd.code_result(code)
+                ui.label('No command line tool to run, no build step, browser opens automatically.')
+                ui.label('Easy for sharing code examples for documentation and Q&A.')
 
     with nd.slide():
-        nd.heading('Embrace Indentation')
+        nd.heading('Hierarchical Layout')
+        with nd.center_row():
+            code = nd.code('''
+                from nicegui import ui
+
+                with ui.card():
+                    with ui.row():
+                        ui.label('Hello')
+                        ui.label('world!')
+
+                ui.run()
+            ''')
+            nd.code_result(code)
+
+    with nd.slide():
+        nd.heading('Hierarchical Layout: Embrace Indentation')
         with nd.center_row():
             with nd.step(0):
                 ui.label('HTML').classes('text-2xl text-gray-600')
@@ -40,7 +70,7 @@ with nd.deck():
                 ''', language='html')
             with nd.step():
                 ui.label('NiceGUI').classes('text-2xl text-gray-600')
-                nicegui_code = nd.code('''
+                nd.code('''
                     with ui.card():
                         with ui.row():
                             ui.label('Hello world!')
@@ -56,12 +86,68 @@ with nd.deck():
                 ''')
 
     with nd.slide():
+        nd.heading('Event Handling: Embrace Lambdas')
         with nd.center_row():
             code = nd.code('''
-                from nicegui import app, ui
+                from nicegui import ui
+                        
+                ui.button('Click me', on_click=lambda: ui.notify('Clicked!'))
+                        
+                ui.run()
+            ''')
+            nd.code_result(code)
 
-                ui.button('Click me', on_click=lambda: ui.notify('Hello World'))
+    with nd.slide():
+        nd.heading('Event Handling: With/without Arguments')
+        with nd.center_row():
+            code = nd.code('''
+                from nicegui import ui
+                        
+                ui.number(value=41, on_change=lambda e: ui.notify(f'new value: {e.value}'))
+                        
+                ui.run()
+            ''')
+            nd.code_result(code)
 
+    with nd.slide():
+        nd.heading('Event Handling: Auto-Context')
+        with nd.center_row():
+            code = nd.code('''
+                from nicegui import ui
+                        
+                with ui.card():
+                    ui.button('Spawn', on_click=lambda: ui.label("I'm here!"))
+
+                ui.run()
+            ''')
+            nd.code_result(code)
+
+    with nd.slide():
+        nd.heading('Event Handling: Sync/Async')
+        with nd.center_row():
+            code = nd.code('''
+                from nicegui import ui
+
+                async def handle_click():
+                    ui.notify('Clicked!')
+
+                ui.button('Click me', on_click=handle_click)
+                        
+                ui.run()
+            ''')
+            nd.code_result(code)
+
+    with nd.slide():
+        nd.heading('Event Handling: Async Lambdas')
+        with nd.center_row():
+            code = nd.code('''
+                from nicegui import ui
+
+                async def notify(value):
+                    ui.notify(f'New value: {value}')
+
+                ui.number(value=12, on_change=lambda e: notify(e.value))
+                        
                 ui.run()
             ''')
             nd.code_result(code)

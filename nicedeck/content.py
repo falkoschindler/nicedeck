@@ -15,3 +15,11 @@ class CenterRow(ui.row):
     def __init__(self) -> None:
         super().__init__()
         self.classes('w-full h-full content-center items-stretch justify-center')
+
+
+class CenterColumn(ui.column):
+    """A row centered on the slide."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.classes('w-full h-full content-center items-stretch justify-center')
