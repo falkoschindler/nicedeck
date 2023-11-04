@@ -42,6 +42,10 @@ a:active:not(.browser-window *) {
   width: 100%;
 }
 
+.q-carousel__navigation-icon--active {
+  color: #5898d4 !important;
+}
+
 /* google-webfonts-helper (https://gwfh.mranftl.com/fonts) */
 /* fira-sans-regular - latin */
 @font-face {

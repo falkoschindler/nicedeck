@@ -9,6 +9,8 @@ class Deck(ui.carousel):
     def __init__(self) -> None:
         super().__init__()
         self._props['fullscreen'] = True
+        self._props['navigation'] = True
+        self._props['control-color'] = 'grey-4'
         self.bind_value(app.storage.general, 'slide_name')
         ui.keyboard(self._handle_key)
 
