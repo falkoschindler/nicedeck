@@ -1,3 +1,7 @@
+import inspect
+from typing import Callable
+
+import isort
 from nicegui import ui
 
 
@@ -13,7 +17,7 @@ class Code(ui.code):
 class CodeResult(ui.element):
     """Rendered NiceGUI code."""
 
-    def __init__(self, code: Code) -> None:
+    def __init__(self, func: Callable) -> None:
         super().__init__()
 
         BAR_COLOR = '#00000010'
@@ -33,4 +37,18 @@ class CodeResult(ui.element):
                     with ui.label().classes(f'w-2 h-[24px] bg-[{COLOR}]'):
                         ui.label().classes(f'w-full h-full bg-[{BAR_COLOR}] rounded-bl-[6px]')
             with ui.column().classes('w-60 h-40 p-4 overflow-auto'):
-                exec(code.content)  # pylint: disable=exec-used
+                func()
+
+
+def Demo(func: Callable) -> None:
+    source = inspect.getsource(func)
+    lines = source.splitlines()
+    lines = lines[2:]  # remove first two lines (@demo and def)
+    indentation = len(lines[0]) - len(lines[0].lstrip())
+    lines = [line[indentation:] for line in lines]
+    lines.insert(0, 'from nicegui import ui')
+    lines.append('')
+    lines.append('ui.run()')
+    code = isort.code('\n'.join(lines), no_sections=True, lines_after_imports=1)
+    Code(code)
+    CodeResult(func)

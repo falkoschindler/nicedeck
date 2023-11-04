@@ -30,31 +30,21 @@ with nd.deck():
         with nd.center_row():
             with ui.column():
                 with ui.row():
-                    code = nd.code('''
-                        from nicegui import ui
-
+                    @nd.demo
+                    def demo():
                         ui.label('Hello world!')
-
-                        ui.run()
-                    ''')
-                    nd.code_result(code)
                 ui.label('No command line tool to run, no build step, browser opens automatically.')
                 ui.label('Easy for sharing code examples for documentation and Q&A.')
 
     with nd.slide():
         nd.heading('Hierarchical Layout')
         with nd.center_row():
-            code = nd.code('''
-                from nicegui import ui
-
+            @nd.demo
+            def demo():
                 with ui.card():
                     with ui.row():
                         ui.label('Hello')
                         ui.label('world!')
-
-                ui.run()
-            ''')
-            nd.code_result(code)
 
     with nd.slide():
         nd.heading('Hierarchical Layout: Embrace Indentation')
@@ -88,69 +78,44 @@ with nd.deck():
     with nd.slide():
         nd.heading('Event Handling: Embrace Lambdas')
         with nd.center_row():
-            code = nd.code('''
-                from nicegui import ui
-                        
+            @nd.demo
+            def demo():
                 ui.button('Click me', on_click=lambda: ui.notify('Clicked!'))
-                        
-                ui.run()
-            ''')
-            nd.code_result(code)
 
     with nd.slide():
         nd.heading('Event Handling: With/without Arguments')
         with nd.center_row():
-            code = nd.code('''
-                from nicegui import ui
-                        
+            @nd.demo
+            def demo():
                 ui.number(value=41, on_change=lambda e: ui.notify(f'new value: {e.value}'))
-                        
-                ui.run()
-            ''')
-            nd.code_result(code)
 
     with nd.slide():
         nd.heading('Event Handling: Auto-Context')
         with nd.center_row():
-            code = nd.code('''
-                from nicegui import ui
-                        
+            @nd.demo
+            def demo():
                 with ui.card():
                     ui.button('Spawn', on_click=lambda: ui.label("I'm here!"))
-
-                ui.run()
-            ''')
-            nd.code_result(code)
 
     with nd.slide():
         nd.heading('Event Handling: Sync/Async')
         with nd.center_row():
-            code = nd.code('''
-                from nicegui import ui
-
+            @nd.demo
+            def demo():
                 async def handle_click():
                     ui.notify('Clicked!')
 
                 ui.button('Click me', on_click=handle_click)
-                        
-                ui.run()
-            ''')
-            nd.code_result(code)
 
     with nd.slide():
         nd.heading('Event Handling: Async Lambdas')
         with nd.center_row():
-            code = nd.code('''
-                from nicegui import ui
-
+            @nd.demo
+            def demo():
                 async def notify(value):
                     ui.notify(f'New value: {value}')
 
-                ui.number(value=12, on_change=lambda e: notify(e.value))
-                        
-                ui.run()
-            ''')
-            nd.code_result(code)
+                ui.number(value=12, on_change=lambda e: ui.notify(f'New value: {e.value}'))
 
     with nd.slide():
         with ui.column().classes('absolute-center'):
