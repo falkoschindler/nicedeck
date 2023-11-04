@@ -56,7 +56,7 @@ with nd.deck():
                 ''')
 
     with nd.slide():
-        with ui.row().classes('absolute-center items-center'):
+        with nd.center_row():
             code = nd.code('''
                 from nicegui import app, ui
 

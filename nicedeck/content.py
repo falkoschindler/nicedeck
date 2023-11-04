@@ -14,4 +14,4 @@ class CenterRow(ui.row):
 
     def __init__(self) -> None:
         super().__init__()
-        self.classes('h-full content-center items-stretch justify-center')
+        self.classes('w-full h-full content-center items-stretch justify-center')
