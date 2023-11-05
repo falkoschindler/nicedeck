@@ -10,7 +10,7 @@ ui.add_head_html(f'<style>{(PATH / "style.css").read_text()}</style>')
 app.add_static_files('/fonts', PATH / 'fonts')
 FACE_SVG = (PATH / 'assets' / 'half_face.svg').read_text()
 
-with nd.deck():
+with nd.deck(time_limit=30 * 60):
     with nd.slide():
         with ui.column().classes('absolute-left'):
             ui.html(FACE_SVG).classes('w-[40vh] my-auto')
