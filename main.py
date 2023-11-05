@@ -25,6 +25,72 @@ with nd.deck():
                 with ui.row().classes('gap-2 items-center'):
                     ui.html((Path(__file__).parent / 'assets' / 'github.svg').read_text()).classes('opacity-70')
                     ui.label('github.com/zauberzeug').classes('text-2xl text-gray-600')
+
+    with nd.slide():
+        nd.heading('Background')
+        nd.note('''
+            - Who am I, what is Zauberzeug?
+            [HQ picture]
+            [robots]
+            - Core problem at Zauberzeug: Developing and controlling robots locally and remotely
+        ''')
+
+    with nd.slide():
+        nd.center_heading('A New UI Framework')
+
+    with nd.slide():
+        nd.heading('ODrive GUI')
+        nd.note('''
+            https://discourse.odriverobotics.com/uploads/default/original/2X/6/6eb090388d280ab70d14bc507b08dbe186ac7a90.png
+        ''')
+
+    with nd.slide():
+        nd.heading('Streamlit')
+        with nd.center_row():
+            nd.code('''
+                import streamlit as st
+
+                st.write('Hello world!')
+            ''')
+            nd.code('''
+                import streamlit as st
+
+                if st.button('Say hello'):
+                    st.write('Hi!')
+            ''')
+            nd.note('But: constant reload, hard to manage state, hard to create something like timers')
+
+    with nd.slide():
+        nd.heading('Idea')
+        nd.note('''
+            - new UI toolbox based on a Flask/FastAPI app serving an Angular frontend?
+            - more Pythonic than Streamlit
+            - proof of concept after a few hours
+        ''')
+
+    with nd.slide():
+        nd.heading('JustPy')
+        nd.note('''
+            - Name? Just Python --> "JustPy"?
+            - https://justpy.io/
+            - (almost) exactly what we were looking for
+                (but with Vue instead of Angular (why not) and based on Quasar and Tailwind)
+            - used as a basis for version 0.x
+            - removed in 1.0
+                (code base in poor condition, deprecated Vue and Quasar versions, too much overhead)
+        ''')
+
+    with nd.slide():
+        nd.heading('NiceGUI')
+        nd.note('''
+            - The name "NiceGUI":
+            - Our framework should be "nice" to use.
+            - Nice guy:
+                "a man who puts the needs of others before his own, avoids confrontations, does favors, provides emotional support, tries to stay out of trouble, and generally acts nicely towards others"
+                https://en.wikipedia.org/wiki/Nice_guy
+            - Pronounce as "nice guy"
+        ''')
+
     with nd.slide():
         nd.heading('Three-line Hello World')
         with nd.center_row():

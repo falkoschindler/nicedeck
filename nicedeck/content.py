@@ -9,6 +9,14 @@ class Heading(ui.label):
         self.classes('absolute top-8 left-8 text-4xl text-gray-800 font-bold')
 
 
+class CenterHeading(ui.label):
+    """A heading for a slide."""
+
+    def __init__(self, text: str) -> None:
+        super().__init__(text)
+        self.classes('absolute-center text-4xl text-gray-800 font-bold')
+
+
 class CenterRow(ui.row):
     """A row centered on the slide."""
 
