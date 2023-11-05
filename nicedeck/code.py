@@ -36,7 +36,7 @@ class CodeResult(ui.element):
                         ui.label('NiceGUI')
                     with ui.label().classes(f'w-2 h-[24px] bg-[{COLOR}]'):
                         ui.label().classes(f'w-full h-full bg-[{BAR_COLOR}] rounded-bl-[6px]')
-            with ui.column().classes('w-60 h-40 p-4 overflow-auto'):
+            with ui.column().classes('w-60 h-full p-4 overflow-auto'):
                 func()
 
 

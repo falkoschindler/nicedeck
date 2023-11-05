@@ -192,7 +192,13 @@ with nd.deck(time_limit=30 * 60):
 
     with nd.slide():
         nd.heading('Builder Pattern')
-        # TODO: style, classes, props
+        with nd.center_row():
+            @nd.demo
+            def demo():
+                ui.button('Nice!', icon='face') \
+                    .props('outline') \
+                    .classes('absolute-center') \
+                    .style('box-shadow: 0 0 1rem 0 rgba(0, 127, 255, 0.25)')
 
     with nd.slide():
         nd.heading('Leaking Abstractions')
@@ -201,20 +207,88 @@ with nd.deck(time_limit=30 * 60):
             - other Quasar elements
             - Tailwind classes
             - CSS
+            - JavaScript
             - HTML
         ''')
 
     with nd.slide():
         nd.heading('Tailwind API')
+        with nd.center_row():
+            @nd.demo
+            def demo():
+                ui.label('TailwindCSS') \
+                    .tailwind \
+                    .text_color('blue-600') \
+                    .border_width('4') \
+                    .border_style('dashed') \
+                    .border_color('blue-600') \
+                    .padding('p-4')
 
     with nd.slide():
         nd.heading('Binding')
+        with nd.center_row():
+            @nd.demo
+            def demo():
+                number = ui.number(value=42)
+
+                ui.label().bind_text_from(number, 'value', lambda v: f'Value: {v}')
+
+                ui.slider(min=0, max=100).bind_value(number)
 
     with nd.slide():
-        nd.heading('"Refreshable" UI')
+        nd.heading('Refreshable UI')
+        with nd.center_row():
+            @nd.demo
+            def demo():
+                @ui.refreshable
+                def print_temperature():
+                    if slider.value < 0:
+                        ui.label(f'Freezing: {slider.value}°C').classes('text-blue')
+                    elif slider.value < 10:
+                        ui.label(f'Cold: {slider.value}°C').classes('text-green')
+                    else:
+                        ui.label(f'Warm: {slider.value}°C').classes('text-orange')
+
+                slider = ui.slider(value=0, min=-10, max=20, on_change=print_temperature.refresh)
+                print_temperature()
 
     with nd.slide():
-        nd.heading('Markdown')
+        nd.heading('Refreshable UI with UI State')
+        with nd.center_row():
+            @nd.demo
+            def demo():
+                @ui.refreshable
+                def show_counter():
+                    count, set_count = ui.state(0)
+                    ui.label(f'Counter: {count}')
+                    ui.button('Increment', on_click=lambda: set_count(count + 1))
+
+                show_counter()
+
+    with nd.slide():
+        nd.heading('Markdown and HTML')
+        with nd.center_row():
+            @nd.demo
+            def demo():
+                ui.markdown('''
+                    This is **Markdown**.
+                ''')
+                ui.html('''
+                    <p>This is <strong>HTML</strong>.</p>
+                ''')
+
+    with nd.slide():
+        nd.heading('Markdown and HTML - Intelligent Indentation')
+        with nd.center_row():
+            @nd.demo
+            def demo():
+                with ui.card():
+                    ui.markdown('''
+                        This is **Markdown**.
+                    ''')
+                    ui.html('''
+                        <p>This is <strong>HTML</strong>.</p>
+                    ''')
 
     with nd.slide():
         with ui.column().classes('absolute-center'):
