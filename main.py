@@ -15,16 +15,16 @@ with nd.deck(time_limit=30 * 60):
         with ui.column().classes('absolute-left'):
             ui.html(FACE_SVG).classes('w-[40vh] my-auto')
         with ui.column().classes('absolute-center w-full ml-[30vw]'):
-            ui.markdown('*NiceGUI*').classes('text-7xl font-medium mt-72')
-            ui.label('Inventing Python’s Nicest UI Framework').classes('text-5xl text-gray-800')
+            ui.markdown('*NiceGUI*').classes('text-5xl font-medium mt-24')
+            ui.label('Inventing Python’s Nicest UI Framework').classes('text-4xl text-gray-800')
             with ui.row().classes('gap-8 mt-24'):
-                ui.label('Falko Schindler').classes('text-2xl text-gray-600')
+                ui.label('Falko Schindler').classes('text-xl text-gray-600')
                 with ui.row().classes('gap-2 items-center'):
                     ui.image('assets/zauberzeug-logo.png').classes('w-6 h-6 opacity-70')
-                    ui.label('zauberzeug.com').classes('text-2xl text-gray-600')
+                    ui.label('zauberzeug.com').classes('text-xl text-gray-600')
                 with ui.row().classes('gap-2 items-center'):
                     ui.html((Path(__file__).parent / 'assets' / 'github.svg').read_text()).classes('opacity-70')
-                    ui.label('github.com/zauberzeug').classes('text-2xl text-gray-600')
+                    ui.label('github.com/zauberzeug').classes('text-xl text-gray-600')
 
     with nd.slide():
         nd.heading('Background')
