@@ -7,12 +7,21 @@ class Deck(ui.carousel):
     """A deck of slides."""
 
     def __init__(self) -> None:
-        super().__init__()
+        super().__init__(on_value_change=self.show_notes.refresh)
         self._props['fullscreen'] = True
         self._props['navigation'] = True
         self._props['control-color'] = 'grey-4'
         self.bind_value(app.storage.general, 'slide_name')
         ui.keyboard(self._handle_key)
+
+        @ui.page('/notes')
+        def notes() -> None:
+            self.show_notes()
+
+    @ui.refreshable
+    def show_notes(self) -> None:
+        for note in self.slide.notes:
+            ui.markdown(note.text)
 
     @property
     def slide(self) -> Slide:

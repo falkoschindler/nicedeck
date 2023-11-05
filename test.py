@@ -12,13 +12,14 @@ app.add_static_files('/fonts', PATH / 'fonts')
 
 with nd.deck():
     with nd.slide():
-        nd.heading('Event Handling: Async Lambdas')
-        with nd.center_row():
-            @nd.demo
-            def demo():
-                async def notify(value):
-                    ui.notify(f'New value: {value}')
+        ui.label('Slide 1')
+        nd.note('This is note 1')
+    with nd.slide():
+        ui.label('Slide 2')
+        nd.note('This is note 2')
+    with nd.slide():
+        ui.label('Slide 3')
+        nd.note('This is note 3')
 
-                ui.number(value=12, on_change=lambda e: ui.notify(f'New value: {e.value}'))
 
 ui.run()
