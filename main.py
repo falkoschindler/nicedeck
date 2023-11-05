@@ -222,4 +222,5 @@ with nd.deck(time_limit=30 * 60):
             ui.link('zauberzeug.com', 'https://zauberzeug.com')
             ui.link('nicegui.io', 'https://nicegui.io')
 
-ui.run(title='PyCon Ireland 2023')
+ui.run(title='PyCon Ireland 2023',
+       uvicorn_reload_includes='*.py, *.css')
