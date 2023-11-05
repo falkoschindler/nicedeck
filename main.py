@@ -94,16 +94,19 @@ with nd.deck():
     with nd.slide():
         nd.heading('Three-line Hello World')
         with nd.center_row():
-            with ui.column():
-                with ui.row():
-                    @nd.demo
-                    def demo():
-                        ui.label('Hello world!')
-                ui.label('No command line tool to run, no build step, browser opens automatically.')
-                ui.label('Easy for sharing code examples for documentation and Q&A.')
+            @nd.demo
+            def demo():
+                ui.label('Hello world!')
+        nd.note('''
+            - no command line tool to run
+            - no build step
+            - browser opens automatically
+            - easy for sharing code examples for documentation and Q&A
+        ''')
 
     with nd.slide():
         nd.heading('Hierarchical Layout')
+        nd.note('Pythonic way to create hierarchy? Indentation!')
         with nd.center_row():
             @nd.demo
             def demo():
@@ -143,6 +146,10 @@ with nd.deck():
 
     with nd.slide():
         nd.heading('Event Handling: Embrace Lambdas')
+        nd.note('''
+            How to react on user input?
+            --> lambda-friendly event registration
+        ''')
         with nd.center_row():
             @nd.demo
             def demo():
@@ -184,20 +191,30 @@ with nd.deck():
                 ui.number(value=12, on_change=lambda e: ui.notify(f'New value: {e.value}'))
 
     with nd.slide():
-        with ui.column().classes('absolute-center'):
-            ui.markdown('''
-                ### NiceGUI's Niceness
-                
-                - `with` contexts
-                - event handler mit/ohne args, sync oder async, async lambdas, mit Kontext
-                - builder pattern: `.style`, `.classes`, `.props`
-                - CSS, Quasar, Tailwind
-                - Tailwind API
-                - lambda-friendly event registration
-                - binding
-                - `ui.refreshable`
-                - `ui.markdown` with indented multiline string
-            ''')
+        nd.heading('Builder Pattern')
+        # TODO: style, classes, props
+
+    with nd.slide():
+        nd.heading('Leaking Abstractions')
+        nd.note('''
+            - Quasar props
+            - other Quasar elements
+            - Tailwind classes
+            - CSS
+            - HTML
+        ''')
+
+    with nd.slide():
+        nd.heading('Tailwind API')
+
+    with nd.slide():
+        nd.heading('Binding')
+
+    with nd.slide():
+        nd.heading('"Refreshable" UI')
+
+    with nd.slide():
+        nd.heading('Markdown')
 
     with nd.slide():
         with ui.column().classes('absolute-center'):
