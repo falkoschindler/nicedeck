@@ -52,6 +52,16 @@ with nd.deck(time_limit=30 * 60):
             [robots]
             - Core problem at Zauberzeug: Developing and controlling robots locally and remotely
         ''')
+        with ui.column().classes('items-center'):
+            ui.label('Zauber').classes('font-bold text-2xl')
+            ui.label('[ˈtsaʊ̯bər]').classes('text-grey text-xs')
+            ui.label('🪄').classes('text-4xl')
+            ui.label('"magic"')
+        with ui.column().classes('items-center'):
+            ui.label('zeug').classes('font-bold text-2xl')
+            ui.label('[ˈt͡sɔʏ̯k]').classes('text-grey text-xs')
+            ui.label('🔨').classes('text-4xl')
+            ui.label('"tools"')
 
     with slide(center_heading='A New UI Framework'):
         pass
