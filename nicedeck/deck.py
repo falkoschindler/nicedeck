@@ -13,7 +13,6 @@ class Deck(ui.carousel):
         super().__init__(on_value_change=self.show_notes.refresh)
         self._props['fullscreen'] = True
         self._props['navigation'] = True
-        self._props['control-color'] = 'grey-4'
         self.bind_value(app.storage.general, 'slide_name')
         ui.keyboard(self._handle_key)
         self.reference_time: Optional[float] = None

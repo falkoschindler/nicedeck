@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from contextlib import contextmanager
 from pathlib import Path
 
 from nicegui import app, ui
@@ -10,23 +11,33 @@ ui.add_head_html(f'<style>{(PATH / "style.css").read_text()}</style>')
 app.add_static_files('/fonts', PATH / 'fonts')
 FACE_SVG = (PATH / 'assets' / 'half_face.svg').read_text()
 
-with nd.deck(time_limit=30 * 60):
+
+@contextmanager
+def slide(*, hide_navigation: bool = False) -> None:
     with nd.slide():
+        wedge = ui.label().classes('absolute -bottom-14 bg-[#eee] w-[120%] h-32 -rotate-[4deg]')
+        if hide_navigation:
+            wedge.classes('z-10 bg-white')
+        yield
+
+
+with nd.deck(time_limit=30 * 60):
+    with slide(hide_navigation=True):
         with ui.column().classes('absolute-left'):
             ui.html(FACE_SVG).classes('w-[40vh] my-auto')
         with ui.column().classes('absolute-center w-full ml-[30vw]'):
-            ui.markdown('*NiceGUI*').classes('text-5xl font-medium mt-24')
+            ui.markdown('*NiceGUI*').classes('text-5xl font-medium mt-12')
             ui.label('Inventing Python’s Nicest UI Framework').classes('text-4xl text-gray-800')
-            with ui.row().classes('gap-8 mt-24'):
-                ui.label('Falko Schindler').classes('text-xl text-gray-600')
+            with ui.row().classes('gap-8 mt-12'):
+                ui.label('Falko Schindler').classes('text-lg text-gray-600')
                 with ui.row().classes('gap-2 items-center'):
                     ui.image('assets/zauberzeug-logo.png').classes('w-6 h-6 opacity-70')
-                    ui.label('zauberzeug.com').classes('text-xl text-gray-600')
+                    ui.label('zauberzeug.com').classes('text-lg text-gray-600')
                 with ui.row().classes('gap-2 items-center'):
                     ui.html((Path(__file__).parent / 'assets' / 'github.svg').read_text()).classes('opacity-70')
-                    ui.label('github.com/zauberzeug').classes('text-xl text-gray-600')
+                    ui.label('github.com/zauberzeug').classes('text-lg text-gray-600')
 
-    with nd.slide():
+    with slide():
         nd.heading('Background')
         nd.note('''
             - Who am I, what is Zauberzeug?
@@ -35,16 +46,16 @@ with nd.deck(time_limit=30 * 60):
             - Core problem at Zauberzeug: Developing and controlling robots locally and remotely
         ''')
 
-    with nd.slide():
+    with slide():
         nd.center_heading('A New UI Framework')
 
-    with nd.slide():
+    with slide():
         nd.heading('ODrive GUI')
         nd.note('''
             https://discourse.odriverobotics.com/uploads/default/original/2X/6/6eb090388d280ab70d14bc507b08dbe186ac7a90.png
         ''')
 
-    with nd.slide():
+    with slide():
         nd.heading('Streamlit')
         with nd.center_row():
             nd.code('''
@@ -60,7 +71,7 @@ with nd.deck(time_limit=30 * 60):
             ''')
             nd.note('But: constant reload, hard to manage state, hard to create something like timers')
 
-    with nd.slide():
+    with slide():
         nd.heading('Idea')
         nd.note('''
             - new UI toolbox based on a Flask/FastAPI app serving an Angular frontend?
@@ -68,7 +79,7 @@ with nd.deck(time_limit=30 * 60):
             - proof of concept after a few hours
         ''')
 
-    with nd.slide():
+    with slide():
         nd.heading('JustPy')
         nd.note('''
             - Name? Just Python --> "JustPy"?
@@ -80,7 +91,7 @@ with nd.deck(time_limit=30 * 60):
                 (code base in poor condition, deprecated Vue and Quasar versions, too much overhead)
         ''')
 
-    with nd.slide():
+    with slide():
         nd.heading('NiceGUI')
         nd.note('''
             - The name "NiceGUI":
@@ -91,7 +102,7 @@ with nd.deck(time_limit=30 * 60):
             - Pronounce as "nice guy"
         ''')
 
-    with nd.slide():
+    with slide():
         nd.heading('Three-line Hello World')
         with nd.center_row():
             @nd.demo
@@ -104,7 +115,7 @@ with nd.deck(time_limit=30 * 60):
             - easy for sharing code examples for documentation and Q&A
         ''')
 
-    with nd.slide():
+    with slide():
         nd.heading('Hierarchical Layout')
         nd.note('Pythonic way to create hierarchy? Indentation!')
         with nd.center_row():
@@ -115,7 +126,7 @@ with nd.deck(time_limit=30 * 60):
                         ui.label('Hello')
                         ui.label('world!')
 
-    with nd.slide():
+    with slide():
         nd.heading('Hierarchical Layout: Embrace Indentation')
         with nd.center_row():
             with nd.step(0):
@@ -144,7 +155,7 @@ with nd.deck(time_limit=30 * 60):
                     container.add(box)
                 ''')
 
-    with nd.slide():
+    with slide():
         nd.heading('Event Handling: Embrace Lambdas')
         nd.note('''
             How to react on user input?
@@ -155,14 +166,14 @@ with nd.deck(time_limit=30 * 60):
             def demo():
                 ui.button('Click me', on_click=lambda: ui.notify('Clicked!'))
 
-    with nd.slide():
+    with slide():
         nd.heading('Event Handling: With/without Arguments')
         with nd.center_row():
             @nd.demo
             def demo():
                 ui.number(value=41, on_change=lambda e: ui.notify(f'new value: {e.value}'))
 
-    with nd.slide():
+    with slide():
         nd.heading('Event Handling: Auto-Context')
         with nd.center_row():
             @nd.demo
@@ -170,7 +181,7 @@ with nd.deck(time_limit=30 * 60):
                 with ui.card():
                     ui.button('Spawn', on_click=lambda: ui.label("I'm here!"))
 
-    with nd.slide():
+    with slide():
         nd.heading('Event Handling: Sync/Async')
         with nd.center_row():
             @nd.demo
@@ -180,7 +191,7 @@ with nd.deck(time_limit=30 * 60):
 
                 ui.button('Click me', on_click=handle_click)
 
-    with nd.slide():
+    with slide():
         nd.heading('Event Handling: Async Lambdas')
         with nd.center_row():
             @nd.demo
@@ -190,7 +201,7 @@ with nd.deck(time_limit=30 * 60):
 
                 ui.number(value=12, on_change=lambda e: ui.notify(f'New value: {e.value}'))
 
-    with nd.slide():
+    with slide():
         nd.heading('Builder Pattern')
         with nd.center_row():
             @nd.demo
@@ -200,7 +211,7 @@ with nd.deck(time_limit=30 * 60):
                     .classes('absolute-center') \
                     .style('box-shadow: 0 0 1rem 0 rgba(0, 127, 255, 0.25)')
 
-    with nd.slide():
+    with slide():
         nd.heading('Leaking Abstractions')
         nd.note('''
             - Quasar props
@@ -211,7 +222,7 @@ with nd.deck(time_limit=30 * 60):
             - HTML
         ''')
 
-    with nd.slide():
+    with slide():
         nd.heading('Tailwind API')
         with nd.center_row():
             @nd.demo
@@ -224,7 +235,7 @@ with nd.deck(time_limit=30 * 60):
                     .border_color('blue-600') \
                     .padding('p-4')
 
-    with nd.slide():
+    with slide():
         nd.heading('Binding')
         with nd.center_row():
             @nd.demo
@@ -235,7 +246,7 @@ with nd.deck(time_limit=30 * 60):
 
                 ui.slider(min=0, max=100).bind_value(number)
 
-    with nd.slide():
+    with slide():
         nd.heading('Refreshable UI')
         with nd.center_row():
             @nd.demo
@@ -252,7 +263,7 @@ with nd.deck(time_limit=30 * 60):
                 slider = ui.slider(value=0, min=-10, max=20, on_change=print_temperature.refresh)
                 print_temperature()
 
-    with nd.slide():
+    with slide():
         nd.heading('Refreshable UI with UI State')
         with nd.center_row():
             @nd.demo
@@ -265,7 +276,7 @@ with nd.deck(time_limit=30 * 60):
 
                 show_counter()
 
-    with nd.slide():
+    with slide():
         nd.heading('Markdown and HTML')
         with nd.center_row():
             @nd.demo
@@ -277,7 +288,7 @@ with nd.deck(time_limit=30 * 60):
                     <p>This is <strong>HTML</strong>.</p>
                 ''')
 
-    with nd.slide():
+    with slide():
         nd.heading('Markdown and HTML - Intelligent Indentation')
         with nd.center_row():
             @nd.demo
@@ -290,7 +301,7 @@ with nd.deck(time_limit=30 * 60):
                         <p>This is <strong>HTML</strong>.</p>
                     ''')
 
-    with nd.slide():
+    with slide():
         with ui.column().classes('absolute-center'):
             ui.markdown('### Applications')
             ui.link('zauberzeug.com', 'https://zauberzeug.com')
