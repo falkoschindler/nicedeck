@@ -14,6 +14,10 @@ body {
   font-family: "Fira Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
     monospace;
 }
+em:not(.browser-window *) {
+  font-style: normal;
+  color: #5898d4;
+}
 a:link:not(.browser-window *),
 a:visited:not(.browser-window *) {
   color: inherit !important;

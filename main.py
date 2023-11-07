@@ -65,11 +65,10 @@ with nd.deck(time_limit=30 * 60):
                     ui.label('[ˈt͡sɔʏ̯k]').classes('text-grey text-xs')
                     ui.label('🔨').classes('text-4xl')
                     ui.label('"tools"')
-            ui.markdown('''
-                _Any sufficiently advanced technology is indistinguishable from magic._
-                
-                -- Arthur C. Clarke
-            ''').classes('bg-gray-50 shadow p-4 text-right')
+            with ui.column().classes('bg-gray-50 shadow p-4 items-end'):
+                ui.label('“Any sufficiently advanced technology is indistinguishable from magic.”') \
+                    .classes('text-primary text-xl')
+                ui.label('-- Arthur C. Clarke').classes('text-xs text-gray-600')
 
     with slide(center_heading='A New UI Framework'):
         pass
