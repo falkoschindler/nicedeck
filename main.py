@@ -10,6 +10,7 @@ import nicedeck as nd
 PATH = Path(__file__).parent
 ui.add_head_html(f'<style>{(PATH / "style.css").read_text()}</style>')
 app.add_static_files('/fonts', PATH / 'fonts')
+app.add_static_files('/assets', PATH / 'assets')
 FACE_SVG = (PATH / 'assets' / 'half_face.svg').read_text()
 
 
@@ -177,6 +178,25 @@ with nd.deck(time_limit=30 * 60):
         @nd.demo
         def demo():
             ui.button('Click me', on_click=lambda: ui.notify('Clicked!'))
+
+    with slide('Behind the Scenes'):
+        with ui.column().classes('w-[30rem] items-stretch'):
+            ui.chat_message('I\'d like to see "/".', avatar='assets/chrome.svg', sent=True)
+            with nd.step().classes('items-stretch'):
+                ui.chat_message('Here you go:\n<html>...<script />...<button />...</html>', avatar='assets/python.svg')
+            with nd.step().classes('items-stretch'):
+                ui.chat_message('Let\'s talk via SocketIO!', avatar='assets/chrome.svg', sent=True)
+            with nd.step().classes('items-stretch'):
+                ui.chat_message('Ok. I\'ll keep the connection open.', avatar='assets/python.svg')
+            with nd.step().classes('items-stretch'):
+                ui.chat_message('The user clicked the button "Click me"!', avatar='assets/chrome.svg', sent=True)
+            with nd.step().classes('items-stretch'):
+                ui.chat_message('Please show a notification: "Clicked!"', avatar='assets/python.svg')
+
+        def click_demo():
+            with nd.step(min=1).classes('items-stretch'):
+                ui.button('Click me', on_click=lambda: ui.notify('Clicked!'))
+        nd.code_result(click_demo)
 
     with slide('Event Handling: With/without Arguments'):
         @nd.demo
