@@ -196,16 +196,6 @@ with nd.deck(time_limit=30 * 60):
                 .classes('absolute-center') \
                 .style('box-shadow: 0 0 1rem 0 rgba(0, 127, 255, 0.25)')
 
-    with slide('Leaking Abstractions'):
-        nd.note('''
-            - Quasar props
-            - other Quasar elements
-            - Tailwind classes
-            - CSS
-            - JavaScript
-            - HTML
-        ''')
-
     with slide('Tailwind API'):
         @nd.demo
         def demo():
@@ -272,6 +262,26 @@ with nd.deck(time_limit=30 * 60):
                 ui.html('''
                     <p>This is <strong>HTML</strong>.</p>
                 ''')
+
+    with slide('On the Shoulders of Giants'):
+        def giant(name: str, note: str) -> None:
+            with nd.step():
+                with ui.element().classes('border-2 w-28 h-12 column items-center justify-center'):
+                    ui.label(name)
+            nd.note(f'{name}: {note}')
+        with ui.row().classes('gap-1 mt-32'):
+            giant('HTML', 'e.g. paragraphs, lists, tables')
+            giant('CSS', 'e.g. shadows, transitions')
+            giant('JavaScript', 'e.g. geolocation, third-party libraries')
+            giant('Quasar', 'use even more components, dark mode')
+            giant('Tailwind CSS', 'consistent and concise styling, responsive design')
+            giant('Vue', 'NiceGUI: only 350 lines of own frontend code')
+            giant('FastAPI', 'e.g. REST, authentication, existing backend')
+            giant('Python', 'popular language with lots of features, many libraries and large community')
+        nd.note('''
+            - all these technologies at your fingertips
+            - no need to learn them all, nicely abstracted away
+        ''')
 
     with slide('Applications'):
         with ui.column():
