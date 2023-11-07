@@ -46,13 +46,14 @@ with nd.deck(time_limit=30 * 60):
                     ui.html((Path(__file__).parent / 'assets' / 'github.svg').read_text()).classes('opacity-70')
                     ui.label('github.com/zauberzeug').classes('text-lg text-gray-600')
 
+    with slide():
+        nd.note('Who am I, what is Zauberzeug?')
+        with nd.heading():
+            ui.image('assets/zauberzeug-logo.webp').classes('w-40')
+        ui.image('assets/building.webp').classes('absolute-center w-full h-[60vh]')
+
     with slide('Background'):
-        nd.note('''
-            - Who am I, what is Zauberzeug?
-            [HQ picture]
-            [robots]
-            - Core problem at Zauberzeug: Developing and controlling robots locally and remotely
-        ''')
+        nd.note('Core problem at Zauberzeug: Developing and controlling robots locally and remotely')
         with ui.column().classes('items-center gap-16'):
             with ui.row():
                 with ui.column().classes('items-center'):
@@ -319,10 +320,19 @@ with nd.deck(time_limit=30 * 60):
             - no need to learn them all, nicely abstracted away
         ''')
 
-    with slide('Applications'):
+    with slide('To the Stars!'):
         with ui.column():
-            ui.link('zauberzeug.com', 'https://zauberzeug.com')
+            ui.label('Version 1.0 is about to turn 1 year old 🎂')
+            ui.label('Almost weekly releases 🚀')
+            ui.markdown('''
+                Active community on [GitHub](https://github.com/zauberzeug/nicegui/),
+                [Discord](https://discord.com/invite/TEpFeAaF4f),
+                [Reddit](https://www.reddit.com/r/nicegui/), and on
+                [StackOverflow](https://stackoverflow.com/questions/tagged/nicegui).
+            ''')
             ui.link('nicegui.io', 'https://nicegui.io')
+            ui.link('zauberzeug.com', 'https://zauberzeug.com')
+        nd.note('Meanwhile: JustPy discontinued')
 
 ui.run(title='PyCon Ireland 2023',
        uvicorn_reload_includes='*.py, *.css')
