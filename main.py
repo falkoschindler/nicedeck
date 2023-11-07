@@ -186,7 +186,7 @@ with nd.deck(time_limit=30 * 60):
             async def notify(value):
                 ui.notify(f'New value: {value}')
 
-            ui.number(value=12, on_change=lambda e: ui.notify(f'New value: {e.value}'))
+            ui.number(value=12, on_change=lambda e: notify(e.value))
 
     with slide('Builder Pattern'):
         @nd.demo
