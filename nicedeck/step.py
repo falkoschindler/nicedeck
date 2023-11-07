@@ -25,4 +25,4 @@ class Step(ui.column):
 
     def handle_visibility_change(self) -> None:
         """Called when the visibility of this step changes."""
-        self.style(f'opacity: {1 if self.visible else 0.5}')
+        self.style(f'opacity: {1 if self.visible else 0}')

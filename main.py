@@ -51,8 +51,17 @@ with nd.deck(time_limit=30 * 60):
         with nd.heading():
             ui.image('assets/zauberzeug-logo.webp').classes('w-40')
         ui.image('assets/building.webp').classes('absolute-center w-full h-[60vh]')
+        with nd.step(), nd.center_row():
+            ui.image('assets/office.jpg').classes('absolute-center w-full h-[60vh]')
+        with nd.center_row():
+            with nd.step(), ui.card():
+                ui.image('assets/brushing-bot.webp').classes('w-60 h-40 bg-white')
+            with nd.step(), ui.card():
+                ui.image('assets/robot-brain.webp').classes('w-60 h-40 bg-white')
+            with nd.step(), ui.card():
+                ui.image('assets/field-friend.webp').classes('w-60 h-40 bg-white')
 
-    with slide('Background'):
+    with slide('Philosophy'):
         nd.note('Core problem at Zauberzeug: Developing and controlling robots locally and remotely')
         with ui.column().classes('items-center gap-16'):
             with ui.row():
