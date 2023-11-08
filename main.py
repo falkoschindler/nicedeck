@@ -32,6 +32,21 @@ def slide(heading: Optional[str] = None, *,
 
 with nd.deck(time_limit=30 * 60):
     with slide(hide_navigation=True):
+        nd.note('''
+            Welcome to my talk about NiceGUI!
+                
+            It's a story about
+                
+            - how we had a problem at hand,
+            - didn't find an existing solution,
+            - decided to create our own,
+            - and ended up with a pretty powerful UI framework that is just taking off in the Python community.
+            
+            And it's about the difference between
+            
+            - creating something that works,
+            - and creating something that is a pleasure to use.
+        ''')
         with ui.column().classes('absolute-left'):
             ui.html(FACE_SVG).classes('w-[40vh] my-auto')
         with ui.column().classes('absolute-center w-full ml-[30vw]'):
@@ -47,7 +62,27 @@ with nd.deck(time_limit=30 * 60):
                     ui.label('github.com/zauberzeug').classes('text-lg text-gray-600')
 
     with slide():
-        nd.note('Who am I, what is Zauberzeug?')
+        nd.note('''
+            - first some background
+            - my company: Zauberzeug, Münsterland, ~15 employees
+            
+            ---
+            
+            - develop hardware and software from an idea to a product
+            - includes: electronics, mechanics, 3D printing, microcontrollers, software, and AI
+            
+            ---
+
+            - autonomous cleaning robot
+            
+            ---
+
+            - Zauberzeug Robot Brain: industrial PC based on NVIDIA Jetson, can control hardware, runs AI models
+            
+            ---
+            
+            - newest creation, Zauberzeug Field Friend: agricultural robot for weed control
+        ''')
         with nd.heading():
             ui.image('assets/zauberzeug-logo.webp').classes('w-40')
         ui.image('assets/building.webp').classes('absolute-center w-full h-[60vh]')
@@ -62,7 +97,11 @@ with nd.deck(time_limit=30 * 60):
                 ui.image('assets/field-friend.webp').classes('w-60 h-40 bg-white')
 
     with slide('Philosophy'):
-        nd.note('Core problem at Zauberzeug: Developing and controlling robots locally and remotely')
+        nd.note('''
+            - Zauberzeug: creating tools that feel like magic
+            - software _and_ hardware
+            - Arthur C. Clarke: "Any sufficiently advanced technology is indistinguishable from magic."
+        ''')
         with ui.column().classes('items-center gap-16'):
             with ui.row():
                 with ui.column().classes('items-center'):
@@ -81,14 +120,28 @@ with nd.deck(time_limit=30 * 60):
                 ui.label('-- Arthur C. Clarke').classes('text-xs text-gray-600')
 
     with slide(center_heading='A New UI Framework'):
-        pass
-
-    with slide('ODrive GUI'):
         nd.note('''
-            https://discourse.odriverobotics.com/uploads/default/original/2X/6/6eb090388d280ab70d14bc507b08dbe186ac7a90.png
+            - after this background: Why a new framework?
         ''')
 
+    with slide('ODrive Motor Controller'):
+        nd.note('''
+            - Core problem at Zauberzeug: Developing and controlling robots locally and remotely
+            - Example: ODrive motor controller, used in our robots
+            - needs configuration and tuning
+            - comes with a powerful Python CLI, but (at that time) a poor GUI, tedious to use (_not nice_)
+            - idea: can we use Streamlit to write a custom tuning UI?
+            - important: network connection to robot, so we can tune the controller while the robot is running
+        ''')
+        ui.image('assets/odrive.jpg').classes('w-[30%]').props('fit=contain')
+        with nd.step().classes('w-[60%]'):
+            ui.image('assets/odrive-gui.png').props('fit=contain').classes('border shadow')
+
     with slide('Streamlit'):
+        nd.note('''
+            - UI framework for Python
+            - popular for its simplicity
+        ''')
         nd.code('''
             import streamlit as st
 
