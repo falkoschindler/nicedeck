@@ -141,37 +141,93 @@ with nd.deck(time_limit=30 * 60):
         nd.note('''
             - UI framework for Python
             - popular for its simplicity
+
+            ---
+            
+            - but: what is this? that hardly Python!
+            - problems:
+                - constant reload
+                - hard to manage state
+                - hard to create something like timers
         ''')
         nd.code('''
             import streamlit as st
 
             st.write('Hello world!')
         ''')
-        nd.code('''
-            import streamlit as st
+        with nd.step():
+            nd.code('''
+                import streamlit as st
 
-            if st.button('Say hello'):
-                st.write('Hi!')
-        ''')
-        nd.note('But: constant reload, hard to manage state, hard to create something like timers')
+                if st.button('Say hello'):
+                    st.write('Hi!')
+            ''')
 
-    with slide('Idea'):
+    with slide('Wishful Programming'):
         nd.note('''
-            - new UI toolbox based on a Flask/FastAPI app serving an Angular frontend?
-            - more Pythonic than Streamlit
-            - proof of concept after a few hours
+            - wishful programming: write code that you wish was possible
+            - this code: working prototype after a few hours
+            - FastAPI app + Angular
+        ''')
+        nd.code('''
+            import simple_ui as ui
+
+            ui.Label('Hello world!')
+            ui.Button('Click me!', on_click=lambda: print('CLICK'))
+
+            with ui.Row():
+                ui.Checkbox('Option 1', on_change=lambda value: print('Option 1:', value))
+                ui.Switch('Option 2', on_change=lambda value: print('Option 2:', value))
+
+            with ui.Column():
+                ui.TextInput(placeholder='Text')
+                ui.NumberInput(value=1.0)
+
+            ui.Radio(['A', 'B', 'C'], on_change=lambda value: print(value))
+            ui.Select(['D', 'E', 'F'], on_change=lambda value: print(value))
+
+            ui.run()
         ''')
 
     with slide('JustPy'):
         nd.note('''
             - Name? Just Python --> "JustPy"?
-            - https://justpy.io/
             - (almost) exactly what we were looking for
-                (but with Vue instead of Angular (why not) and based on Quasar and Tailwind)
+                - Vue (not Angular)
+                - Quasar, Tailwind
             - used as a basis for version 0.x
             - removed in 1.0
-                (code base in poor condition, deprecated Vue and Quasar versions, too much overhead)
+                - code base in poor condition
+                - deprecated Vue and Quasar versions
+                - too much overhead
         ''')
+        nd.code('''
+            import justpy as jp
+
+            def hello_world_readme():
+                wp = jp.WebPage()
+                d = jp.Div(text='Hello world!')
+                wp.add(d)
+                return wp
+
+            jp.justpy(hello_world_readme)
+        ''')
+        with nd.step():
+            nd.code('''
+                import justpy as jp
+
+                def my_click(self, msg):
+                    self.text = 'I was clicked!'
+
+                def hello_world_readme2():
+                    wp = jp.WebPage()
+                    d = jp.Div(text='Hello world!')
+                    d.on('click', my_click)
+                    wp.add(d)
+                    return wp
+
+                jp.justpy(hello_world_readme2)
+            ''')
 
     with slide('NiceGUI'):
         nd.note('''
@@ -181,21 +237,28 @@ with nd.deck(time_limit=30 * 60):
                 "a man who puts the needs of others before his own, avoids confrontations, does favors, provides emotional support, tries to stay out of trouble, and generally acts nicely towards others"
                 https://en.wikipedia.org/wiki/Nice_guy
             - Pronounce as "nice guy"
-        ''')
-
-    with slide('Three-line Hello World'):
-        @nd.demo
-        def demo():
-            ui.label('Hello world!')
-        nd.note('''
+            
+            ---
+            
+            - three-line hello world
             - no command line tool to run
             - no build step
             - browser opens automatically
             - easy for sharing code examples for documentation and Q&A
+            - browser opens automatically
+            - auto-reload
         ''')
+        ui.image('assets/face.png').classes('w-40 mr-8')
+        with nd.step().classes('self-center'), ui.row().classes('items-stretch'):
+            @nd.demo
+            def demo():
+                ui.label('Hello world!')
 
-    with slide('Hierarchical Layout'):
-        nd.note('Pythonic way to create hierarchy? Indentation!')
+    with slide('Embrace Indentation'):
+        nd.note('''
+            - Pythonic way to create hierarchy? Indentation!
+            - here: card and row
+        ''')
 
         @nd.demo
         def demo():
@@ -204,13 +267,25 @@ with nd.deck(time_limit=30 * 60):
                     ui.label('Hello')
                     ui.label('world!')
 
-    with slide('Hierarchical Layout: Embrace Indentation'):
+    with slide('Hierarchy in Other UI Frameworks'):
+        nd.note('''
+            - HTML: nesting of tags
+            
+            ---
+        
+            - NiceGUI: clean and readable
+            
+            ---
+            
+            - JustPy: declarative approach can get messy
+        ''')
         with nd.step(0):
             ui.label('HTML').classes('text-2xl text-gray-600')
             nd.code('''
-                <div id="container">
-                    <div id="box">
-                        <p>Hello world!</p>
+                <div class="card">
+                    <div class="row">
+                        <span>Hello</span>
+                        <span>world!</span>
                     </div>
                 </div>
             ''', language='html')
@@ -219,15 +294,16 @@ with nd.deck(time_limit=30 * 60):
             nd.code('''
                 with ui.card():
                     with ui.row():
-                        ui.label('Hello world!')
+                        ui.label('Hello')
+                        ui.label('world!')
             ''').classes('flex-grow')
         with nd.step():
             ui.label('JustPy').classes('text-2xl text-gray-600')
             nd.code('''
                 container = Div()
                 box = Div()
-                label = Div(text='Hello world!')
-                box.add(label)
+                box.add(Div(text='Hello'))
+                box.add(Div(text='world!'))
                 container.add(box)
             ''')
 
@@ -235,6 +311,7 @@ with nd.deck(time_limit=30 * 60):
         nd.note('''
             How to react on user input?
             --> lambda-friendly event registration
+            (in contrast to Streamlit)
         ''')
 
         @nd.demo
@@ -242,10 +319,13 @@ with nd.deck(time_limit=30 * 60):
             ui.button('Click me', on_click=lambda: ui.notify('Clicked!'))
 
     with slide('Behind the Scenes'):
+        nd.note('''
+            What happens behind the scenes?
+        ''')
         with ui.column().classes('w-[30rem] items-stretch'):
             ui.chat_message('I\'d like to see "/".', avatar='assets/chrome.svg', sent=True)
             with nd.step().classes('items-stretch'):
-                ui.chat_message('Here you go:\n<html>...<script />...<button />...</html>', avatar='assets/python.svg')
+                ui.chat_message('Here you go:\n<html>...<button />...<script />...</html>', avatar='assets/python.svg')
             with nd.step().classes('items-stretch'):
                 ui.chat_message('Let\'s talk via SocketIO!', avatar='assets/chrome.svg', sent=True)
             with nd.step().classes('items-stretch'):
@@ -261,17 +341,32 @@ with nd.deck(time_limit=30 * 60):
         nd.code_result(click_demo)
 
     with slide('Event Handling: With/without Arguments'):
+        nd.note('''
+            - sometimes you want additional event arguments
+            - but not always
+            - NiceGUI supports both
+        ''')
+
         @nd.demo
         def demo():
             ui.number(value=41, on_change=lambda e: ui.notify(f'new value: {e.value}'))
 
     with slide('Event Handling: Auto-Context'):
+        nd.note('''
+            - NiceGUI automatically keeps track of the current context
+            - this includes the current page, element, and slot
+        ''')
+
         @nd.demo
         def demo():
             with ui.card():
                 ui.button('Spawn', on_click=lambda: ui.label("I'm here!"))
 
     with slide('Event Handling: Sync/Async'):
+        nd.note('''
+            - Your event handler is async? No problem!
+        ''')
+
         @nd.demo
         def demo():
             async def handle_click():
@@ -280,6 +375,11 @@ with nd.deck(time_limit=30 * 60):
             ui.button('Click me', on_click=handle_click)
 
     with slide('Event Handling: Async Lambdas'):
+        nd.note('''
+            - Even "async lambdas" are supported!
+            - I.e. if a lambda returns a coroutine, it is awaited.
+        ''')
+
         @nd.demo
         def demo():
             async def notify(value):
@@ -288,14 +388,24 @@ with nd.deck(time_limit=30 * 60):
             ui.number(value=12, on_change=lambda e: notify(e.value))
 
     with slide('Builder Pattern'):
+        nd.note('''
+            - Builder pattern: configure elements by chaining method calls
+        ''')
+
         @nd.demo
         def demo():
             ui.button('Nice!', icon='face') \
                 .props('outline') \
                 .classes('absolute-center') \
-                .style('box-shadow: 0 0 1rem 0 rgba(0, 127, 255, 0.25)')
+                .style('box-shadow: 0 0 1rem 0 rgba(0, 127, 255, 0.25)') \
+                .on('mouseenter', lambda: ui.notify('😎'))
 
     with slide('Tailwind API'):
+        nd.note('''
+            - Tailwind classes can be hard to memorize
+            - API for discovering them more easily
+        ''')
+
         @nd.demo
         def demo():
             ui.label('TailwindCSS') \
@@ -307,6 +417,7 @@ with nd.deck(time_limit=30 * 60):
                 .padding('p-4')
 
     with slide('Binding'):
+        # TODO: CONTINUE HERE
         @nd.demo
         def demo():
             number = ui.number(value=42)
@@ -381,8 +492,12 @@ with nd.deck(time_limit=30 * 60):
             - all these technologies at your fingertips
             - no need to learn them all, nicely abstracted away
         ''')
-
-    with slide('To the Stars!'):
+    
+    with slide('Where are we at?'):
+        nd.note('''
+            - xx UI elements
+            - one of the most popular Python UI frameworks
+        ''')
         with ui.column():
             ui.label('Version 1.0 is about to turn 1 year old 🎂')
             ui.label('Almost weekly releases 🚀')
@@ -395,6 +510,12 @@ with nd.deck(time_limit=30 * 60):
             ui.link('nicegui.io', 'https://nicegui.io')
             ui.link('zauberzeug.com', 'https://zauberzeug.com')
         nd.note('Meanwhile: JustPy discontinued')
+
+    with slide('To the Stars!'):
+        # On Air
+        # ChatGPT
+        # Custom GPT
+        # displace Streamlit?
 
 ui.run(title='PyCon Ireland 2023',
        uvicorn_reload_includes='*.py, *.css')

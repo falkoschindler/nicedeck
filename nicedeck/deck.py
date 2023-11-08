@@ -19,6 +19,7 @@ class Deck(ui.carousel):
 
         @ui.page('/notes')
         def notes() -> None:
+            ui.add_head_html('<style>hr { border: 1px dashed gray }</style>')
             self.timer(time_limit)
             ui.timer(1.0, self.timer.refresh)
             ui.separator()
