@@ -417,7 +417,11 @@ with nd.deck(time_limit=30 * 60):
                 .padding('p-4')
 
     with slide('Binding'):
-        # TODO: CONTINUE HERE
+        nd.note('''
+            - Binding: connect UI elements to each other and to data models
+            - supports conversion
+        ''')
+
         @nd.demo
         def demo():
             number = ui.number(value=42)
@@ -427,6 +431,12 @@ with nd.deck(time_limit=30 * 60):
             ui.slider(min=0, max=100).bind_value(number)
 
     with slide('Refreshable UI'):
+        nd.note('''
+            - common pattern emerged: clear and refill container
+            - introduced `refreshable` decorator
+            - of course: can be sync or async, can have arguments
+        ''')
+
         @nd.demo
         def demo():
             @ui.refreshable
@@ -442,6 +452,10 @@ with nd.deck(time_limit=30 * 60):
             print_temperature()
 
     with slide('Refreshable UI with UI State'):
+        nd.note('''
+            - suggestion from the community: borrow React's state concept
+        ''')
+
         @nd.demo
         def demo():
             @ui.refreshable
@@ -452,38 +466,50 @@ with nd.deck(time_limit=30 * 60):
 
             show_counter()
 
-    with slide('Markdown and HTML'):
+    with slide('HTML, Markdown and More'):
+        nd.note('''
+            - want to be able to use HTML, Markdown, Mermaid, and code snippets
+            - of course, there is more
+            - note: intelligent indentation
+        ''')
+
         @nd.demo
         def demo():
-            ui.markdown('''
-                This is **Markdown**.
-            ''')
             ui.html('''
                 <p>This is <strong>HTML</strong>.</p>
             ''')
-
-    with slide('Markdown and HTML - Intelligent Indentation'):
-        @nd.demo
-        def demo():
-            with ui.card():
-                ui.markdown('''
-                    This is **Markdown**.
-                ''')
-                ui.html('''
-                    <p>This is <strong>HTML</strong>.</p>
-                ''')
+            ui.markdown('''
+                This is **Markdown**.
+            ''')
+            ui.mermaid('''
+                graph LR
+                    This --> is --> Mermaid
+            ''')
+            ui.code('''
+                import this
+                
+                print('This is Python.')
+            ''')
 
     with slide('On the Shoulders of Giants'):
-        def giant(name: str, note: str) -> None:
-            with nd.step():
-                with ui.element().classes('border-2 w-28 h-12 column items-center justify-center'):
-                    ui.label(name)
-            nd.note(f'{name}: {note}')
-        with ui.row().classes('gap-1 mt-32'):
+        nd.note('''
+            - NiceGUI is built on top of many great technologies
+            - beginner-friendly abstraction
+            - but: you _can_ always go deeper
+        ''')
+
+        def giant(name: str, note: str) -> ui.element:
+            with nd.step().classes('border-2 h-12 column items-center justify-center'):
+                ui.label(name)
+            if note:
+                nd.note(f'**{name}**: {note}')
+        with ui.grid(columns=8).classes('mt-24 w-[90%] gap-1'):
+            with ui.element().classes('border-2 h-12 column items-center justify-center col-span-8'):
+                ui.label('NiceGUI')
             giant('HTML', 'e.g. paragraphs, lists, tables')
             giant('CSS', 'e.g. shadows, transitions')
             giant('JavaScript', 'e.g. geolocation, third-party libraries')
-            giant('Quasar', 'use even more components, dark mode')
+            giant('Quasar', 'dozens of components, can be used even without official NiceGUI integration')
             giant('Tailwind CSS', 'consistent and concise styling, responsive design')
             giant('Vue', 'NiceGUI: only 350 lines of own frontend code')
             giant('FastAPI', 'e.g. REST, authentication, existing backend')
@@ -492,7 +518,7 @@ with nd.deck(time_limit=30 * 60):
             - all these technologies at your fingertips
             - no need to learn them all, nicely abstracted away
         ''')
-    
+
     with slide('Where are we at?'):
         nd.note('''
             - xx UI elements
@@ -512,10 +538,12 @@ with nd.deck(time_limit=30 * 60):
         nd.note('Meanwhile: JustPy discontinued')
 
     with slide('To the Stars!'):
-        # On Air
-        # ChatGPT
-        # Custom GPT
-        # displace Streamlit?
+        nd.note('''
+            On Air
+            ChatGPT
+            Custom GPT
+            displace Streamlit?
+        ''')
 
 ui.run(title='PyCon Ireland 2023',
        uvicorn_reload_includes='*.py, *.css')
