@@ -26,11 +26,14 @@ def slide(heading: Optional[str] = None, *,
         wedge = ui.label().classes('absolute -bottom-14 bg-[#eee] w-[120%] h-32 -rotate-[4deg]')
         if hide_navigation:
             wedge.classes('z-10 bg-white')
+        else:
+            ui.label().bind_text_from(deck, 'value', lambda v: v.split('_')[-1]) \
+                .classes('absolute bottom-4 right-4 text-gray-400')
         with nd.center_row():
             yield
 
 
-with nd.deck(time_limit=30 * 60):
+with nd.deck(time_limit=30 * 60) as deck:
     with slide(hide_navigation=True):
         nd.note('''
             Welcome to my talk about NiceGUI!
@@ -602,8 +605,8 @@ with nd.deck(time_limit=30 * 60):
 
         @nd.demo
         def demo():
-            ui.label('Thank you!') \
-                .classes('text-4xl font-bold text-primary')
+            ui.label('Thank you.') \
+                .classes('text-4xl text-primary')
 
 
 ui.run(title='PyCon Ireland 2023',
