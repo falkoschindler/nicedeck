@@ -39,8 +39,8 @@ class Deck(ui.carousel):
                 ui.label(f'{time_limit // 60:.0f}:{time_limit % 60:02.0f}')
                 ui.button('Start', icon='play_arrow', on_click=start_timer).props('flat')
         else:
-            elapsed = int(self.reference_time - time.time())
-            ui.label(f'{elapsed // 60:.0f}:{elapsed % 60:02.0f}')
+            dt = self.reference_time - time.time()
+            ui.label(f'{"-" if dt < 0 else ""}{abs(dt) // 60:.0f}:{abs(dt) % 60:02.0f}')
 
     @property
     def slide(self) -> Slide:
