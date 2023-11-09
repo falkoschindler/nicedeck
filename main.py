@@ -114,10 +114,34 @@ with nd.deck(time_limit=30 * 60) as deck:
                     .classes('text-primary text-xl')
                 ui.label('-- Arthur C. Clarke').classes('text-xs text-gray-600')
 
-    with slide(center_heading='A New UI Framework'):
+    with slide(heading='Why a New UI Framework?'):
         nd.note('''
-            - **Why?**
+            - small company
+            - one of the most popular Python UI frameworks
+            - yes, live, even slides in NiceGUI!
         ''')
+        with ui.row().style('filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))'), \
+                ui.card().style(r'clip-path: polygon(0 0, 100% 0, 100% 93.5%, 0 100%)').classes('pb-12 no-shadow'), \
+                ui.row().classes('no-wrap'):
+            with ui.column().classes('items-center'):
+                ui.image('assets/face.png').classes('w-16') \
+                    .on('click', lambda _: output.set_text("That's my face!"), [])
+                ui.button('Click me!', on_click=lambda: output.set_text('Clicked')).classes('w-full')
+                ui.input('Text', value='abc', on_change=lambda e: output.set_text(e.value))
+                ui.checkbox('Check', on_change=lambda e: output.set_text('Checked' if e.value else 'Unchecked'))
+                ui.switch('Switch', on_change=lambda e: output.set_text('Switched on' if e.value else 'Switched off'))
+
+            with ui.column().classes('items-center'):
+                output = ui.label('Hello Dublin!') \
+                    .classes('w-44 my-6 h-8 text-xl text-gray-800 overflow-hidden text-ellipsis text-center')
+                ui.slider(min=0, max=100, value=50, step=0.1, on_change=lambda e: output.set_text(e.value)) \
+                    .style('width: 150px; margin-bottom: 2px')
+                with ui.row():
+                    ui.number('Number', value=3.1415927, format='%.2f', on_change=lambda e: output.set_text(e.value)) \
+                        .classes('w-20')
+                    ui.select({1: 'One', 2: 'Two', 3: 'Three'}, value=1, on_change=lambda e: output.set_text(e.value))
+                ui.toggle(['1', '2', '3'], value='1', on_change=lambda e: output.set_text(e.value))
+                ui.radio(['A', 'B', 'C'], value='A', on_change=lambda e: output.set_text(e.value)).props('inline')
 
     with slide('ODrive Motor Controller'):
         nd.note('''
@@ -291,8 +315,6 @@ with nd.deck(time_limit=30 * 60) as deck:
         nd.note('''
             - "normal" event handling: callback functions
               (in contrast to Streamlit)
-            
-            - yes: this is live, slides written in NiceGUI!
         ''')
 
         @nd.demo
