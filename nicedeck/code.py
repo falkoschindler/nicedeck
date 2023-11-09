@@ -8,7 +8,7 @@ from nicegui import ui
 class Code(ui.code):
     """A code block."""
 
-    def __init__(self, code: str, *, language: str = 'python') -> None:
+    def __init__(self, code: str, *, language: str | None = 'python') -> None:
         super().__init__(code, language=language)
         self._classes.append('p-2')
         self.copy_button.set_visibility(False)
@@ -47,8 +47,9 @@ def Demo(func: Callable) -> None:
     indentation = len(lines[0]) - len(lines[0].lstrip())
     lines = [line[indentation:] for line in lines]
     lines.insert(0, 'from nicegui import ui')
-    lines.append('')
-    lines.append('ui.run()')
+    if not lines[-1].startswith('ui.run'):
+        lines.append('')
+        lines.append('ui.run()')
     code = isort.code('\n'.join(lines), no_sections=True, lines_after_imports=1)
     Code(code)
     CodeResult(func)

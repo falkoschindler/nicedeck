@@ -521,29 +521,90 @@ with nd.deck(time_limit=30 * 60):
 
     with slide('Where are we at?'):
         nd.note('''
-            - xx UI elements
+            - around **100** UI elements
+            - almost weekly releases
             - one of the most popular Python UI frameworks
+            - used in production
+            - hundreds of open source projects build on top of NiceGUI
+            - JustPy discontinued
+            
+            ---
+            
+            - strong community: Discord, GitHub, Reddit, **ChatGPT**
+            
+            ---
+            
+            - nicegui.io (built with NiceGUI)
+            
+            ---
+            
+            - extensive documentation and interactive demos
         ''')
-        with ui.column():
+        with ui.column().classes('self-center'):
             ui.label('Version 1.0 is about to turn 1 year old 🎂')
+            ui.label('Around 100 UI elements 🧱')
             ui.label('Almost weekly releases 🚀')
-            ui.markdown('''
-                Active community on [GitHub](https://github.com/zauberzeug/nicegui/),
-                [Discord](https://discord.com/invite/TEpFeAaF4f),
-                [Reddit](https://www.reddit.com/r/nicegui/), and on
-                [StackOverflow](https://stackoverflow.com/questions/tagged/nicegui).
-            ''')
-            ui.link('nicegui.io', 'https://nicegui.io')
-            ui.link('zauberzeug.com', 'https://zauberzeug.com')
-        nd.note('Meanwhile: JustPy discontinued')
+            ui.label('Strong community 💪')
+        with nd.step().classes('w-[20%]'), ui.column().classes('w-full'):
+            ui.image('assets/github.jpg').classes('h-6').props('fit=contain')
+            ui.image('assets/reddit.png').classes('h-6').props('fit=contain')
+            ui.image('assets/discord.png').classes('h-6').props('fit=contain')
+            ui.image('assets/stackoverflow.png').classes('h-6').props('fit=contain')
+            ui.image('assets/chatgpt.png').classes('h-6').props('fit=contain')
+        with nd.step(), nd.center_row().classes('absolute-center pb-[1%] pr-[2%]'):
+            ui.image('assets/web-index.png').classes('w-[60%]')
+        with nd.step(), nd.center_row().classes('absolute-center pt-[1%] pl-[2%]'):
+            ui.image('assets/web-documentation.png').classes('w-[60%]')
 
     with slide('To the Stars!'):
         nd.note('''
-            On Air
-            ChatGPT
-            Custom GPT
-            displace Streamlit?
+            - robot accessible over the local network
         ''')
+
+        @nd.demo
+        def demo():
+            ...
+
+            ui.button('Start!', icon='smart_toy', on_click=lambda: start())
+
+        with nd.step():
+            nd.code('NiceGUI ready to go NiceGUI ready to go on http://localhost:8080, and http://192.168.0.209:8080',
+                    language=None).classes('bg-white')
+
+    with slide('To the Stars!'):
+        nd.note('''
+            - what if robot is in use somewhere else?
+            - solution: NiceGUI On Air
+            - uses proxy server for remote access
+        ''')
+        with ui.row().classes('absolute-center -mt-40 gap-2'):
+            ui.label('NiceGUI').classes('text-2xl font-bold')
+            ui.label('On Air').classes('text-2xl font-bold text-primary')
+
+        @nd.demo
+        def demo():
+            ...
+
+            ui.button('Start!', icon='smart_toy', on_click=lambda: start())
+
+            ui.run(on_air=True)
+
+        with nd.step():
+            nd.code('NiceGUI is on air at http://on-air.nicegui.io/devices/0gGsMGIS/',
+                    language=None).classes('bg-white')
+
+    with slide():
+        nd.note('''
+            - This brings me to the end of my talk.
+            - Thank you for your attention!
+            - Can I answer any questions?
+        ''')
+
+        @nd.demo
+        def demo():
+            ui.label('Thank you!') \
+                .classes('text-4xl font-bold text-primary')
+
 
 ui.run(title='PyCon Ireland 2023',
        uvicorn_reload_includes='*.py, *.css')
