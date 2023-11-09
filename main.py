@@ -66,25 +66,16 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide():
         nd.note('''
-            - first some background
-            - my company: Zauberzeug, Münsterland, ~20 employees
+            - Zauberzeug, Münsterland, ~20 employees
             
             ---
             
-            - develop hardware and software from an idea to a product
-            - includes: electronics, mechanics, 3D printing, microcontrollers, software, and AI
-            
-            ---
-
-            - autonomous cleaning robot
-            
-            ---
-
-            - Zauberzeug Robot Brain: industrial PC based on NVIDIA Jetson, can control hardware, runs AI models
+            - hardware+software, **idea -> product**
+            - electronics, mechanics, 3D printing, microcontrollers, software, and AI
             
             ---
             
-            - newest creation, Zauberzeug Field Friend: agricultural robot for weed control
+            - 3 examples
             - **mobile** robots: out in the wild
         ''')
         with nd.heading():
@@ -102,9 +93,9 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide('Philosophy'):
         nd.note('''
-            - Zauberzeug: creating tools that feel like magic
-            - software _and_ hardware
-            - Arthur C. Clarke: "Any sufficiently advanced technology is indistinguishable from magic."
+            - creating tools that feel like **magic**
+            - quote
+            - applies to software _and_ hardware
         ''')
         with ui.column().classes('items-center gap-16'):
             with ui.row():
@@ -125,17 +116,16 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide(center_heading='A New UI Framework'):
         nd.note('''
-            - after this background: Why a new framework?
+            - **Why?**
         ''')
 
     with slide('ODrive Motor Controller'):
         nd.note('''
-            - Core problem at Zauberzeug: Developing and controlling robots locally and remotely
-            - Example: ODrive motor controller, used in our robots
-            - needs configuration and tuning
-            - comes with a powerful Python CLI, but (at that time) a poor GUI, tedious to use (_not nice_)
-            - idea: can we use Streamlit to write a custom tuning UI?
-            - important: network connection to robot, so we can tune the controller while the robot is running
+            - mobile robots: motors
+            - ODrive motor controller needs configuration and tuning
+            - **Python** CLI, poor GUI
+            - network!
+            - perfect match: Streamlit?
         ''')
         ui.image('assets/odrive.jpg').classes('w-[30%]').props('fit=contain')
         with nd.step().classes('w-[60%]'):
@@ -145,11 +135,8 @@ with nd.deck(time_limit=30 * 60) as deck:
         nd.note('''
             - UI framework for Python
             - popular for its simplicity
-
-            ---
-            
-            - but: what is this? that hardly Python!
             - problems:
+                - non-Pythonic syntax
                 - constant reload
                 - hard to manage state
                 - hard to create something like timers
@@ -159,19 +146,19 @@ with nd.deck(time_limit=30 * 60) as deck:
 
             st.write('Hello world!')
         ''')
-        with nd.step():
-            nd.code('''
-                import streamlit as st
+        nd.code('''
+            import streamlit as st
 
-                if st.button('Say hello'):
-                    st.write('Hi!')
-            ''')
+            if st.button('Say hello'):
+                st.write('Hi!')
+        ''')
 
     with slide('Wishful Programming'):
         nd.note('''
-            - wishful programming: write code that you wish was possible
-            - this code: working prototype after a few hours
+            - what do we want?
+            - working prototype after a few hours
             - FastAPI app + Angular
+            - name? "Just Python"?
         ''')
         nd.code('''
             import simple_ui as ui
@@ -195,11 +182,8 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide('JustPy'):
         nd.note('''
-            - Name? Just Python --> "JustPy"?
-            - (almost) exactly what we were looking for
-                - Vue (not Angular)
-                - Quasar, Tailwind
-            - used as a basis for version 0.x
+            - Vue, Quasar, Tailwind
+            - basis for 0.x
             - removed in 1.0
                 - code base in poor condition
                 - deprecated Vue and Quasar versions
@@ -235,24 +219,23 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide('NiceGUI'):
         nd.note('''
-            - The name "NiceGUI":
-            - Our framework should be "nice" to use.
+            - "NiceGUI", pun intended
+            - should be "nice" to use
             - Nice guy:
-                "a man who puts the needs of others before his own, avoids confrontations, does favors, provides emotional support, tries to stay out of trouble, and generally acts nicely towards others"
+                "a man who puts the needs of others before his own,
+                avoids confrontations,
+                does favors,
+                provides emotional support,
+                tries to stay out of trouble,
+                and generally acts nicely towards others"
                 https://en.wikipedia.org/wiki/Nice_guy
-            - Pronounce as "nice guy"
             
             ---
             
-            - three-line hello world
-            - no command line tool to run
-            - no build step
-            - browser opens automatically
-            - easy for sharing code examples for documentation and Q&A
-            - browser opens automatically
+            - 3 lines
+            - no build, CLI, or config files
+            - browser opens
             - auto-reload
-            
-            - you guessed it: slides in NiceGUI
         ''')
         ui.image('assets/face.png').classes('w-40 mr-8')
         with nd.step().classes('self-center'), ui.row().classes('items-stretch'):
@@ -262,8 +245,7 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide('Embrace Indentation'):
         nd.note('''
-            - Pythonic way to create hierarchy? Indentation!
-            - here: card and row
+            - Pythonic hierarchy? Indentation!
         ''')
 
         @nd.demo
@@ -275,15 +257,7 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide('Hierarchy in Other UI Frameworks'):
         nd.note('''
-            - HTML: nesting of tags
-            
-            ---
-        
-            - NiceGUI: clean and readable
-            
-            ---
-            
-            - JustPy: declarative approach can get messy
+            ...
         ''')
         with nd.step(0):
             ui.label('HTML').classes('text-2xl text-gray-600')
@@ -315,9 +289,10 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide('Event Handling: Embrace Lambdas'):
         nd.note('''
-            How to react on user input?
-            --> lambda-friendly event registration
-            (in contrast to Streamlit)
+            - "normal" event handling: callback functions
+              (in contrast to Streamlit)
+            
+            - yes: this is live, slides written in NiceGUI!
         ''')
 
         @nd.demo
@@ -326,7 +301,7 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide('Behind the Scenes'):
         nd.note('''
-            What happens behind the scenes?
+            ...
         ''')
         with ui.column().classes('w-[30rem] items-stretch'):
             ui.chat_message('I\'d like to see "/".', avatar='assets/chrome.svg', sent=True)
@@ -348,9 +323,7 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide('Event Handling: With/without Arguments'):
         nd.note('''
-            - sometimes you want additional event arguments
-            - but not always
-            - NiceGUI supports both
+            - **some small conveniences**
         ''')
 
         @nd.demo
@@ -359,14 +332,16 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide('Event Handling: Auto-Context'):
         nd.note('''
-            - NiceGUI automatically keeps track of the current context
-            - this includes the current page, element, and slot
+            - page, element, and slot
         ''')
 
         @nd.demo
         def demo():
-            with ui.card():
-                ui.button('Spawn', on_click=lambda: ui.label("I'm here!"))
+            with ui.row():
+                with ui.card():
+                    ui.button(icon='add', on_click=lambda: ui.label('🙂'))
+                with ui.card():
+                    ui.button(icon='add', on_click=lambda: ui.label('😎'))
 
     with slide('Event Handling: Sync/Async'):
         nd.note('''
@@ -386,8 +361,7 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide('Event Handling: Async Lambdas'):
         nd.note('''
-            - Even "async lambdas" are supported!
-            - I.e. if a lambda returns a coroutine, it is awaited.
+            - "async lambdas"
         ''')
 
         @nd.demo
@@ -403,7 +377,8 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide('Builder Pattern'):
         nd.note('''
-            - Builder pattern: configure elements by chaining method calls
+            - important concept: builder pattern
+            - style and events chained in a single statement
         ''')
 
         @nd.demo
@@ -417,13 +392,12 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide('Tailwind API'):
         nd.note('''
-            - Tailwind classes can be hard to memorize
-            - API for discovering them more easily
+            - can use Tailwind API instead
         ''')
 
         @nd.demo
         def demo():
-            ui.label('TailwindCSS') \
+            ui.label('Tailwind CSS') \
                 .tailwind \
                 .text_color('blue-600') \
                 .border_width('4') \
@@ -433,8 +407,7 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide('Binding'):
         nd.note('''
-            - Binding: connect UI elements to each other and to data models
-            - supports conversion
+            - connect UI elements to each other and to data models
         ''')
 
         @nd.demo
@@ -449,7 +422,7 @@ with nd.deck(time_limit=30 * 60) as deck:
         nd.note('''
             - common pattern emerged: clear and refill container
             - introduced `refreshable` decorator
-            - of course: can be sync or async, can have arguments
+            - sync/async, w/wo arguments
         ''')
 
         @nd.demo
@@ -468,7 +441,7 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide('Refreshable UI with UI State'):
         nd.note('''
-            - suggestion from the community: borrow React's state concept
+            - community: borrow React's state concept
         ''')
 
         @nd.demo
@@ -483,9 +456,7 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide('HTML, Markdown and More'):
         nd.note('''
-            - want to be able to use HTML, Markdown, Mermaid, and code snippets
-            - of course, there is more
-            - note: intelligent indentation
+            - use existing technologies
         ''')
 
         @nd.demo
@@ -510,7 +481,7 @@ with nd.deck(time_limit=30 * 60) as deck:
         nd.note('''
             - NiceGUI is built on top of many great technologies
             - beginner-friendly abstraction
-            - but: you _can_ always go deeper
+            - _can_ go deeper
         ''')
 
         def giant(name: str, note: str) -> ui.element:
@@ -523,38 +494,21 @@ with nd.deck(time_limit=30 * 60) as deck:
                 ui.label('NiceGUI')
             giant('HTML', 'e.g. paragraphs, lists, tables')
             giant('CSS', 'e.g. shadows, transitions')
-            giant('JavaScript', 'e.g. geolocation, third-party libraries')
-            giant('Quasar', 'dozens of components, can be used even without official NiceGUI integration')
+            giant('JavaScript', 'e.g. geolocation, libraries')
+            giant('Quasar', 'dozens of components, even without NiceGUI integration')
             giant('Tailwind CSS', 'consistent and concise styling, responsive design')
-            giant('Vue', 'NiceGUI: only 350 lines of own frontend code')
+            giant('Vue', 'heavy lifting on frontend')
             giant('FastAPI', 'e.g. REST, authentication, existing backend')
-            giant('Python', 'popular language with lots of features, many libraries and large community')
-        nd.note('''
-            - all these technologies at your fingertips
-            - no need to learn them all, nicely abstracted away
-        ''')
+            giant('Python', 'popular language, libraries, community')
 
     with slide('Where are we at?'):
         nd.note('''
-            - around **100** UI elements
-            - almost weekly releases
+            ...
+                
             - one of the most popular Python UI frameworks
-            - used in production
-            - hundreds of open source projects build on top of NiceGUI
-            - RoSys: UI and robot control in Python
+            - 100s of open source projects build on top of NiceGUI
+            - **RoSys**: UI and robot control in Python
             - JustPy discontinued
-            
-            ---
-            
-            - strong community: Discord, GitHub, Reddit, **ChatGPT**
-            
-            ---
-            
-            - nicegui.io (built with NiceGUI)
-            
-            ---
-            
-            - extensive documentation and interactive demos
         ''')
         with ui.column().classes('self-center'):
             ui.label('Version 1.0 is about to turn 1 year old 🎂')
@@ -574,7 +528,7 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide('To the Stars!'):
         nd.note('''
-            - robot accessible over the local network
+            - robot on local network
         ''')
 
         with ui.column():
@@ -593,9 +547,9 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide('To the Stars!'):
         nd.note('''
-            - what if robot is in use somewhere else?
-            - solution: NiceGUI On Air
-            - uses proxy server for remote access
+            - robot somewhere else
+            - proxy server for remote access
+            - send link to colleagues or friends!
         ''')
         with ui.row().classes('absolute-center -mt-48 gap-2'):
             ui.label('NiceGUI').classes('text-2xl font-bold')
@@ -621,8 +575,8 @@ with nd.deck(time_limit=30 * 60) as deck:
     with slide():
         nd.note('''
             - This brings me to the end of my talk.
-            - Thank you for your attention!
-            - Can I answer any questions?
+            - I thank you for your attention
+            - and I'm happy to answer your questions.
         ''')
 
         @nd.demo
