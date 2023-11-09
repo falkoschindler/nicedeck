@@ -228,7 +228,7 @@ with nd.deck(time_limit=30 * 60) as deck:
                 provides emotional support,
                 tries to stay out of trouble,
                 and generally acts nicely towards others"
-                https://en.wikipedia.org/wiki/Nice_guy
+                [wiki]
             
             ---
             
@@ -482,24 +482,27 @@ with nd.deck(time_limit=30 * 60) as deck:
             - NiceGUI is built on top of many great technologies
             - beginner-friendly abstraction
             - _can_ go deeper
+            
+            ---
         ''')
 
         def giant(name: str, note: str) -> ui.element:
             with nd.step().classes('border-2 h-12 column items-center justify-center'):
                 ui.label(name)
-            if note:
-                nd.note(f'**{name}**: {note}')
+            return f'**{name}**: {note}<br />'
         with ui.grid(columns=8).classes('mt-24 w-[90%] gap-1'):
             with ui.element().classes('border-2 h-12 column items-center justify-center col-span-8'):
                 ui.label('NiceGUI')
-            giant('HTML', 'e.g. paragraphs, lists, tables')
-            giant('CSS', 'e.g. shadows, transitions')
-            giant('JavaScript', 'e.g. geolocation, libraries')
-            giant('Quasar', 'dozens of components, even without NiceGUI integration')
-            giant('Tailwind CSS', 'consistent and concise styling, responsive design')
-            giant('Vue', 'heavy lifting on frontend')
-            giant('FastAPI', 'e.g. REST, authentication, existing backend')
-            giant('Python', 'popular language, libraries, community')
+            notes = ''
+            notes += giant('HTML', 'e.g. paragraphs, lists, tables')
+            notes += giant('CSS', 'e.g. shadows, transitions')
+            notes += giant('JavaScript', 'e.g. geolocation, libraries')
+            notes += giant('Quasar', 'dozens of components, even without NiceGUI integration')
+            notes += giant('Tailwind CSS', 'consistent and concise styling, responsive design')
+            notes += giant('Vue', 'heavy lifting on frontend')
+            notes += giant('FastAPI', 'e.g. REST, authentication, existing backend')
+            notes += giant('Python', 'popular language, libraries, community')
+            nd.note(notes)
 
     with slide('Where are we at?'):
         nd.note('''
