@@ -10,7 +10,7 @@ class Code(ui.code):
 
     def __init__(self, code: str, *, language: str | None = 'python') -> None:
         super().__init__(code, language=language)
-        self._classes.append('p-2')
+        self.classes('p-2 shadow-md')
         self.copy_button.set_visibility(False)
 
 
@@ -22,8 +22,7 @@ class CodeResult(ui.element):
 
         BAR_COLOR = '#00000010'
         COLOR = '#ffffff'
-        with ui.card().classes(f'no-wrap bg-[{COLOR}] rounded-xl p-0 gap-0') \
-                .style('box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1)'):
+        with ui.card().classes(f'no-wrap bg-[{COLOR}] rounded-xl p-0 gap-0 border shadow-md'):
             with ui.row().classes(f'w-full h-8 p-2 bg-[{BAR_COLOR}]'):
                 with ui.row().classes('gap-1 relative left-[1px] top-[1px]'):
                     ui.icon('circle').classes('text-[13px] text-red-400')
@@ -46,6 +45,7 @@ def Demo(func: Callable) -> None:
     lines = lines[2:]  # remove first two lines (@demo and def)
     indentation = len(lines[0]) - len(lines[0].lstrip())
     lines = [line[indentation:] for line in lines]
+    lines = [line.removeprefix('# ') for line in lines]
     lines.insert(0, 'from nicegui import ui')
     if not lines[-1].startswith('ui.run'):
         lines.append('')

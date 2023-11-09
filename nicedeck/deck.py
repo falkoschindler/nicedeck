@@ -28,7 +28,7 @@ class Deck(ui.carousel):
     @ui.refreshable
     def show_notes(self) -> None:
         for note in self.slide.notes:
-            ui.markdown(note.text)
+            ui.markdown(note.text).classes('text-lg')
 
     @ui.refreshable
     def timer(self, time_limit: float) -> None:

@@ -58,16 +58,16 @@ with nd.deck(time_limit=30 * 60) as deck:
             with ui.row().classes('gap-8 mt-12'):
                 ui.label('Falko Schindler').classes('text-lg text-gray-600')
                 with ui.row().classes('gap-2 items-center'):
-                    ui.image('assets/zauberzeug-logo.png').classes('w-6 h-6 opacity-70')
-                    ui.label('zauberzeug.com').classes('text-lg text-gray-600')
+                    ui.image('assets/favicon.png').classes('opacity-70 w-6')
+                    ui.label('nicegui.io').classes('text-lg text-gray-600')
                 with ui.row().classes('gap-2 items-center'):
                     ui.html((Path(__file__).parent / 'assets' / 'github.svg').read_text()).classes('opacity-70')
-                    ui.label('github.com/zauberzeug').classes('text-lg text-gray-600')
+                    ui.label('github.com/zauberzeug/nicegui').classes('text-lg text-gray-600')
 
     with slide():
         nd.note('''
             - first some background
-            - my company: Zauberzeug, Münsterland, ~15 employees
+            - my company: Zauberzeug, Münsterland, ~20 employees
             
             ---
             
@@ -85,12 +85,13 @@ with nd.deck(time_limit=30 * 60) as deck:
             ---
             
             - newest creation, Zauberzeug Field Friend: agricultural robot for weed control
+            - **mobile** robots: out in the wild
         ''')
         with nd.heading():
             ui.image('assets/zauberzeug-logo.webp').classes('w-40')
-        ui.image('assets/building.webp').classes('absolute-center w-full h-[60vh]')
+        ui.image('assets/building.webp').classes('absolute w-full z-[-1] top-28 bottom-0')
         with nd.step(), nd.center_row():
-            ui.image('assets/office.jpg').classes('absolute-center w-full h-[60vh]')
+            ui.image('assets/office.jpg').classes('absolute w-full z-[-1] top-28 bottom-0')
         with nd.center_row():
             with nd.step(), ui.card():
                 ui.image('assets/brushing-bot.webp').classes('w-60 h-40 bg-white')
@@ -250,6 +251,8 @@ with nd.deck(time_limit=30 * 60) as deck:
             - easy for sharing code examples for documentation and Q&A
             - browser opens automatically
             - auto-reload
+            
+            - you guessed it: slides in NiceGUI
         ''')
         ui.image('assets/face.png').classes('w-40 mr-8')
         with nd.step().classes('self-center'), ui.row().classes('items-stretch'):
@@ -308,7 +311,7 @@ with nd.deck(time_limit=30 * 60) as deck:
                 box.add(Div(text='Hello'))
                 box.add(Div(text='world!'))
                 container.add(box)
-            ''')
+            ''').classes('flex-grow')
 
     with slide('Event Handling: Embrace Lambdas'):
         nd.note('''
@@ -372,8 +375,12 @@ with nd.deck(time_limit=30 * 60) as deck:
 
         @nd.demo
         def demo():
+            import asyncio
+
             async def handle_click():
-                ui.notify('Clicked!')
+                ui.notify('Wait for it...')
+                await asyncio.sleep(1)
+                ui.notify('Click!')
 
             ui.button('Click me', on_click=handle_click)
 
@@ -385,10 +392,14 @@ with nd.deck(time_limit=30 * 60) as deck:
 
         @nd.demo
         def demo():
-            async def notify(value):
-                ui.notify(f'New value: {value}')
+            import asyncio
 
-            ui.number(value=12, on_change=lambda e: notify(e.value))
+            async def notify(value):
+                ui.notify('You chose...')
+                await asyncio.sleep(1)
+                ui.notify(value)
+
+            ui.toggle(['A', 'B', 'C'], on_change=lambda e: notify(e.value))
 
     with slide('Builder Pattern'):
         nd.note('''
@@ -399,9 +410,10 @@ with nd.deck(time_limit=30 * 60) as deck:
         def demo():
             ui.button('Nice!', icon='face') \
                 .props('outline') \
-                .classes('absolute-center') \
+                .classes('m-auto') \
                 .style('box-shadow: 0 0 1rem 0 rgba(0, 127, 255, 0.25)') \
-                .on('mouseenter', lambda: ui.notify('😎'))
+                .on('mouseenter', lambda e: e.sender.classes('scale-125')) \
+                .on('mouseleave', lambda e: e.sender.classes(remove='scale-125'))
 
     with slide('Tailwind API'):
         nd.note('''
@@ -429,7 +441,7 @@ with nd.deck(time_limit=30 * 60) as deck:
         def demo():
             number = ui.number(value=42)
 
-            ui.label().bind_text_from(number, 'value', lambda v: f'Value: {v}')
+            ui.label().bind_text_from(number, 'value', lambda v: f'T = {v:.0f}˚C')
 
             ui.slider(min=0, max=100).bind_value(number)
 
@@ -443,7 +455,7 @@ with nd.deck(time_limit=30 * 60) as deck:
         @nd.demo
         def demo():
             @ui.refreshable
-            def print_temperature():
+            def show_temperature():
                 if slider.value < 0:
                     ui.label(f'Freezing: {slider.value}°C').classes('text-blue')
                 elif slider.value < 10:
@@ -451,8 +463,8 @@ with nd.deck(time_limit=30 * 60) as deck:
                 else:
                     ui.label(f'Warm: {slider.value}°C').classes('text-orange')
 
-            slider = ui.slider(value=0, min=-10, max=20, on_change=print_temperature.refresh)
-            print_temperature()
+            slider = ui.slider(value=0, min=-10, max=20, on_change=show_temperature.refresh)
+            show_temperature()
 
     with slide('Refreshable UI with UI State'):
         nd.note('''
@@ -491,7 +503,7 @@ with nd.deck(time_limit=30 * 60) as deck:
             ui.code('''
                 import this
                 
-                print('This is Python.')
+                print('This is Python')
             ''')
 
     with slide('On the Shoulders of Giants'):
@@ -529,6 +541,7 @@ with nd.deck(time_limit=30 * 60) as deck:
             - one of the most popular Python UI frameworks
             - used in production
             - hundreds of open source projects build on top of NiceGUI
+            - RoSys: UI and robot control in Python
             - JustPy discontinued
             
             ---
@@ -564,15 +577,19 @@ with nd.deck(time_limit=30 * 60) as deck:
             - robot accessible over the local network
         ''')
 
-        @nd.demo
-        def demo():
-            ...
+        with ui.column():
+            with ui.row().classes('items-stretch'):
+                @nd.demo
+                def demo():
+                    # import robot
 
-            ui.button('Start!', icon='smart_toy', on_click=lambda: start())
+                    ui.button('Start!', icon='smart_toy', on_click=lambda: robot.start())
 
-        with nd.step():
-            nd.code('NiceGUI ready to go NiceGUI ready to go on http://localhost:8080, and http://192.168.0.209:8080',
-                    language=None).classes('bg-white')
+            with nd.step().classes('w-full'):
+                nd.code('''
+                    $ python3 main.py
+                    NiceGUI ready to go on http://localhost:8080, and http://192.168.0.209:8080
+                ''', language=None).classes('bg-white h-32 w-full')
 
     with slide('To the Stars!'):
         nd.note('''
@@ -580,21 +597,26 @@ with nd.deck(time_limit=30 * 60) as deck:
             - solution: NiceGUI On Air
             - uses proxy server for remote access
         ''')
-        with ui.row().classes('absolute-center -mt-40 gap-2'):
+        with ui.row().classes('absolute-center -mt-48 gap-2'):
             ui.label('NiceGUI').classes('text-2xl font-bold')
             ui.label('On Air').classes('text-2xl font-bold text-primary')
 
-        @nd.demo
-        def demo():
-            ...
+        with ui.column():
+            with ui.row().classes('items-stretch'):
+                @nd.demo
+                def demo():
+                    # import robot
 
-            ui.button('Start!', icon='smart_toy', on_click=lambda: start())
+                    ui.button('Start!', icon='smart_toy', on_click=lambda: robot.start())
 
-            ui.run(on_air=True)
+                    # ui.run(on_air=True)
 
-        with nd.step():
-            nd.code('NiceGUI is on air at http://on-air.nicegui.io/devices/0gGsMGIS/',
-                    language=None).classes('bg-white')
+            with nd.step().classes('w-full'):
+                nd.code('''
+                    $ python3 main.py
+                    NiceGUI ready to go on http://localhost:1234, and http://192.168.0.209:1234
+                    NiceGUI is on air at http://on-air.nicegui.io/devices/0gGsMGIS/
+                ''', language=None).classes('bg-white h-32 w-full')
 
     with slide():
         nd.note('''

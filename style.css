@@ -45,7 +45,7 @@ a:active:not(.browser-window *) {
 .q-carousel__navigation-icon {
   font-size: 5px !important;
   margin: 0 !important;
-  color: #e0e0e0 !important;
+  color: #ccc !important;
 }
 .q-carousel__navigation-icon--active {
   color: #5898d4 !important;
