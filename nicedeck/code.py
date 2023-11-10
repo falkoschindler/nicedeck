@@ -14,7 +14,7 @@ class Code(ui.code):
         self.copy_button.set_visibility(False)
 
 
-class CodeResult(ui.element):
+class CodeResult(ui.card):
     """Rendered NiceGUI code."""
 
     def __init__(self, func: Callable) -> None:
@@ -22,7 +22,7 @@ class CodeResult(ui.element):
 
         BAR_COLOR = '#00000010'
         COLOR = '#ffffff'
-        with ui.card().classes(f'no-wrap bg-[{COLOR}] rounded-xl p-0 gap-0 border shadow-md'):
+        with self.classes(f'no-wrap bg-[{COLOR}] rounded-xl p-0 gap-0 border shadow-md'):
             with ui.row().classes(f'w-full h-8 p-2 bg-[{BAR_COLOR}]'):
                 with ui.row().classes('gap-1 relative left-[1px] top-[1px]'):
                     ui.icon('circle').classes('text-[13px] text-red-400')

@@ -164,6 +164,7 @@ with nd.deck(time_limit=30 * 60) as deck:
                 - constant reload
                 - hard to manage state
                 - hard to create something like timers
+            - have their use cases, but not for robotics
         ''')
         nd.code('''
             import streamlit as st
@@ -551,37 +552,41 @@ with nd.deck(time_limit=30 * 60) as deck:
         with nd.step(), nd.center_row().classes('absolute-center pt-[1%] pl-[2%]'):
             ui.image('assets/web-documentation.png').classes('w-[60%]')
 
-    with slide('To the Stars!'):
+    with slide():
+        with nd.heading(), ui.row().classes('gap-2'):
+            ui.label('NiceGUI')
+            ui.label('On Air 🚀').classes('text-primary')
         nd.note('''
             - robot on local network
         ''')
 
-        with ui.column():
-            with ui.row().classes('items-stretch'):
+        with ui.column().classes('gap-8'):
+            with ui.row().classes('gap-8 items-stretch'):
                 @nd.demo
                 def demo():
                     # import robot
 
                     ui.button('Start!', icon='smart_toy', on_click=lambda: robot.start())
 
-            with nd.step().classes('w-full'):
-                nd.code('''
-                    $ python3 main.py
-                    NiceGUI ready to go on http://localhost:8080, and http://192.168.0.209:8080
-                ''', language=None).classes('bg-white h-32 w-full')
+                ui.icon('wifi', size='2rem', color='gray-600').classes('self-center').move(target_index=1)
 
-    with slide('To the Stars!'):
+            nd.code('''
+                $ python3 main.py
+                NiceGUI ready to go on http://localhost:8080, and http://192.168.0.209:8080
+            ''', language=None).classes('bg-white h-32 w-full')
+
+    with slide():
+        with nd.heading(), ui.row().classes('gap-2'):
+            ui.label('NiceGUI')
+            ui.label('On Air 🚀').classes('text-primary')
         nd.note('''
             - robot somewhere else
             - proxy server for remote access
             - send link to colleagues or friends!
         ''')
-        with ui.row().classes('absolute-center -mt-48 gap-2'):
-            ui.label('NiceGUI').classes('text-2xl font-bold')
-            ui.label('On Air').classes('text-2xl font-bold text-primary')
 
-        with ui.column():
-            with ui.row().classes('items-stretch'):
+        with ui.column().classes('gap-8'):
+            with ui.row().classes('gap-8 items-stretch'):
                 @nd.demo
                 def demo():
                     # import robot
@@ -590,12 +595,13 @@ with nd.deck(time_limit=30 * 60) as deck:
 
                     # ui.run(on_air=True)
 
-            with nd.step().classes('w-full'):
-                nd.code('''
-                    $ python3 main.py
-                    NiceGUI ready to go on http://localhost:1234, and http://192.168.0.209:1234
-                    NiceGUI is on air at http://on-air.nicegui.io/devices/0gGsMGIS/
-                ''', language=None).classes('bg-white h-32 w-full')
+                ui.image('assets/4g.png').classes('self-center gap-0 w-8').move(target_index=1)
+
+            nd.code('''
+                $ python3 main.py
+                NiceGUI ready to go on http://localhost:1234, and http://192.168.0.209:1234
+                NiceGUI is on air at http://on-air.nicegui.io/devices/0gGsMGIS/
+            ''', language=None).classes('bg-white h-32 w-full')
 
     with slide():
         nd.note('''
