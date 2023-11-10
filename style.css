@@ -1,6 +1,10 @@
 body {
   font-family: "Fira Sans", Roboto, -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
+em {
+  font-style: normal;
+  color: #5898d4;
+}
 
 .q-carousel__navigation-icon {
   font-size: 5px !important;
