@@ -509,20 +509,22 @@ with nd.deck(time_limit=30 * 60) as deck:
             ---
         ''')
 
+        box_classes = 'border h-12 column items-center justify-center text-xl rounded bg-[#f8f8f8] shadow'
+
         def giant(name: str, note: str) -> ui.element:
-            with nd.step().classes('border-2 h-12 column items-center justify-center'):
+            with nd.step().classes(box_classes):
                 ui.label(name)
             return f'**{name}**: {note}<br />'
-        with ui.grid(columns=8).classes('mt-24 w-[90%] gap-1'):
-            with ui.element().classes('border-2 h-12 column items-center justify-center col-span-8'):
+        with ui.grid(columns=8).classes('mt-24 w-[90%] gap-2'):
+            with ui.element().classes(f'{box_classes} col-span-8'):
                 ui.label('NiceGUI')
             notes = ''
             notes += giant('HTML', 'e.g. paragraphs, lists, tables')
             notes += giant('CSS', 'e.g. shadows, transitions')
             notes += giant('JavaScript', 'e.g. geolocation, libraries')
+            notes += giant('Vue', 'heavy lifting on frontend')
             notes += giant('Quasar', 'dozens of components, even without NiceGUI integration')
             notes += giant('Tailwind CSS', 'consistent and concise styling, responsive design')
-            notes += giant('Vue', 'heavy lifting on frontend')
             notes += giant('FastAPI', 'e.g. REST, authentication, existing backend')
             notes += giant('Python', 'popular language, libraries, community')
             nd.note(notes)
