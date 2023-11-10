@@ -145,9 +145,10 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide('ODrive Motor Controller'):
         nd.note('''
-            - mobile robots: motors
-            - ODrive motor controller needs configuration and tuning
-            - **Python** CLI, poor GUI
+            - May 2021 (2.5 years ago)
+            - motor tuning
+            - ODrive motor controller
+            - **Python** CLI, poor GUI (inputs, sliders, plots)
             - network!
             - perfect match: Streamlit?
         ''')
@@ -524,7 +525,7 @@ with nd.deck(time_limit=30 * 60) as deck:
             notes += giant('JavaScript', 'e.g. geolocation, libraries')
             notes += giant('Vue', 'heavy lifting on frontend')
             notes += giant('Quasar', 'dozens of components, even without NiceGUI integration')
-            notes += giant('Tailwind CSS', 'consistent and concise styling, responsive design')
+            notes += giant('Tailwind', 'consistent and concise styling, responsive design')
             notes += giant('FastAPI', 'e.g. REST, authentication, existing backend')
             notes += giant('Python', 'popular language, libraries, community')
             nd.note(notes)
@@ -553,6 +554,13 @@ with nd.deck(time_limit=30 * 60) as deck:
             ui.image('assets/web-index.png').classes('w-[60%]')
         with nd.step(), nd.center_row().classes('absolute-center pt-[1%] pl-[2%]'):
             ui.image('assets/web-documentation.png').classes('w-[60%]')
+
+    with slide('Zauberzeug ODrive GUI'):
+        nd.note('''
+            ODrive GUI based on NiceGUI!
+        ''')
+        with ui.card().classes('absolute-center w-[58%] mt-4 p-2 border shadow-md'):
+            ui.image('assets/odrivegui.png')
 
     with slide():
         with nd.heading(), ui.row().classes('gap-2'):
