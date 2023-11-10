@@ -82,7 +82,7 @@ with nd.deck(time_limit=30 * 60) as deck:
             ui.image('assets/zauberzeug-logo.webp').classes('w-40')
         ui.image('assets/building.webp').classes('absolute w-full z-[-1] top-28 bottom-0')
         with nd.step(), nd.center_row():
-            ui.image('assets/office.jpg').classes('absolute w-full z-[-1] top-28 bottom-0')
+            ui.image('assets/office2.jpg').classes('absolute w-full z-[-1] top-28 bottom-0')
         with nd.center_row():
             with nd.step(), ui.card():
                 ui.image('assets/brushing-bot.webp').classes('w-60 h-40 bg-white')
