@@ -37,9 +37,11 @@ with nd.deck(time_limit=30 * 60) as deck:
     with slide(hide_navigation=True):
         nd.note('''
             Welcome to my talk about NiceGUI!
-                
-            It's a story about
-                
+            
+            **Who knows NiceGUI already?**
+
+            In this talk: story about
+            
             - how we had a problem at hand,
             - didn't find an existing solution,
             - decided to create our own,
@@ -76,7 +78,7 @@ with nd.deck(time_limit=30 * 60) as deck:
             ---
             
             - 3 examples
-            - **mobile** robots: out in the wild
+            - **mobile** robots: out in the wild, remote access
         ''')
         with nd.heading():
             ui.image('assets/zauberzeug-logo.webp').classes('w-40')
@@ -94,8 +96,11 @@ with nd.deck(time_limit=30 * 60) as deck:
     with slide('Philosophy'):
         nd.note('''
             - creating tools that feel like **magic**
+            
+            ---
+            
             - quote
-            - applies to software _and_ hardware
+            - applies to hardware (weeding robot) _and_ software
         ''')
         with ui.column().classes('items-center gap-16'):
             with ui.row():
@@ -109,16 +114,18 @@ with nd.deck(time_limit=30 * 60) as deck:
                     ui.label('[ˈt͡sɔʏ̯k]').classes('text-grey text-xs')
                     ui.label('🔨').classes('text-4xl')
                     ui.label('"tools"')
-            with ui.column().classes('bg-gray-50 shadow p-4 items-end'):
+            with nd.step(), ui.column().classes('bg-gray-50 shadow p-4 items-end'):
                 ui.label('“Any sufficiently advanced technology is indistinguishable from magic.”') \
                     .classes('text-primary text-xl')
                 ui.label('-- Arthur C. Clarke').classes('text-xs text-gray-600')
 
     with slide(heading='Why a New UI Framework?'):
         nd.note('''
-            - small company
-            - one of the most popular Python UI frameworks
-            - yes, live, even slides in NiceGUI!
+            - why another Python UI framework?
+            - one of the most popular ones
+            - not only such basic elements
+            - so nice to use
+            - and yes, live, even slides in NiceGUI!
         ''')
         with ui.row().style('filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))'), \
                 ui.card().style(r'clip-path: polygon(0 0, 100% 0, 100% 93.5%, 0 100%)').classes('pb-12 no-shadow'), \
@@ -145,12 +152,12 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide('ODrive Motor Controller'):
         nd.note('''
-            - [May 2021]
-            - motor tuning
+            - story begins in [May 2021]
+            - new robot, driving funny -> motor tuning
             - ODrive motor controller
-            - **Python** CLI, poor GUI (inputs, sliders, plots)
-            - network!
-            - perfect match: Streamlit?
+            - poor GUI, but configurable, plots, network
+            - **Python** API
+            - Streamlit UI?
         ''')
         ui.image('assets/odrive.jpg').classes('w-[30%]').props('fit=contain')
         with nd.step().classes('w-[60%]'):
@@ -182,6 +189,7 @@ with nd.deck(time_limit=30 * 60) as deck:
     with slide('Wishful Programming'):
         nd.note('''
             - what do we want?
+            - "simple" like Streamlit, but _real_ Python
             - working prototype after a few hours
             - FastAPI app + Angular
             - name? "Just Python"?
@@ -208,12 +216,14 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide('JustPy'):
         nd.note('''
+            - bit more complicated
             - Vue, Quasar, Tailwind
             - basis for 0.x
             - removed in 1.0
                 - code base in poor condition
                 - deprecated Vue and Quasar versions
                 - too much overhead
+            - JustPy: amazing, but should be nicer!
         ''')
         nd.code('''
             import justpy as jp
@@ -247,6 +257,7 @@ with nd.deck(time_limit=30 * 60) as deck:
         nd.note('''
             - "NiceGUI", pun intended
             - should be "nice" to use
+            - "face" of the library
             - Nice guy:
                 "a man who puts the needs of others before his own,
                 avoids confrontations,
@@ -271,7 +282,9 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide('Embrace Indentation'):
         nd.note('''
-            - Pythonic hierarchy? Indentation!
+            - hierarchy?
+            - use power of Python: indentation and with expressions!
+            - you see the structure immediately
         ''')
 
         @nd.demo
@@ -325,7 +338,12 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide('Behind the Scenes'):
         nd.note('''
+            - Let's look behind the scenes
+            - no time for technical detail...
+            
             ...
+
+            - NiceGUI: basically a fancy webserver
         ''')
         with ui.column().classes('w-[30rem] items-stretch'):
             ui.chat_message('I\'d like to see "/".', avatar='assets/chrome.svg', sent=True)
@@ -352,7 +370,9 @@ with nd.deck(time_limit=30 * 60) as deck:
 
         @nd.demo
         def demo():
-            ui.number(value=41, on_change=lambda e: ui.notify(f'new value: {e.value}'))
+            ui.number(value=41, on_change=lambda e: ui.notify(f'New value: {e.value}'))
+
+            ui.button('Submit', on_click=lambda: ui.notify('Done.', type='positive'))
 
     with slide('Event Handling: Auto-Context'):
         nd.note('''
@@ -386,24 +406,27 @@ with nd.deck(time_limit=30 * 60) as deck:
     with slide('Event Handling: Async Lambdas'):
         nd.note('''
             - [June 2023]
-            - "async lambdas"
+            - if signature of async function doesn't match
+            - "async lambdas" in Python
+            - NiceGUI supports it anyway
         ''')
 
         @nd.demo
         def demo():
             import asyncio
 
-            async def notify(value):
-                ui.notify('You chose...')
+            async def show_result(choice: str):
+                ui.notify('You picked...')
                 await asyncio.sleep(1)
-                ui.notify(value)
+                ui.notify(choice)
 
-            ui.toggle(['A', 'B', 'C'], on_change=lambda e: notify(e.value))
+            ui.toggle(['A', 'B', 'C'], on_change=lambda e: show_result(e.value))
 
     with slide('Builder Pattern'):
         nd.note('''
             - important concept: builder pattern
             - style and events chained in a single statement
+            - powerful, even without local variables
         ''')
 
         @nd.demo
@@ -417,8 +440,10 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide('Tailwind API'):
         nd.note('''
+            - have to know  CSS/Tailwind?
             - [April 2023]
             - can use Tailwind API instead
+            - auto-suggestions from IDE
         ''')
 
         @nd.demo
@@ -426,13 +451,15 @@ with nd.deck(time_limit=30 * 60) as deck:
             ui.label('Tailwind CSS') \
                 .tailwind \
                 .text_color('blue-600') \
-                .border_width('4') \
-                .border_style('dashed') \
                 .border_color('blue-600') \
-                .padding('p-4')
+                .border_style('dashed') \
+                .border_width('4') \
+                .padding('p-4') \
+                .margin('m-auto')
 
     with slide('Binding'):
         nd.note('''
+            - not only event handlers
             - connect UI elements to each other and to data models
         ''')
 
@@ -486,6 +513,15 @@ with nd.deck(time_limit=30 * 60) as deck:
         nd.note('''
             - [May 2021, Jan/Sep 2023]
             - use existing technologies
+            - more:
+                - Highcharts
+                - Plotly
+                - PyPlot
+                - AG Grid
+                - 3D rendering
+                - joystick
+                - audio/video
+                - ...
         ''')
 
         @nd.demo
@@ -528,7 +564,7 @@ with nd.deck(time_limit=30 * 60) as deck:
             notes += giant('HTML', 'e.g. paragraphs, lists, tables')
             notes += giant('CSS', 'e.g. shadows, transitions')
             notes += giant('JavaScript', 'e.g. geolocation, libraries')
-            notes += giant('Vue', 'heavy lifting on frontend')
+            notes += giant('Vue', 'heavy lifting on frontend, NiceGUI: little code')
             notes += giant('Quasar', 'dozens of components, even without NiceGUI integration')
             notes += giant('Tailwind', 'consistent and concise styling, responsive design')
             notes += giant('FastAPI', 'e.g. REST, authentication, existing backend')
@@ -537,24 +573,27 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide('Where are we at?'):
         nd.note('''
+            Strong community of nice guys (and girls 😉)
+
             ...
                 
+            # 👇🏻
+                
             - one of the most popular Python UI frameworks
-            - 100s of open source projects build on top of NiceGUI
-            - **RoSys**: UI and robot control in Python
+            - 100s of open source projects built on top of NiceGUI
             - JustPy discontinued
         ''')
-        with ui.column().classes('self-center'):
+        with ui.column().classes('self-center text-lg'):
             ui.label('Version 1.0 is about to turn 1 year old 🎂')
             ui.label('Around 100 UI elements 🧱')
             ui.label('Almost weekly releases 🚀')
             ui.label('Strong community 💪')
-        with nd.step().classes('w-[20%]'), ui.column().classes('w-full'):
-            ui.image('assets/github.jpg').classes('h-6').props('fit=contain')
-            ui.image('assets/reddit.png').classes('h-6').props('fit=contain')
-            ui.image('assets/discord.png').classes('h-6').props('fit=contain')
-            ui.image('assets/stackoverflow.png').classes('h-6').props('fit=contain')
-            ui.image('assets/chatgpt.png').classes('h-6').props('fit=contain')
+        with nd.step().classes('w-[18%]'), ui.column().classes('w-full'):
+            ui.image('assets/github.jpg').classes('h-7').props('fit=contain')
+            ui.image('assets/reddit.png').classes('h-7').props('fit=contain')
+            ui.image('assets/discord.png').classes('h-7').props('fit=contain')
+            ui.image('assets/stackoverflow.png').classes('h-7').props('fit=contain')
+            ui.image('assets/chatgpt.png').classes('h-7').props('fit=contain')
         with nd.step(), nd.center_row().classes('absolute-center pb-[1%] pr-[2%]'):
             ui.image('assets/web-index.png').classes('w-[60%]')
         with nd.step(), nd.center_row().classes('absolute-center pt-[1%] pl-[2%]'):
@@ -562,7 +601,8 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide('Zauberzeug ODrive GUI'):
         nd.note('''
-            ODrive GUI based on NiceGUI!
+            - ODrive GUI based on NiceGUI! (first project)
+            - also **RoSys**: UI and robot control in Python
         ''')
         with ui.card().classes('absolute-center w-[58%] mt-4 p-2 border shadow-md'):
             ui.image('assets/odrivegui.png')
@@ -598,6 +638,7 @@ with nd.deck(time_limit=30 * 60) as deck:
             - robot somewhere else
             - proxy server for remote access
             - send link to colleagues or friends!
+            - tech preview available for testing
         ''')
 
         with ui.column().classes('gap-8'):
