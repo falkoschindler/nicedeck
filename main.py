@@ -145,7 +145,7 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide('ODrive Motor Controller'):
         nd.note('''
-            - May 2021 (2.5 years ago)
+            - [May 2021]
             - motor tuning
             - ODrive motor controller
             - **Python** CLI, poor GUI (inputs, sliders, plots)
@@ -385,6 +385,7 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide('Event Handling: Async Lambdas'):
         nd.note('''
+            - [June 2023]
             - "async lambdas"
         ''')
 
@@ -416,6 +417,7 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide('Tailwind API'):
         nd.note('''
+            - [April 2023]
             - can use Tailwind API instead
         ''')
 
@@ -444,6 +446,7 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide('Refreshable UI'):
         nd.note('''
+            - [April 2023]
             - common pattern emerged: clear and refill container
             - introduced `refreshable` decorator
             - sync/async, w/wo arguments
@@ -465,6 +468,7 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide('Refreshable UI with UI State'):
         nd.note('''
+            - [October 2023]
             - community: borrow React's state concept
         ''')
 
@@ -480,6 +484,7 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide('HTML, Markdown and More'):
         nd.note('''
+            - [May 2021, Jan/Sep 2023]
             - use existing technologies
         ''')
 
