@@ -22,7 +22,6 @@ class Deck(ui.carousel):
             ui.add_head_html('<style>hr { border: 1px dashed gray }</style>')
             self.timer(time_limit)
             ui.timer(1.0, self.timer.refresh)
-            ui.separator()
             self.show_notes()
 
     @ui.refreshable
@@ -33,15 +32,15 @@ class Deck(ui.carousel):
 
     @ui.refreshable
     def timer(self, time_limit: float) -> None:
-        if self.reference_time is None:
-            def start_timer() -> None:
-                self.reference_time = int(time.time() + time_limit)
-            with ui.row().classes('items-center'):
+        with ui.row().classes('items-center text-bold text-lg'):
+            if self.reference_time is None:
+                def start_timer() -> None:
+                    self.reference_time = int(time.time() + time_limit)
                 ui.label(f'{time_limit // 60:.0f}:{time_limit % 60:02.0f}')
                 ui.button('Start', icon='play_arrow', on_click=start_timer).props('flat')
-        else:
-            dt = self.reference_time - time.time()
-            ui.label(f'{"-" if dt < 0 else ""}{abs(dt) // 60:.0f}:{abs(dt) % 60:02.0f}')
+            else:
+                dt = self.reference_time - time.time()
+                ui.label(f'{"-" if dt < 0 else ""}{abs(dt) // 60:.0f}:{abs(dt) % 60:02.0f}')
 
     @property
     def slide(self) -> Slide:
