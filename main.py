@@ -403,24 +403,24 @@ with nd.deck(time_limit=30 * 60) as deck:
 
             ui.button('Click me', on_click=handle_click)
 
-    with slide('Event Handling: Async Lambdas'):
-        nd.note('''
-            - [June 2023]
-            - if signature of async function doesn't match
-            - "async lambdas" in Python
-            - NiceGUI supports it anyway
-        ''')
+    # with slide('Event Handling: Async Lambdas'):
+    #     nd.note('''
+    #         - [June 2023]
+    #         - if signature of async function doesn't match
+    #         - "async lambdas" in Python
+    #         - NiceGUI supports it anyway
+    #     ''')
 
-        @nd.demo
-        def demo():
-            import asyncio
+    #     @nd.demo
+    #     def demo():
+    #         import asyncio
 
-            async def show_result(choice: str):
-                ui.notify('You picked...')
-                await asyncio.sleep(1)
-                ui.notify(choice)
+    #         async def show_result(choice: str):
+    #             ui.notify('You picked...')
+    #             await asyncio.sleep(1)
+    #             ui.notify(choice)
 
-            ui.toggle(['A', 'B', 'C'], on_change=lambda e: show_result(e.value))
+    #         ui.toggle(['A', 'B', 'C'], on_change=lambda e: show_result(e.value))
 
     with slide('Builder Pattern'):
         nd.note('''
@@ -509,38 +509,38 @@ with nd.deck(time_limit=30 * 60) as deck:
 
             show_counter()
 
-    with slide('HTML, Markdown and More'):
-        nd.note('''
-            - [May 2021, Jan/Sep 2023]
-            - use existing technologies
-            - more:
-                - Highcharts
-                - Plotly
-                - PyPlot
-                - AG Grid
-                - 3D rendering
-                - joystick
-                - audio/video
-                - ...
-        ''')
+    # with slide('HTML, Markdown and More'):
+    #     nd.note('''
+    #         - [May 2021, Jan/Sep 2023]
+    #         - use existing technologies
+    #         - more:
+    #             - Highcharts
+    #             - Plotly
+    #             - PyPlot
+    #             - AG Grid
+    #             - 3D rendering
+    #             - joystick
+    #             - audio/video
+    #             - ...
+    #     ''')
 
-        @nd.demo
-        def demo():
-            ui.html('''
-                <p>This is <strong>HTML</strong>.</p>
-            ''')
-            ui.markdown('''
-                This is **Markdown**.
-            ''')
-            ui.mermaid('''
-                graph LR
-                    This --> is --> Mermaid
-            ''')
-            ui.code('''
-                import this
-                
-                print('This is Python')
-            ''')
+    #     @nd.demo
+    #     def demo():
+    #         ui.html('''
+    #             <p>This is <strong>HTML</strong>.</p>
+    #         ''')
+    #         ui.markdown('''
+    #             This is **Markdown**.
+    #         ''')
+    #         ui.mermaid('''
+    #             graph LR
+    #                 This --> is --> Mermaid
+    #         ''')
+    #         ui.code('''
+    #             import this
+
+    #             print('This is Python')
+    #         ''')
 
     with slide('On the Shoulders of Giants'):
         nd.note('''
@@ -573,15 +573,16 @@ with nd.deck(time_limit=30 * 60) as deck:
 
     with slide('Where are we at?'):
         nd.note('''
-            Strong community of nice guys (and girls 😉)
+            - Highcharts
+            - Plotly
+            - PyPlot
+            - AG Grid
+            - 3D rendering
+            - joystick
+            - audio/video
+            - ...
 
-            ...
-                
-            # 👇🏻
-                
-            - one of the most popular Python UI frameworks
-            - 100s of open source projects built on top of NiceGUI
-            - JustPy discontinued
+            Strong community of nice guys (and girls 😉)
         ''')
         with ui.column().classes('self-center text-lg'):
             ui.label('Version 1.0 is about to turn 1 year old 🎂')
@@ -602,7 +603,7 @@ with nd.deck(time_limit=30 * 60) as deck:
     with slide('Zauberzeug ODrive GUI'):
         nd.note('''
             - ODrive GUI based on NiceGUI! (first project)
-            - also **RoSys**: UI and robot control in Python
+            - and all **other projects** and a whole robot control system RoSys
         ''')
         with ui.card().classes('absolute-center w-[58%] mt-4 p-2 border shadow-md'):
             ui.image('assets/odrivegui.png')
