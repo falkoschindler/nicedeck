@@ -14,10 +14,24 @@ As an example, it contains the talk ["NiceGUI - Inventing Python’s Nicest UI F
 
 ## Getting started
 
+Install required NiceGUI package:
+
 ```bash
 pip install nicegui
+```
+
+Open the example slideshow from PyCon Ireland 2023:
+
+```bash
 python3 main.py
 ```
 
-- Navigate with the arrow keys or using the navigation bar on the bottom.
-- Open /notes in another tap or on another device to view the slide notes.
+Or open a small demo slideshow:
+
+```bash
+python3 demo.py
+```
+
+Navigate with the arrow keys or using the navigation bar on the bottom.
+
+Open /notes in another tap or on another device to view the slide notes.
