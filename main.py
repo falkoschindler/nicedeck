@@ -130,6 +130,8 @@ with nd.deck(time_limit=30 * 60) as deck:
         with ui.row().style('filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))'), \
                 ui.card().style(r'clip-path: polygon(0 0, 100% 0, 100% 93.5%, 0 100%)').classes('pb-12 no-shadow'), \
                 ui.row().classes('no-wrap'):
+            output: ui.label
+
             with ui.column().classes('items-center'):
                 ui.image('assets/face.png').classes('w-16') \
                     .on('click', lambda _: output.set_text("That's my face!"), [])
@@ -553,7 +555,7 @@ with nd.deck(time_limit=30 * 60) as deck:
 
         box_classes = 'border h-12 column items-center justify-center text-xl rounded bg-[#f8f8f8] shadow'
 
-        def giant(name: str, note: str) -> ui.element:
+        def giant(name: str, note: str) -> str:
             with nd.step().classes(box_classes):
                 ui.label(name)
             return f'**{name}**: {note}<br />'
