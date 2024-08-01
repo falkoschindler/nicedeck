@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Optional
+from typing import Generator, Optional
 
 from nicegui import app, ui
 
 import nicedeck as nd
 
 PATH = Path(__file__).parent
-ui.add_head_html(f'<style>{(PATH / "style.css").read_text()}</style>')
+ui.add_css(PATH / 'style.css')
 app.add_static_files('/fonts', PATH / 'fonts')
 app.add_static_files('/assets', PATH / 'assets')
 FACE_SVG = (PATH / 'assets' / 'half_face.svg').read_text()
@@ -17,7 +17,7 @@ FACE_SVG = (PATH / 'assets' / 'half_face.svg').read_text()
 @contextmanager
 def slide(heading: Optional[str] = None, *,
           center_heading: Optional[str] = None,
-          hide_navigation: bool = False) -> None:
+          hide_navigation: bool = False) -> Generator[None, None, None]:
     with nd.slide():
         if heading:
             nd.heading(heading)
