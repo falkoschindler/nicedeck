@@ -9,7 +9,8 @@ As an example, it contains the talk ["NiceGUI - Inventing Python’s Nicest UI F
 - Include Markdown, images, and code.
 - Unveil parts of the slide step by step.
 - Interact with NiceGUI code examples directly in the slides.
-- View synchronized slide notes on another screen or mobile device.
+- View synchronized speaker notes on another screen or mobile device.
+- Use a countdown timer on the notes page.
 
 ## Getting started
 
