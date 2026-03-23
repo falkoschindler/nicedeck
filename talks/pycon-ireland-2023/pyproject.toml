@@ -1,0 +1,11 @@
+[project]
+name = "pycon-ireland-2023"
+version = "0.0.0"
+requires-python = ">=3.10"
+dependencies = [
+    "nicegui>=1.4.0,<1.5.0",
+    "nicedeck==0.1.0",
+]
+
+[tool.uv.sources]
+nicedeck = { path = "../.." }

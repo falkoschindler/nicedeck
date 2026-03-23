@@ -69,6 +69,5 @@ with nd.deck(time_limit=10 * 60).props('control-color=blue-2') as deck:
         ''')
         with ui.column().classes('absolute-center items-center gap-16'):
             ui.label('You reached the end of this demo.').classes('text-4xl')
-            ui.image('assets/face.png').classes('w-32')
 
 ui.run(title='NiceDeck Demo Talk')

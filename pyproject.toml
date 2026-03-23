@@ -9,7 +9,7 @@ description = "Create slideshows in Python using NiceGUI"
 requires-python = ">=3.10"
 dependencies = [
     "isort",
-    "nicegui>=1.4,<2",
+    "nicegui>=1.4",
 ]
 
 [project.urls]

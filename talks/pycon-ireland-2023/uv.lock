@@ -340,11 +340,11 @@ wheels = [
 
 [[package]]
 name = "docutils"
-version = "0.22.4"
+version = "0.19"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/ae/b6/03bb70946330e88ffec97aefd3ea75ba575cb2e762061e0e62a213befee8/docutils-0.22.4.tar.gz", hash = "sha256:4db53b1fde9abecbb74d91230d32ab626d94f6badfc575d6db9194a49df29968", size = 2291750, upload-time = "2025-12-18T19:00:26.443Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/6b/5c/330ea8d383eb2ce973df34d1239b3b21e91cd8c865d21ff82902d952f91f/docutils-0.19.tar.gz", hash = "sha256:33995a6753c30b7f577febfc2c50411fec6aac7f7ffeb7c4cfe5991072dcf9e6", size = 2056383, upload-time = "2022-07-05T20:17:31.045Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/02/10/5da547df7a391dcde17f59520a231527b8571e6f46fc8efb02ccb370ab12/docutils-0.22.4-py3-none-any.whl", hash = "sha256:d0013f540772d1420576855455d050a2180186c91c15779301ac2ccb3eeb68de", size = 633196, upload-time = "2025-12-18T19:00:18.077Z" },
+    { url = "https://files.pythonhosted.org/packages/93/69/e391bd51bc08ed9141ecd899a0ddb61ab6465309f1eb470905c0c8868081/docutils-0.19-py3-none-any.whl", hash = "sha256:5e1de4d849fee02c63b040a4a3fd567f4ab104defd8a5511fbbc24a8a017efbc", size = 570472, upload-time = "2022-07-05T20:17:26.388Z" },
 ]
 
 [[package]]
@@ -857,7 +857,7 @@ wheels = [
 [[package]]
 name = "nicedeck"
 version = "0.1.0"
-source = { editable = "." }
+source = { directory = "../../" }
 dependencies = [
     { name = "isort" },
     { name = "nicegui" },
@@ -871,7 +871,7 @@ requires-dist = [
 
 [[package]]
 name = "nicegui"
-version = "1.4.37"
+version = "1.4.30"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiofiles" },
@@ -895,9 +895,9 @@ dependencies = [
     { name = "vbuild" },
     { name = "watchfiles" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/1d/37/37f1ba4221522d0a670fa0c288cad5b0df4dc5bde1fe5b5e9d8ac9dd6288/nicegui-1.4.37.tar.gz", hash = "sha256:d55976d7c0c22a0797938cabc0ae534535b42aee9a6ce54d660be72628434f35", size = 16159722, upload-time = "2024-08-29T13:53:53.746Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/23/11/8cc00b35d0c59d52aa706619bc95a1aebef0c330bc0e87415c82e5156c82/nicegui-1.4.30.tar.gz", hash = "sha256:5c962c0e2722078fd94eb617672a8881a9f68086ee6fe81f8b8999e3dc4f75bc", size = 16150779, upload-time = "2024-07-26T10:05:14.236Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/26/95/a7f7c2cd3b4a2c2b8b59b2020c30aa2c211ea828aab75563b00e1e9cf07c/nicegui-1.4.37-py3-none-any.whl", hash = "sha256:b63ae7cf89ace808fefba866b81514c59a04cff40447b6043640e259747179b6", size = 16627209, upload-time = "2024-08-29T13:53:50.324Z" },
+    { url = "https://files.pythonhosted.org/packages/0c/c0/cbbcdab58cd6fbe60d07280baa8531f0f75614a6c30efe2d31f7b9096913/nicegui-1.4.30-py3-none-any.whl", hash = "sha256:1574592d620f9d9cf5ab1e6df18bde36248d4961a2990034e735c075e0a2aac0", size = 16611401, upload-time = "2024-07-26T10:05:09.491Z" },
 ]
 
 [[package]]
@@ -1102,6 +1102,21 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/59/68/f918702e270eddc5f7c54108f6a2f2afc2d299985820dbb0db9beb77d66d/pscript-0.7.7.tar.gz", hash = "sha256:8632f7a4483f235514aadee110edee82eb6d67336bf68744a7b18d76e50442f8", size = 176138, upload-time = "2022-01-10T10:55:02.559Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f1/bc/980e2ebd442d2a8f1d22780f73db76f2a1df3bf79b3fb501b054b4b4dd03/pscript-0.7.7-py3-none-any.whl", hash = "sha256:b0fdac0df0393a4d7497153fea6a82e6429f32327c4c0a4817f1cd68adc08083", size = 126689, upload-time = "2022-01-10T10:55:00.793Z" },
+]
+
+[[package]]
+name = "pycon-ireland-2023"
+version = "0.0.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "nicedeck" },
+    { name = "nicegui" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "nicedeck", directory = "../../" },
+    { name = "nicegui", specifier = ">=1.4.0,<1.5.0" },
 ]
 
 [[package]]
