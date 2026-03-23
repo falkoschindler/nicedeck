@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nicedeck"
+version = "0.1.0"
+description = "Create slideshows in Python using NiceGUI"
+requires-python = ">=3.10"
+dependencies = [
+    "isort",
+    "nicegui>=1.4,<2",
+]
+
+[project.urls]
+Repository = "https://github.com/falkoschindler/nicedeck"
+
+[tool.setuptools]
+packages = ["nicedeck"]
