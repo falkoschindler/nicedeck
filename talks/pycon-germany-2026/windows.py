@@ -12,7 +12,7 @@ from nicegui.elements.markdown import remove_indentation
 def demo(f: Callable | None = None, *, mode: Literal['rows', 'cols'] = 'cols') -> Callable:
     """Render a callable as a demo with Python code and browser window."""
     def wrap(f: Callable) -> Callable:
-        with ui.grid().classes(f'w-full grid-{mode}-[1fr_20rem] max-lg:grid-{mode}-1 gap-4 items-stretch'):
+        with ui.grid().classes(f'w-full max-w-[95vw] grid-{mode}-[auto_auto] gap-4 items-stretch'):
             code_window(_get_full_code(f), language='python')
             browser_window(f).classes('min-h-[10rem]')
         return f
