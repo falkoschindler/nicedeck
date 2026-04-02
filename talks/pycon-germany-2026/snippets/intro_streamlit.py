@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import streamlit as st
 
 if "label_text" not in st.session_state:

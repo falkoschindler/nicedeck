@@ -33,56 +33,17 @@ Python API — CLI tools, ORMs, data pipelines — can use these same primitives
 
 Open cold — no introduction, no "hi my name is." Start with code.
 
-**Show side by side:**
+**Show side by side:** JustPy code (left) vs NiceGUI code + live result (right).
+See `snippets/intro_justpy.py` and the `@demo` in main.py.
 
-```python
-import justpy as jp
-
-def hello_world():
-    page = jp.QuasarPage()
-    card = jp.QCard()
-    row = jp.Div(classes='flex gap-4')
-
-    def handle_click(sender, msg):
-        label.text = 'Hello World!'
-    button = jp.QButton(text='Click me')
-    button.on('click', handle_click)
-    row.add(button)
-
-    label = jp.Div(text='Hello Darmstadt!')
-    row.add(label)
-
-    card.add(row)
-    page.add(card)
-    return page
-
-jp.justpy(hello_world)
-```
-
-```python
-from nicegui import ui
-
-with ui.card():
-    with ui.row():
-        ui.button('Click me', on_click=lambda: label.set_text('Hello World!'))
-        label = ui.label('Hello Darmstadt!')
-
-ui.run()
-```
-
-- Show the running result next to the NiceGUI code — the visual hierarchy (card > row > button + label)
+- Show the running result below the NiceGUI code — the visual hierarchy (card > row > button + label)
   matches the code's indentation. That's the point.
 - "Both do the same thing. One reads like a to-do list. The other reads like the UI it describes."
-- "What's the difference? It's not the framework — it's which Python features the designer chose to use."
-- And it starts this simple:
-
-  ```python
-  from nicegui import ui
-  ui.label('Hello PyCon DE!')
-  ui.run()
-  ```
-
-- Auto-opens browser, hot-reload, zero config. (The slides themselves are NiceGUI, so this runs live.)
+- "What's the difference? It's which Python features the designer chose to use."
+- Some observations — the Zen of Python in action:
+  - "Readability counts" — the code reads like the UI looks
+  - "Beautiful is better than ugly" — indentation mirrors hierarchy
+  - "Simple is better than complex" — 8 lines vs 22
 - "We've been building NiceGUI for 5 years. Here's what we learned about letting Python do the design work."
 - Now briefly: I'm Falko, Zauberzeug (robotics company near Münster), lead developer of NiceGUI.
 
@@ -120,7 +81,7 @@ Frame as a design constraint, not a history lesson.
           st.write(st.session_state.label_text)
   ```
 
-- Show the NiceGUI version side by side on the slide.
+- Step: show the full Streamlit version (from `snippets/intro_streamlit.py`) next to the simple one.
 - `session_state` for a single text change, `st.rerun()` to update it,
   `if st.button(...)` — control flow as event handling.
   The framework decides when your code runs. That's the magic we wanted to avoid.
