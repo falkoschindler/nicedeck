@@ -49,11 +49,7 @@ def root():
         # --- 1. Title Slide ---
         with slide(hide_navigation=True):
             nd.note('''
-                Who knows NiceGUI already?
-
-                This talk: 5 years of building a Python UI framework.
-                What Python language features make great UI APIs?
-                Practical insights useful beyond NiceGUI.
+                *(Wait for the audience to settle.)*
             ''')
             with ui.column().classes('absolute-center items-center gap-4'):
                 ui.markdown('# **5 Years of *NiceGUI***').classes('[&_em]:text-(--q-primary) [&_em]:not-italic')
@@ -68,23 +64,23 @@ def root():
         # --- 2. The Question: JustPy vs NiceGUI ---
         with slide(heading='What Makes an API Feel Pythonic?'):
             nd.note('''
-                Open cold. Start with code, not introduction.
+                Let's start with *two pieces of code*.
 
-                "Both do the same thing.
-                One reads like a to-do list. The other reads like the UI it describes."
+                On the left, you see a Python UI framework called JustPy. It creates a card with a button and a label. When you click the button, the label text changes. *22 lines of code*.
 
-                "What's the difference? It's which Python features the designer chose to use."
+                On the right — *the same app* in NiceGUI. *8 lines*. And it *runs* — you can click the button right here.
 
-                Some observations — the Zen of Python in action:
-                - "Readability counts" — the code reads like the UI looks
-                - "Beautiful is better than ugly" — indentation mirrors hierarchy
-                - "Simple is better than complex" — 8 lines vs 22
+                Both do *exactly the same thing*. One reads like a *to-do list* — create this, configure that, add it here, add it there. The other reads like *the UI it describes*.
 
-                ---
+                So what's the *difference*? It's not about which framework is "better." It's about which *Python features* the designer chose to use.
 
-                "We've been building NiceGUI for 5 years.
-                Here's what we learned about letting Python do the design work."
-                I'm Falko, Zauberzeug (robotics company near Münster), lead developer of NiceGUI.
+                Look at the NiceGUI version. *"Readability counts"* — the code reads like the UI looks. *"Beautiful is better than ugly"* — the indentation *mirrors the hierarchy*. *"Simple is better than complex"* — 8 lines instead of 22. *"Flat is better than nested"* — no callback function just to set a text.
+
+                These aren't my principles. They're from *the Zen of Python*. NiceGUI just takes them seriously.
+
+                We've been building NiceGUI for *5 years* now. And this talk is about what we *learned* — about which Python language features make great APIs, and *why*.
+
+                But first — I'm Falko Schindler, lead developer of NiceGUI. I work at *Zauberzeug*, a robotics company near Münster. We build agricultural robots, and NiceGUI started because we needed *dashboards for real hardware* — motors, cameras, LEDs.
             ''')
             with ui.grid(columns='auto auto').classes('gap-x-8 gap-y-4 w-[95%]'):
                 code_window(SNIPPETS / 'intro_justpy.py')
@@ -99,24 +95,23 @@ def root():
         # --- 3. The Sweet Spot: Streamlit vs NiceGUI ---
         with slide(heading='The Sweet Spot'):
             nd.note('''
-                "That was the low-level end. Now the other extreme."
+                That was the *low-level* end — JustPy. Now let me show you the *other extreme*.
 
-                Streamlit at its best — nothing beats this for a quick hello world.
-                But: the "Hello World!" disappears on next interaction.
+                This is *Streamlit*. And honestly — for a quick hello world, *nothing beats it*. Four lines, and you have a label, a button, it runs. *Beautiful simplicity*.
 
-                ---
-
-                Try the same persistent button interaction:
-                session_state for a text change, st.rerun() to update,
-                if st.button(...) — control flow as event handling.
-                The framework decides when your code runs.
+                But now try the *same interaction* we just saw — a button that *persistently* changes a label.
 
                 ---
 
-                "We wanted the sweet spot: high-level components, explicit state, real Python."
-                Brief Zauberzeug context: we build robots — hardware, motors, cameras.
-                We needed dashboards that work, not a thesis project on web frameworks.
-                This constraint guided every API decision since.
+                Suddenly you need `session_state` — just to remember *one text*. You need `st.rerun()` — to manually *trigger the update*. And the button itself? It's an *`if` statement*. Control flow *is* the event handling.
+
+                Now — to be fair: Streamlit made this choice *deliberately*. For *data apps* where you want stateless dashboards, the rerun model makes sense. But for *interactive, stateful UIs* — the kind we need for controlling robots — the framework deciding when your code runs? That's *too much magic*.
+
+                And JustPy was *too low-level*.
+
+                We wanted the *sweet spot*: *high-level components*, *explicit state*, *real Python*.
+
+                And this constraint — not too much magic, not too low-level — has guided *every API decision* we've made in the last 5 years.
             ''')
             with ui.grid(columns='auto auto').classes('gap-x-8 gap-y-4 w-[95%]'):
                 code_window('''
@@ -133,17 +128,19 @@ def root():
         # --- 4. Context Managers Are the Layout API ---
         with slide(heading='Context Managers Are the Layout API'):
             nd.note('''
-                You already saw this — Python's indentation *is* the hierarchy.
+                So let's talk about *specific lessons* we learned. The first one is probably the *biggest single insight* from 5 years of NiceGUI.
 
-                "The `with` statement is really a 'within' statement."
+                UI has *hierarchy*. Cards contain rows. Rows contain labels. How do you *express* that in Python?
 
-                HTML has the same nesting — hierarchy *should* be visible in code.
-                JustPy lost it, NiceGUI got it back.
+                On the left you see *HTML*. Tags nest inside tags. The indentation shows the structure. That's *actually good*.
 
-                ---
+                On the right — *NiceGUI*. Same structure. Same indentation. But instead of tags, we use Python's *`with` statement*.
 
-                **Lesson:** if your domain has hierarchy, Python already has the syntax for it.
-                File systems, config trees, document structures — `with` blocks work everywhere.
+                `with ui.card()` means: everything *within* this block is *inside* the card. The *shape of the code* mirrors the *shape of the UI*. And you can see it running right there.
+
+                I like to say: the `with` statement is really a *"within"* statement.
+
+                Now — this isn't just about UI. *Any domain that has hierarchy* can benefit from this. File systems, config trees, document structures — Python *already has the syntax* for nesting. You just have to *use it*.
             ''')
             with ui.grid(columns='1fr 1fr').classes('gap-x-8 gap-y-4 w-[95%] items-start'):
                 code_window('''
@@ -165,21 +162,19 @@ def root():
         # --- 5. Method Chaining as Progressive Disclosure ---
         with slide(heading='Method Chaining'):
             nd.note('''
-                A ui.button('Click') is nice and simple.
-                But then you need styling. Then behavior.
-                Do you need a completely different API now?
+                Second lesson: *progressive disclosure* through method chaining.
 
-                No. You chain. Each method returns self — the builder pattern.
-                Beginners never see .props() until they need it.
+                You start simple: `ui.button('Click')`. *Done*. One line, one button.
 
-                Four layers of depth:
-                Pure Python → Tailwind/UnoCSS → Quasar props → raw HTML/JS.
-                You go deeper only when you choose to.
+                But then you need *styling*. Then *behavior*. Then props for the underlying component library. Do you need a *completely different API* now?
 
-                ---
+                *No.* You just *chain*.
 
-                **Lesson:** builder patterns let users add complexity without restructuring code.
-                Beginners see simplicity, experts find power — without a mode switch.
+                Every method — `.classes()`, `.style()`, `.props()`, `.on()` — returns *self*. That's the *builder pattern* — each method returns the object itself, so you can keep chaining.
+
+                *Beginners never see `.props()` until they need it.* And when they do need it, they don't have to *restructure* anything. They just add *one more dot* at the end.
+
+                The lesson: *builder patterns* let users add complexity *without changing the structure* of their code. Beginners see *simplicity*, experts find *power* — without a *mode switch*.
             ''')
 
             @demo
@@ -191,19 +186,18 @@ def root():
                     .on('mouseenter', lambda e: e.sender.classes('scale-125')) \
                     .on('mouseleave', lambda e: e.sender.classes(remove='scale-125'))
 
-        # --- 6. Lambdas Make Events Obvious ---
+        # --- 6a. Lambdas & Callbacks ---
         with slide(heading='Lambdas & Callbacks'):
             nd.note('''
-                Remember the `if st.button(...)` pattern?
-                NiceGUI's answer: cause and effect in one line.
+                Third lesson: *event handling should be obvious*.
 
-                With or without event argument —
-                NiceGUI inspects the signature and does the right thing.
+                Remember Streamlit's `if st.button(...)` pattern? Here's NiceGUI's answer:
 
-                ---
+                `on_click=lambda: ui.notify('Done.')` — *cause and effect in one line*.
 
-                **Lesson:** callbacks should be as lightweight as the action they describe.
-                If your event handling requires more ceremony than the event itself, something is wrong.
+                If your callback needs the *event object* — the value that changed, the element that was clicked — just add a *parameter*. NiceGUI looks at how many parameters your function takes and *passes what you need*.
+
+                No special API. Just *Python lambdas*.
             ''')
 
             @demo
@@ -212,40 +206,14 @@ def root():
 
                 ui.button('Submit', on_click=lambda: ui.notify('Done.', type='positive'))
 
-        # --- 6b. Auto-Context ---
-        with slide(heading='Auto-Context'):
-            nd.note('''
-                UI created in event handlers appears in the right place.
-                NiceGUI tracks page, element, and slot context automatically.
-
-                Click the left button → label appears in the left card.
-                No explicit parent tracking.
-
-                Context means more than just the container — it also tracks the *client*.
-                Multiple users visit the same app → each user's events affect only their own UI.
-                NiceGUI is a web framework after all.
-            ''')
-
-            @demo
-            def _():
-                with ui.row():
-                    with ui.card():
-                        ui.button(icon='add', on_click=lambda: ui.label('Hello'))
-                    with ui.card():
-                        ui.button(icon='add', on_click=lambda: ui.label('World'))
-
-        # --- 7. Async/Await Just Works ---
+        # --- 6b. Async / Await ---
         with slide(heading='Async / Await'):
             nd.note('''
-                Handler needs to do something slow — API call, animation, delay.
-                Just make it async.
+                And what if your handler needs to do something *slow*? An API call, an animation, a delay? Just make it *`async`*.
 
-                No special framework API. No run_in_executor. No callback pyramids.
-                If Python's async/await works, your framework should accept it.
+                `async def handle_click`. `await asyncio.sleep`. *No special framework API.* Your framework should accept whatever Python function you give it — sync *or* async.
 
-                ---
-
-                **Lesson:** don't invent concurrency models when Python already has one.
+                Let me click this button — "Wait for it..." — *(pause)* — "Click!"
             ''')
 
             @demo
@@ -259,23 +227,44 @@ def root():
 
                 ui.button('Click me', on_click=handle_click)
 
-        # --- 8. Decorators Make Patterns Declarative ---
+        # --- 6c. Auto-Context ---
+        with slide(heading='Auto-Context'):
+            nd.note('''
+                Now here's something more subtle: *auto-context*.
+
+                I have two cards, each with a *plus button*. When I click the left button, a label appears — *in the left card*. When I click the right button — *in the right card*.
+
+                I never told NiceGUI *where* to put those labels. It knows, because it tracks the *context* — which element, which slot, which *client*.
+
+                That last one matters: NiceGUI is a *web framework*. Multiple users can visit the same app. Each user's events affect *only their own UI*.
+
+                The lesson: callbacks should be as *lightweight* as the action they describe. If your event handling requires more *ceremony* than the event itself, *something is wrong*.
+            ''')
+
+            @demo
+            def _():
+                with ui.row():
+                    with ui.card():
+                        ui.button(icon='add', on_click=lambda: ui.label('Hello'))
+                    with ui.card():
+                        ui.button(icon='add', on_click=lambda: ui.label('World'))
+
+        # --- 7. Decorators Make Patterns Declarative ---
         with slide(heading='Decorators'):
             nd.note('''
-                **Routing:** @ui.page('/settings') — if you know FastAPI, you already know this.
-                Familiar patterns reduce learning curves.
+                So callbacks are lightweight. But what about *larger patterns* that repeat across your app?
 
-                **Reactivity:** common pattern — clear a container, rebuild its contents.
-                Tedious and error-prone.
-                @ui.refreshable makes it declarative.
-                The decorator handles clearing and rebuilding.
-                You just describe what the UI should look like.
+                Fourth lesson: decorators make *patterns declarative*.
 
-                ---
+                A common pattern in UI development: you have a container, *state changes*, and you need to *clear it and rebuild* its contents. That's tedious. And *error-prone*.
 
-                **Lesson:** decorators turn recurring patterns into declarations.
-                If you find yourself writing the same scaffolding around different logic,
-                that's a decorator waiting to happen.
+                With `@ui.refreshable`, you just *describe* what the UI should look like. The decorator handles *clearing and rebuilding*.
+
+                Here — I drag the slider. Below zero: *"Freezing"* in blue. Above zero: *"Cold"* in green. Above ten: *"Warm"* in orange.
+
+                I didn't write any "clear container, then add label" logic. The `@ui.refreshable` decorator *does that for me*.
+
+                The lesson: if you find yourself writing the *same scaffolding* around *different logic*, that's a *decorator waiting to happen*.
             ''')
 
             @demo
@@ -293,31 +282,30 @@ def root():
                                    on_change=show_temperature.refresh)
                 show_temperature()
 
-        # --- 9. Design for the IDE ---
+        # --- 8. Design for the IDE ---
         with slide(heading='Design for the IDE'):
             nd.note('''
-                Your API should be readable *before* the user runs it —
-                in the IDE, in the tooltip, in the auto-complete dropdown.
+                Fifth lesson, and this one is about something you *don't see* at runtime.
 
-                **Flat namespace:** ui.input, not ui.elements.input.TextInput.
-                Type ui. and browse everything.
+                Your API should be readable *before the user runs it*. In the *IDE*. In the *tooltip*. In the *auto-complete dropdown*.
 
-                **Type hints for chaining:** ui.button().classes() returns Button, not Element.
+                First: a *flat namespace*. `ui.input` — not `ui.elements.input.TextInput`. Type `ui.` in your IDE and you can *browse everything*.
 
-                **Explicit signatures over **kwargs:** JustPy passes everything as **kwargs —
-                the IDE can't help you. NiceGUI spells out every parameter.
-
-                **Honest defaults:** DEFAULT_PROP is a sentinel with __or__ overloaded
-                so the | 'primary' shows up in the signature.
-                @resolve_defaults does the actual resolution at call time.
-                A bit of magic — but in service of a crystal-clear API surface.
-
-                "Your best documentation is the one the user never has to open."
+                Second: JustPy passes most things as `**kwargs`. The IDE *can't help you*. You're on your own with the docs. NiceGUI *spells out every parameter*. It's more code to *maintain*, but that's what shows up in the *tooltip*.
 
                 ---
 
-                **Lesson:** every design choice should survive the IDE test —
-                does auto-complete, the tooltip, the signature tell the user what they need?
+                And here's something I'm particularly proud of: *honest defaults*.
+
+                Look at what your IDE shows you for the `color` parameter: `DEFAULT_PROP | 'primary'`.
+
+                It tells you two things at once: this value *can be overridden globally*, and if it isn't, the fallback is *'primary'*.
+
+                How does that work? `DEFAULT_PROP` is a *sentinel* — a special placeholder object — with `__or__` overloaded, so the `| 'primary'` *shows up in the signature*. The `@resolve_defaults` decorator resolves it at *call time*.
+
+                A bit of *magic in the implementation* — but in service of a *crystal-clear API surface*.
+
+                The lesson: every design choice should survive the *IDE test*. Your best documentation is the one the user *never has to open*.
             ''')
             with ui.column().classes('gap-4 w-[95%]'):
                 with ui.row().classes('gap-8 text-xl'):
@@ -337,28 +325,26 @@ def root():
                             ) -> None:
                     ''')
 
-        # --- 10. Binding Leverages Python's Object Model ---
+        # --- 9. Binding ---
         with slide(heading='Binding'):
             nd.note('''
-                UI shows data. Data changes. UI must update.
-                Classic two-way sync nightmare.
+                Sixth lesson: work with Python's *object model*, don't fight it.
 
-                Some frameworks: inherit from Observable, use special State containers.
-                (Looking at you, Reflex.)
+                UI shows data. Data changes. UI must *update*. The classic *two-way sync* nightmare.
 
-                We actually tried the magical version first: car.driver.bind(person.name) —
-                using monkey-patching and caller introspection.
-                (See github.com/zauberzeug/binding.)
-                Beautiful syntax, but too fragile for a mature library.
+                Some frameworks say: inherit from `Observable`. Use special `State` containers. *Wrap everything.*
 
-                NiceGUI's approach is explicit: pass the object and attribute name as strings.
-                Works with any object that has attributes — dataclasses, plain classes, other UI elements.
-                No base class required. No registration. Just Python objects.
+                We actually *tried* something like that. Early on, we built a library where you could write `car.driver.bind(person.name)` — it used *monkey-patching* — overriding built-in behavior at runtime — and *caller introspection* to figure out what you meant. *Beautiful syntax.* But *too fragile* for a mature library.
 
-                ---
+                So NiceGUI's approach is *explicit*. You pass the *object* and the *attribute name as a string*.
 
-                **Lesson:** don't force users to restructure their data model for your framework.
-                Work with what Python already gives you.
+                Yes, passing strings means you lose some *refactoring safety*. We accept that trade-off — because it lets you bind to *any Python object* without requiring a special base class.
+
+                Here — a number input, a label, and a slider. *All bound together.* Drag the slider, and *everything updates*.
+
+                Here I'm binding UI elements to each other, but this works the same with a `@dataclass` — a `Temperature` class with a `value` field, say. Dataclasses, plain classes, other UI elements — *anything with attributes*. No registration. Just *Python objects*.
+
+                The lesson: don't force users to *restructure their data model* for your framework. Work with what Python *already gives you*.
             ''')
 
             @demo
@@ -369,24 +355,28 @@ def root():
 
                 ui.slider(min=0, max=100).bind_value(number)
 
-        # --- 11. Escape Hatches ---
+        # --- 10. Escape Hatches ---
         with slide(heading='Escape Hatches'):
             nd.note('''
-                "Every layer here is something you can reach into directly."
+                Now let's zoom out from individual features and talk about *architecture*.
 
-                .classes('...') → Tailwind.
-                .props('...') → Quasar.
-                ui.html() → raw HTML.
-                ui.run_javascript() → raw JS.
-                app.routes → full FastAPI.
+                NiceGUI sits on top of a *stack*.
 
-                "We don't hide the web. We make it optional."
-                "Users trust your abstractions only if they know they can bypass them."
+                *(step through technologies one by one)*
 
-                ---
+                HTML. CSS. JavaScript. *Vue* — that's the JavaScript framework that powers our frontend. *Quasar* — a component library built on Vue. *Tailwind* — utility-first CSS. *FastAPI* — the Python web framework underneath. And at the bottom: *Python*.
 
-                **Lesson:** always provide a path to the layer below.
-                The moment users feel trapped, they leave.
+                Every one of these layers is something you can *reach into directly*.
+
+                `.classes('...')` gives you *Tailwind*. `.props('...')` gives you *Quasar*. `ui.html()` gives you *raw HTML*. `ui.run_javascript()` gives you *raw JavaScript* — need the browser's geolocation API? *One line*. And `app.routes` gives you the *full FastAPI*.
+
+                We don't *hide* the web. We make it *optional*.
+
+                And this is the key insight: users will *trust your abstractions* only if they know they can *bypass them*.
+
+                The moment users feel *trapped* — the moment they hit a wall and there's no escape hatch — they *leave*.
+
+                Always provide a *path to the layer below*.
             ''')
             box = 'w-full border border-gray-500/20 h-12 column items-center justify-center text-xl rounded bg-gray-500/5 shadow'
             with ui.grid(columns=8).classes('w-[90%] gap-2'):
@@ -409,21 +399,20 @@ def root():
                 with nd.step(), ui.element().classes(box):
                     ui.label('Python')
 
-        # --- 12. Beyond API: What Makes It "Nice" ---
+        # --- 11. What Makes It "Nice" ---
         with slide(heading='What Makes It "Nice"'):
             nd.note('''
-                The name: NiceGUI = Nice Guy —
-                "a guy who tries to be nice to everyone and do things right."
+                We've been talking about *API design*. But niceness isn't just *technical*.
 
-                "Prefer simple solutions" — this is in our code review rules as a **blocker**.
-                Not a guideline.
-                If a simpler design meets the requirements, the complex one is rejected.
+                The name — NiceGUI — is a *pun*. Nice GUI. Nice Guy. "A guy who tries to be *nice* to everyone and do things *right*."
 
-                Dogfooding: nicegui.io — the entire website, docs, live demos —
-                is built with NiceGUI. We find our own bugs before users do.
+                In our code review rules, *"prefer simple solutions"* is a *blocker*. Not a guideline. If a *simpler design* meets the requirements, the complex one is *rejected*. Full stop.
 
-                Community: when someone asks a question, we reply with a working code snippet.
-                Helpfulness is measured in runnable examples.
+                We *dogfood relentlessly*. The entire nicegui.io website — documentation, live demos, interactive examples — is *built with NiceGUI*. We find our own bugs *before users do*.
+
+                And when someone asks a question in our community, we reply with a *working code snippet*. Not just words. *Runnable code*. That's how we measure helpfulness.
+
+                5 years. 15,000+ stars. About 120 UI elements. Frequent releases. A growing *ecosystem*.
             ''')
             with ui.column().classes('items-center gap-8'):
                 ui.label('NiceGUI = Nice Guy').classes('text-3xl')
@@ -435,21 +424,18 @@ def root():
                     ui.label('5 years \u2022 15k+ stars \u2022 ~120 elements \u2022 frequent releases') \
                         .classes('text-lg')
 
-        # --- 13. Takeaways ---
+        # --- 12. Takeaways ---
         with slide(heading='Takeaways'):
             nd.note('''
-                No new information — just crystallize.
+                So — what did we learn?
 
-                Python's language features are API design tools.
-                Context managers, decorators, lambdas, async, type hints, the object model —
-                use them deliberately, not accidentally.
+                *Python's language features are API design tools.* Context managers, decorators, lambdas, async, type hints, the object model — use them *deliberately*, not accidentally.
 
-                Find the sweet spot. Not too much magic, not too low-level.
-                The right abstraction lets users think in their domain, not yours.
+                *Find the sweet spot.* Not too much magic, not too low-level. The right abstraction lets your users think in *their domain*, not yours.
 
-                These lessons aren't about UI.
-                CLI tools, ORMs, data pipelines, testing frameworks —
-                any Python API benefits from the same thinking.
+                And these lessons *aren't about UI*. CLI tools, ORMs, data pipelines, testing frameworks — *any Python API* benefits from the same thinking.
+
+                *"Simple things should be simple. Complex things should be possible."* — Alan Kay.
             ''')
             with ui.column().classes('items-center gap-8 text-xl'):
                 ui.label('Python features are API design tools')
@@ -462,13 +448,18 @@ def root():
                 with nd.step():
                     ui.markdown('_"Simple things should be simple, complex things should be possible."_ — Alan Kay')
 
-        # --- 14. Thank You ---
+        # --- 13. Thank You ---
         with slide(hide_navigation=True):
             nd.note('''
-                Thank you! Questions?
+                And to prove that point — here's *both* at the same time.
 
-                "Simple things should be simple. Complex things should be possible."
-                This is both — a 3D scene in a few lines of Python.
+                *(gesture to the 3D point cloud)*
+
+                A few lines of Python. An *animated 3D scene*. Simple things should be simple. Complex things should be *possible*.
+
+                Thank you!
+
+                You can find NiceGUI at *nicegui.io*, on *GitHub*, and on *Discord*. I'm happy to take *questions*.
             ''')
 
             @demo
