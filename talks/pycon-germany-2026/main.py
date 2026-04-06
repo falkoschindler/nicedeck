@@ -295,7 +295,7 @@ def root():
 
                 ---
 
-                And here's something I'm particularly proud of: *honest defaults*.
+                Notice the *type hints* — `Handler`, `str | None` — that's what powers the whole IDE experience. And here's something I'm particularly proud of: *honest defaults*.
 
                 Look at what your IDE shows you for the `color` parameter: `DEFAULT_PROP | 'primary'`.
 
@@ -334,7 +334,7 @@ def root():
 
                 Some frameworks say: inherit from `Observable`. Use special `State` containers. *Wrap everything.*
 
-                We actually *tried* something like that. Early on, we built a library where you could write `car.driver.bind(person.name)` — it used *monkey-patching* — overriding built-in behavior at runtime — and *caller introspection* to figure out what you meant. *Beautiful syntax.* But *too fragile* for a mature library.
+                We tried cleverer approaches — *beautiful syntax*, but they broke. *Too fragile* for a mature library.
 
                 So NiceGUI's approach is *explicit*. You pass the *object* and the *attribute name as a string*.
 
