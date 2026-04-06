@@ -2,7 +2,7 @@ from typing import Optional, cast
 
 from nicegui import binding, ui
 
-from .slide import Slide
+from ._slide import Slide
 
 
 class Step(ui.column):

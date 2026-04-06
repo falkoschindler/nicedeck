@@ -479,4 +479,4 @@ def root():
                 ui.timer(0.05, lambda: wave.set_points(*generate_data()))
 
 
-ui.run(root=root, title='PyCon Germany 2026', uvicorn_reload_includes='*.py, *.css')
+nd.run(root=root, title='PyCon Germany 2026', uvicorn_reload_includes='*.py, *.css')

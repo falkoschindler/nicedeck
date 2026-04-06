@@ -3,7 +3,7 @@ from typing import Optional
 
 from nicegui import app, events, ui
 
-from .slide import Slide
+from ._slide import Slide
 
 
 class Deck(ui.carousel):

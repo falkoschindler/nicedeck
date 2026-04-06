@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from .slide import Slide
+from ._slide import Slide
 
 
 @dataclass
