@@ -9,24 +9,13 @@ from ._slide import Slide
 class Deck(ui.carousel):
     """A deck of slides."""
 
-    def __init__(self, *, time_limit: float = 0) -> None:
-        """Initialize the deck.
-
-        :param time_limit: Time limit for each slide in seconds. If 0, no timer is shown.
-        """
+    def __init__(self) -> None:
         super().__init__(on_value_change=self.show_notes.refresh)
         self._props['fullscreen'] = True
         self._props['navigation'] = True
         self.bind_value(app.storage.general, 'slide_name')
         ui.keyboard(self._handle_key)
         self.reference_time: Optional[float] = None
-
-        @ui.page('/notes')
-        def notes() -> None:
-            ui.add_css('hr { border: 1px dashed gray }')
-            self.timer(time_limit)
-            ui.timer(1.0, self.timer.refresh)
-            self.show_notes()
 
     @ui.refreshable_method
     def show_notes(self) -> None:
