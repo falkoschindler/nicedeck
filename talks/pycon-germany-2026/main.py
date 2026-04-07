@@ -14,15 +14,13 @@ from windows import code_window, demo
 SNIPPETS = Path(__file__).parent / 'snippets'
 
 
-class SolarizedLight(SolarizedLightStyle):
-    styles = make_style({**LIGHT_COLORS, 'base0': '#1a1d26', 'base01': '#4a4f5a'})
-
-
-class SolarizedDark(SolarizedDarkStyle):
-    styles = make_style({**DARK_COLORS, 'base0': '#edeff3', 'base01': '#9ba2ae'})
-
-
 def setup():
+    class SolarizedLight(SolarizedLightStyle):
+        styles = make_style({**LIGHT_COLORS, 'base0': '#1a1d26', 'base01': '#4a4f5a'})
+
+    class SolarizedDark(SolarizedDarkStyle):
+        styles = make_style({**DARK_COLORS, 'base0': '#edeff3', 'base01': '#9ba2ae'})
+
     ui.add_css('.q-carousel__navigation-icon--active .q-icon {color:  # 78909c !important; }')
     ui.add_css(f'''
         {HtmlFormatter(nobackground=True, style=SolarizedLight).get_style_defs('div.codehilite')}
@@ -31,8 +29,7 @@ def setup():
 
 
 @contextmanager
-def slide_layout(heading: str | None = None, *,
-                 center_heading: str | None = None) -> Generator[None, None, None]:
+def slide_layout(heading: str | None = None, *, center_heading: str | None = None) -> Generator[None, None, None]:
     if heading:
         nd.heading(heading)
     if center_heading:
