@@ -1,10 +1,9 @@
 import time
 from typing import Callable
 
-from nicegui import app, ui
+from nicegui import app, events, ui
 
-from ._deck import Deck
-from ._event import NAVIGATE
+from ._deck import deck
 from ._slide import Slide
 from .code import Code as code
 from .code import CodeResult as code_result
@@ -16,15 +15,11 @@ from .content import Heading as heading
 from .overview import OverviewDeck, OverviewSlide
 from .step import Step as step
 
-_slides: list[Callable] = []
-_notes: list[str] = []
-
 
 def slide(notes: str = '') -> Callable:
     """Register a slide function. Can be used as @nd.slide or @nd.slide(notes='...')."""
     def decorator(f: Callable) -> Callable:
-        _slides.append(f)
-        _notes.append(notes)
+        deck.slides.append(Slide(f, notes))
         return f
     return decorator
 
@@ -35,18 +30,39 @@ def run(*, time_limit: float = 0, setup: Callable | None = None, classes: str = 
     def index():
         if setup:
             setup()
-        deck = Deck().classes(classes).props(props)
-        with deck:
-            for fn in _slides:
-                with Slide():
-                    fn()
+
+        carousel = ui.carousel().classes(classes).props(props).props('fullscreen navigation') \
+            .bind_value(app.storage.general, 'slide_name')
+
+        @carousel.on_value_change
+        def _(e: events.ValueChangeEventArguments) -> None:
+            deck.index = int(e.value.split('_')[1]) - 1
+            deck.navigate.emit()
+
+        @ui.keyboard
+        def _(e: events.KeyEventArguments) -> None:
+            s = deck.current_slide
+            if e.action.keydown and e.key.arrow_left:
+                if s.step > 0:
+                    s.step -= 1
+                else:
+                    carousel.previous()
+            if e.action.keydown and e.key.arrow_right:
+                if s.step < s.steps - 1:
+                    s.step += 1
+                else:
+                    carousel.next()
+
+        with carousel:
+            for i, s in enumerate(deck.slides):
+                deck.index = i
+                s.step = 0
+                s.steps = 1
+                with ui.carousel_slide().style('padding: 0'):
+                    s.func()
 
     @ui.page('/notes')
     def notes():
-        if not _notes:
-            ui.label('Open the main page first')
-            return
-
         ui.add_css('hr { border: 1px dashed gray }')
         reference_time: float | None = None
 
@@ -66,25 +82,25 @@ def run(*, time_limit: float = 0, setup: Callable | None = None, classes: str = 
 
         @ui.refreshable
         def show_notes() -> None:
-            slide_name = app.storage.general.get('slide_name', 'slide_1')
-            idx = int(slide_name.split('_')[1]) - 1
-            if 0 <= idx < len(_notes) and _notes[idx]:
-                ui.markdown(_notes[idx]).classes('text-xl')
+            ui.markdown(deck.current_slide.notes).classes('text-xl')
 
         if time_limit:
             show_timer()
             ui.timer(1.0, show_timer.refresh)
         show_notes()
-        NAVIGATE.subscribe(show_notes.refresh)
+        deck.navigate.subscribe(show_notes.refresh)
 
     @ui.page('/overview')
     def overview():
         if setup:
             setup()
         with OverviewDeck():
-            for fn, notes_text in zip(_slides, _notes):
-                with OverviewSlide(notes=notes_text):
-                    fn()
+            for i, s in enumerate(deck.slides):
+                deck.index = i
+                s.step = 0
+                s.steps = 1
+                with OverviewSlide():
+                    s.func()
 
     ui.run(**kwargs)
 

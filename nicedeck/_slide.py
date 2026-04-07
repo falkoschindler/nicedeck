@@ -1,24 +1,11 @@
-from __future__ import annotations
-
-from typing import Optional, Self
-
-from nicegui import ui
+from dataclasses import dataclass, field
+from typing import Callable
 
 
-class Slide(ui.carousel_slide):
-    """A slide in a deck."""
-    current: Optional[Slide] = None
-
-    def __init__(self) -> None:
-        super().__init__()
-        self._style['padding'] = '0'
-        self.step = 0
-        self.steps = 1
-
-    def __enter__(self) -> Self:
-        Slide.current = self
-        return super().__enter__()
-
-    def __exit__(self, exc_type, exc_value, traceback) -> None:
-        Slide.current = None
-        super().__exit__(exc_type, exc_value, traceback)
+@dataclass
+class Slide:
+    """Data object representing a slide in a deck."""
+    func: Callable
+    notes: str = ''
+    step: int = field(default=0, init=False)
+    steps: int = field(default=1, init=False)

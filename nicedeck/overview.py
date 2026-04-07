@@ -4,7 +4,7 @@ from typing import Self
 
 from nicegui import ui
 
-from ._slide import Slide
+from ._deck import deck
 
 
 class OverviewDeck(ui.column):
@@ -12,7 +12,6 @@ class OverviewDeck(ui.column):
 
     def __init__(self) -> None:
         super().__init__()
-        self.value = ''
         self.classes('w-full items-center gap-16 py-8')
         ui.add_css('''
             .overview-slide [style*="opacity"] { opacity: 1 !important; }
@@ -26,17 +25,13 @@ class OverviewDeck(ui.column):
 class OverviewSlide(ui.column):
     """A slide rendered for overview/print mode with notes above the content."""
 
-    def __init__(self, notes: str = '') -> None:
+    def __init__(self) -> None:
         super().__init__()
         self.classes('w-full max-w-5xl overview-slide')
-        self.step: int = 0
-        self.steps: int = 1
-        self._notes = notes
         self._notes_el: ui.column
         self._content_el: ui.element
 
     def __enter__(self) -> Self:
-        Slide.current = self  # type: ignore[assignment]
         super().__enter__()
         self._notes_el = ui.column().classes('w-full gap-0')
         self._content_el = ui.element('div')
@@ -45,13 +40,12 @@ class OverviewSlide(ui.column):
             ' relative overflow-hidden rounded-lg border shadow'
         )
         self._content_el.__enter__()
-        return self  # type: ignore[return-value]
+        return self
 
     def __exit__(self, *args) -> None:
         self._content_el.__exit__(*args)
-        self.step = self.steps - 1
-        if self._notes:
+        slide = deck.current_slide
+        if slide.notes:
             with self._notes_el:
-                ui.markdown(self._notes)
-        Slide.current = None
+                ui.markdown(slide.notes)
         super().__exit__(*args)
