@@ -52,6 +52,7 @@ See `snippets/intro_justpy.py` and the `@demo` in main.py.
 Frame as a design constraint, not a history lesson.
 
 - "That was the low-level end. Now the other extreme."
+
 - **Streamlit** at its best — nothing beats this for a quick hello world:
 
   ```python
@@ -82,12 +83,16 @@ Frame as a design constraint, not a history lesson.
   ```
 
 - Step: show the full Streamlit version (from `snippets/intro_streamlit.py`) next to the simple one.
+
 - `session_state` for a single text change, `st.rerun()` to update it,
   `if st.button(...)` — control flow as event handling.
   The framework decides when your code runs. That's the magic we wanted to avoid.
+
 - "We wanted the sweet spot: high-level components, explicit state, real Python."
+
 - Brief Zauberzeug context: we build robots — hardware, motors, cameras.
   We needed dashboards that work, not a thesis project on web frameworks.
+
 - This constraint — not too much magic, not too low-level — guided every API decision since.
 
 ## 4. Lesson: Context Managers Are the Layout API (3 min)
@@ -104,9 +109,12 @@ The deeper insight behind what the audience just saw.
   ```
 
 - "The `with` statement is really a 'within' statement."
+
 - Show side-by-side: HTML vs NiceGUI — same nesting, different syntax.
   HTML has it too — hierarchy _should_ be visible in code. JustPy lost it, NiceGUI got it back.
+
 - Live demo: build a nested layout, audience sees the code shape matches the screen.
+
 - **Lesson:** if your domain has hierarchy, Python already has the syntax for it.
   File systems, config trees, document structures — `with` blocks work everywhere.
 
@@ -116,6 +124,7 @@ How to handle complexity without forcing it upfront.
 
 - **Problem:** a `ui.button('Click')` is nice and simple. But then you need styling.
   Then behavior. Do you need a completely different API now?
+
 - No. You chain:
 
   ```python
@@ -128,9 +137,12 @@ How to handle complexity without forcing it upfront.
 
 - Each method returns `self` — nothing new, it's the builder pattern.
   But it means beginners never see `.props()` until they need it.
+
 - Four layers of depth: Pure Python → Tailwind/UnoCSS → Quasar props → raw HTML/JS.
   You go deeper only when you choose to.
+
 - Live demo: start with a plain button, chain styling and events onto it.
+
 - **Lesson:** builder patterns let users add complexity without restructuring code.
   Beginners see simplicity, experts find power — without a mode switch.
 
@@ -139,6 +151,7 @@ How to handle complexity without forcing it upfront.
 The most Pythonic thing about NiceGUI.
 
 - **Problem:** user clicks a button — what happens?
+
 - Remember the `if st.button(...)` pattern? NiceGUI's answer: cause and effect in one line.
 
   ```python
@@ -147,6 +160,7 @@ The most Pythonic thing about NiceGUI.
   ```
 
 - With or without event argument — NiceGUI inspects the signature and does the right thing.
+
 - **Auto-context:** when you create UI in a handler, it appears in the right place.
 
   ```python
@@ -158,10 +172,13 @@ The most Pythonic thing about NiceGUI.
   ```
 
 - Click the left button → label appears in the left card. No explicit parent tracking.
+
 - Context means more than just the container — it also tracks the _client_.
   Multiple users visit the same app → each user's events affect only their own UI.
   NiceGUI is a web framework after all.
+
 - Live demo: both examples.
+
 - **Lesson:** callbacks should be as lightweight as the action they describe.
   If your event handling requires more ceremony than the event itself, something is wrong.
 
@@ -170,6 +187,7 @@ The most Pythonic thing about NiceGUI.
 Short and sweet — this one sells itself.
 
 - **Problem:** handler needs to do something slow — API call, animation, delay.
+
 - Just make it `async`:
 
   ```python
@@ -183,7 +201,9 @@ Short and sweet — this one sells itself.
 
 - No special framework API. No `run_in_executor`. No callback pyramids.
   If Python's `async/await` works, your framework should accept it.
+
 - Live demo.
+
 - **Lesson:** don't invent concurrency models when Python already has one.
 
 ## 8. Lesson: Decorators Make Patterns Declarative (3 min)
@@ -191,11 +211,14 @@ Short and sweet — this one sells itself.
 Where NiceGUI borrows from FastAPI — and where it goes further.
 
 - **Problem 1:** routing — how do you map URLs to pages?
+
   - `@ui.page('/settings')` — if you know FastAPI, you already know this.
   - Familiar patterns reduce learning curves.
 
 - **Problem 2:** reactivity — UI that updates when state changes.
+
   - Common pattern: clear a container, rebuild its contents. Tedious and error-prone.
+
   - `@ui.refreshable` makes it declarative:
 
     ```python
@@ -214,7 +237,9 @@ Where NiceGUI borrows from FastAPI — and where it goes further.
     ```
 
 - The decorator handles clearing and rebuilding. You just describe what the UI should look like.
+
 - Live demo: drag the slider, watch the label change color.
+
 - **Lesson:** decorators turn recurring patterns into declarations.
   If you find yourself writing the same scaffolding around different logic, that's a decorator waiting to happen.
 
@@ -226,11 +251,14 @@ The unifying principle: your API should be readable _before_ the user runs it �
 in the IDE, in the tooltip, in the auto-complete dropdown.
 
 - **Flat namespace:** `ui.input`, not `ui.elements.input.TextInput`. Type `ui.` and browse everything.
+
 - **Type hints for chaining:** `ui.button().classes()` returns `Button`, not `Element`.
   So you stay in the right type context throughout the chain.
+
 - **Explicit signatures over `**kwargs`:** JustPy passes everything as `\*\*kwargs` —
   the IDE can't help you, you're on your own with the docs.
   NiceGUI spells out every parameter. More code to maintain, but that's what shows up in the tooltip.
+
 - **Honest defaults:**
 
   ```python
@@ -250,6 +278,7 @@ in the IDE, in the tooltip, in the auto-complete dropdown.
   A bit of magic in the implementation — but in service of a crystal-clear API surface.
 
 - "Your best documentation is the one the user never has to open."
+
 - **Lesson:** every design choice should survive the IDE test —
   does auto-complete, the tooltip, the signature tell the user what they need?
 
@@ -258,11 +287,14 @@ in the IDE, in the tooltip, in the auto-complete dropdown.
 The "it just works with your existing code" moment.
 
 - **Problem:** UI shows data. Data changes. UI must update. Classic two-way sync nightmare.
+
 - Some frameworks: inherit from `Observable`, use special `State` containers, wrap everything.
   (Looking at you, Reflex.)
+
 - We actually tried the magical version first: `car.driver.bind(person.name)` —
   using monkey-patching and caller introspection to figure out what you meant.
   (See github.com/zauberzeug/binding.) Beautiful syntax, but too fragile for a mature library.
+
 - NiceGUI's approach is explicit: pass the object and attribute name as strings.
 
   ```python
@@ -273,8 +305,11 @@ The "it just works with your existing code" moment.
 
 - Works with any object that has attributes — dataclasses, plain classes, other UI elements.
   No base class required. No registration. Just Python objects.
+
 - The `lambda v: ...` transform is optional — for formatting, unit conversion, etc.
+
 - Live demo: drag the slider, watch the label and number input update.
+
 - **Lesson:** don't force users to restructure their data model for your framework.
   Work with what Python already gives you.
 
@@ -342,4 +377,5 @@ No new information — just crystallize.
 
 - "Simple things should be simple. Complex things should be possible."
   This is both — a 3D scene in a few lines of Python.
+
 - Links: nicegui.io, GitHub, Discord

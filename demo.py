@@ -46,7 +46,7 @@ with nd.deck(time_limit=10 * 60).props('control-color=blue-2') as deck:
         with ui.column().classes('absolute-center'):
             ui.code('''
                 #!/usr/bin/env python3
-                    
+
                 print('Hello, Python world!')
             ''')
 

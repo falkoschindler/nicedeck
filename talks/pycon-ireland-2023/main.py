@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# ruff: noqa: F821
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Generator, Optional
@@ -37,18 +38,18 @@ with nd.deck(time_limit=30 * 60) as deck:
     with slide(hide_navigation=True):
         nd.note('''
             Welcome to my talk about NiceGUI!
-            
+
             **Who knows NiceGUI already?**
 
             In this talk: story about
-            
+
             - how we had a problem at hand,
             - didn't find an existing solution,
             - decided to create our own,
             - and ended up with a pretty powerful UI framework that is just taking off in the Python community.
-            
+
             And it's about the difference between
-            
+
             - creating something that works,
             - and creating something that is a pleasure to use.
         ''')
@@ -69,14 +70,14 @@ with nd.deck(time_limit=30 * 60) as deck:
     with slide():
         nd.note('''
             - Zauberzeug, Münsterland, ~20 employees
-            
+
             ---
-            
+
             - hardware+software, **idea -> product**
             - electronics, mechanics, 3D printing, microcontrollers, software, and AI
-            
+
             ---
-            
+
             - 3 examples
             - **mobile** robots: out in the wild, remote access
         ''')
@@ -96,9 +97,9 @@ with nd.deck(time_limit=30 * 60) as deck:
     with slide('Philosophy'):
         nd.note('''
             - creating tools that feel like **magic**
-            
+
             ---
-            
+
             - quote
             - applies to hardware (weeding robot) _and_ software
         ''')
@@ -268,9 +269,9 @@ with nd.deck(time_limit=30 * 60) as deck:
                 tries to stay out of trouble,
                 and generally acts nicely towards others"
                 [wiki]
-            
+
             ---
-            
+
             - 3 lines
             - no build, CLI, or config files
             - browser opens
@@ -342,7 +343,7 @@ with nd.deck(time_limit=30 * 60) as deck:
         nd.note('''
             - Let's look behind the scenes
             - no time for technical detail...
-            
+
             ...
 
             - NiceGUI: basically a fancy webserver
@@ -549,7 +550,7 @@ with nd.deck(time_limit=30 * 60) as deck:
             - NiceGUI is built on top of many great technologies
             - beginner-friendly abstraction
             - _can_ go deeper
-            
+
             ---
         ''')
 
