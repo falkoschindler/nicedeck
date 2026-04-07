@@ -3,8 +3,7 @@ from typing import Callable
 
 from nicegui import app, events, ui
 
-from ._deck import deck
-from ._slide import Slide
+from ._deck import Slide, deck
 from .code import Code as code
 from .code import CodeResult as code_result
 from .code import Demo as demo
@@ -12,7 +11,6 @@ from .content import CenterColumn as center_column
 from .content import CenterHeading as center_heading
 from .content import CenterRow as center_row
 from .content import Heading as heading
-from .overview import OverviewDeck, OverviewSlide
 from .step import Step as step
 
 
@@ -56,8 +54,7 @@ def run(*, time_limit: float = 0, setup: Callable | None = None, classes: str = 
         with carousel:
             for i, s in enumerate(deck.slides):
                 deck.index = i
-                s.step = 0
-                s.steps = 1
+                s.reset()
                 with ui.carousel_slide().style('padding: 0'):
                     s.func()
 
@@ -94,13 +91,22 @@ def run(*, time_limit: float = 0, setup: Callable | None = None, classes: str = 
     def overview():
         if setup:
             setup()
-        with OverviewDeck():
+        ui.add_css('''
+            .overview-slide [style*="opacity"] { opacity: 1 !important; }
+            @media print {
+                .overview-slide { break-before: page; }
+                .overview-slide:first-child { break-before: avoid; }
+            }
+        ''')
+        with ui.column().classes('w-full items-center gap-16 py-8'):
             for i, s in enumerate(deck.slides):
                 deck.index = i
-                s.step = 0
-                s.steps = 1
-                with OverviewSlide():
-                    s.func()
+                s.reset()
+                with ui.column().classes('w-full max-w-5xl overview-slide'):
+                    ui.markdown(s.notes)
+                    with ui.card().props('bordered flat') \
+                            .classes('w-full aspect-video bg-[#fafbfc] dark:bg-[#0f1117] relative overflow-hidden'):
+                        s.func()
 
     ui.run(**kwargs)
 
