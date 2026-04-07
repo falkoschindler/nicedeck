@@ -1,6 +1,6 @@
 from typing import Callable
 
-from .deck import deck
+from .deck import Slide, deck
 from nicegui import events, ui
 import time
 
@@ -35,14 +35,13 @@ def run(*, time_limit: float = 0, setup: Callable | None = None, classes: str = 
                     deck.slide_index += 1
                     deck.slide_step = 0
 
-        saved_index = deck.slide_index
         with carousel:
             for i, s in enumerate(deck.slides):
-                deck.slide_index = i
+                Slide.rendering = s
                 s.steps = 1
                 with ui.carousel_slide(name=str(i)).style('padding: 0'):
                     s.func()
-        deck.slide_index = saved_index
+            Slide.rendering = None
 
     @ui.page('/notes')
     def notes():
@@ -84,16 +83,15 @@ def run(*, time_limit: float = 0, setup: Callable | None = None, classes: str = 
                 .overview-slide:first-child { break-before: avoid; }
             }
         ''')
-        saved_index = deck.slide_index
         with ui.column().classes('w-full items-center gap-16 py-8'):
-            for i, s in enumerate(deck.slides):
-                deck.slide_index = i
+            for s in deck.slides:
+                Slide.rendering = s
                 s.steps = 1
                 with ui.column().classes('w-full max-w-5xl overview-slide'):
                     ui.markdown(s.notes)
                     with ui.card().props('bordered flat') \
                             .classes('w-full aspect-video bg-[#fafbfc] dark:bg-[#0f1117] relative overflow-hidden'):
                         s.func()
-        deck.slide_index = saved_index
+            Slide.rendering = None
 
     ui.run(**kwargs)

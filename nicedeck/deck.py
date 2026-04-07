@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 from collections.abc import Callable
-
 from dataclasses import dataclass, field
+from typing import ClassVar
 
 from nicegui import Event, app, binding
 
@@ -27,6 +27,8 @@ class Deck:
 @dataclass
 class Slide:
     """Data object representing a slide in a deck."""
+    rendering: ClassVar[Slide | None] = None
+
     func: Callable[[], None]
     notes: str = ''
     steps: int = field(default=1, init=False)

@@ -2,7 +2,7 @@ from typing import Optional, cast
 
 from nicegui import binding, ui
 
-from .deck import deck
+from .deck import Slide, deck
 
 
 class Step(ui.column):
@@ -14,7 +14,8 @@ class Step(ui.column):
                  max: Optional[int] = None,  # pylint: disable=redefined-builtin
                  ) -> None:
         super().__init__()
-        slide = deck.current_slide
+        assert Slide.rendering is not None, 'Step() must be used inside a slide'
+        slide = Slide.rendering
         if min != 0:
             slide.steps += 1
         if min is None:
