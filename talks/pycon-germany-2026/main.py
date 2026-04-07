@@ -520,8 +520,8 @@ def _():
 
 nd.run(
     setup=setup,
-    deck_classes='bg-[#fafbfc] dark:bg-[#0f1117]',
-    deck_props='control-color=blue-grey-2',
+    classes='bg-[#fafbfc] dark:bg-[#0f1117]',
+    props='control-color=blue-grey-2',
     time_limit=30 * 60,
     title='PyCon Germany 2026',
     uvicorn_reload_includes='*.py, *.css',
