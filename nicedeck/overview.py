@@ -1,19 +1,16 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, List, Self
+from typing import Self
 
 from nicegui import ui
 
 from ._slide import Slide
 
-if TYPE_CHECKING:
-    from .note import Note
-
 
 class OverviewDeck(ui.column):
     """A deck rendered as a vertical overview of all slides with notes."""
 
-    def __init__(self, **_kwargs) -> None:
+    def __init__(self) -> None:
         super().__init__()
         self.value = ''
         self.classes('w-full items-center gap-16 py-8')
@@ -29,12 +26,12 @@ class OverviewDeck(ui.column):
 class OverviewSlide(ui.column):
     """A slide rendered for overview/print mode with notes above the content."""
 
-    def __init__(self) -> None:
+    def __init__(self, notes: str = '') -> None:
         super().__init__()
         self.classes('w-full max-w-5xl overview-slide')
         self.step: int = 0
         self.steps: int = 1
-        self.notes: List[Note] = []
+        self._notes = notes
         self._notes_el: ui.column
         self._content_el: ui.element
 
@@ -53,9 +50,8 @@ class OverviewSlide(ui.column):
     def __exit__(self, *args) -> None:
         self._content_el.__exit__(*args)
         self.step = self.steps - 1
-        if self.notes:
+        if self._notes:
             with self._notes_el:
-                for note in self.notes:
-                    ui.markdown(note.text)
+                ui.markdown(self._notes)
         Slide.current = None
         super().__exit__(*args)

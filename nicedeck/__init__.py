@@ -13,21 +13,19 @@ from .content import CenterColumn as center_column
 from .content import CenterHeading as center_heading
 from .content import CenterRow as center_row
 from .content import Heading as heading
-from .note import Note as note
 from .overview import OverviewDeck, OverviewSlide
 from .step import Step as step
 
 _slides: list[Callable] = []
-_notes: list[list[str]] = []
+_notes: list[str] = []
 
 
-def slide(func: Callable | None = None) -> Callable:
-    """Register a slide function. Can be used as @nd.slide or @nd.slide()."""
+def slide(notes: str = '') -> Callable:
+    """Register a slide function. Can be used as @nd.slide or @nd.slide(notes='...')."""
     def decorator(f: Callable) -> Callable:
         _slides.append(f)
+        _notes.append(notes)
         return f
-    if func is not None:
-        return decorator(func)
     return decorator
 
 
@@ -42,7 +40,6 @@ def run(*, time_limit: float = 0, setup: Callable | None = None, classes: str = 
             for fn in _slides:
                 with Slide():
                     fn()
-        _notes[:] = [[n.text for n in child.notes] for child in deck.default_slot.children if isinstance(child, Slide)]
 
     @ui.page('/notes')
     def notes():
@@ -71,10 +68,8 @@ def run(*, time_limit: float = 0, setup: Callable | None = None, classes: str = 
         def show_notes() -> None:
             slide_name = app.storage.general.get('slide_name', 'slide_1')
             idx = int(slide_name.split('_')[1]) - 1
-            if 0 <= idx < len(_notes):
-                with ui.column().classes('gap-0'):
-                    for text in _notes[idx]:
-                        ui.markdown(text).classes('text-xl')
+            if 0 <= idx < len(_notes) and _notes[idx]:
+                ui.markdown(_notes[idx]).classes('text-xl')
 
         if time_limit:
             show_timer()
@@ -87,8 +82,8 @@ def run(*, time_limit: float = 0, setup: Callable | None = None, classes: str = 
         if setup:
             setup()
         with OverviewDeck():
-            for fn in _slides:
-                with OverviewSlide():
+            for fn, notes_text in zip(_slides, _notes):
+                with OverviewSlide(notes=notes_text):
                     fn()
 
     ui.run(**kwargs)
@@ -102,7 +97,6 @@ __all__ = [
     'code_result',
     'demo',
     'heading',
-    'note',
     'run',
     'slide',
     'step',
