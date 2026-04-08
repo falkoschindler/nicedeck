@@ -38,6 +38,13 @@ def slide_layout(heading: str | None = None, *, center_heading: str | None = Non
         yield
 
 
+def lesson(number: int, text: str) -> None:
+    with nd.step():
+        ui.label(f'Lesson {number}: {text}') \
+            .classes('absolute bottom-24 left-[50%] translate-x-[-50%] text-lg text-gray-600 border border-gray-500/20 '
+                     'p-4 rounded bg-white shadow-lg')
+
+
 # --- 1. Title Slide ---
 @nd.slide('''
     *(Wait for the audience to settle.)*
@@ -158,6 +165,8 @@ def _():
                         ui.label('Hello')
                         ui.label('world!')
 
+        lesson(1, 'The with statement is a "within" statement — code shape mirrors UI shape.')
+
 
 # --- 5. Method Chaining as Progressive Disclosure ---
 @nd.slide('''
@@ -186,6 +195,8 @@ def _():
                 .style('box-shadow: 0 0 1rem 0 rgba(0, 127, 255, 0.25)') \
                 .on('mouseenter', lambda e: e.sender.classes('scale-125')) \
                 .on('mouseleave', lambda e: e.sender.classes(remove='scale-125'))
+
+        lesson(2, 'Builder patterns add complexity without changing code structure.')
 
 
 # --- 6a. Lambdas & Callbacks ---
@@ -256,6 +267,8 @@ def _():
                 with ui.card():
                     ui.button(icon='add', on_click=lambda: ui.label('World'))
 
+        lesson(3, 'Callbacks should be as lightweight as the action they describe.')
+
 
 # --- 7. Decorators Make Patterns Declarative ---
 @nd.slide('''
@@ -290,6 +303,8 @@ def _():
             slider = ui.slider(value=0, min=-10, max=20,
                                on_change=show_temperature.refresh)
             show_temperature()
+
+        lesson(4, 'Same scaffolding, different logic — that\'s a decorator.')
 
 
 # --- 8. Design for the IDE ---
@@ -336,6 +351,8 @@ def _():
                         ) -> None:
                 ''')
 
+        lesson(5, 'Your best documentation is the one users never have to open.')
+
 
 # --- 9. Binding ---
 @nd.slide('''
@@ -367,6 +384,8 @@ def _():
             ui.label().bind_text_from(number, 'value', lambda v: f'T = {v:.0f}°C')
 
             ui.slider(min=0, max=100).bind_value(number)
+
+        lesson(6, 'Work with Python\'s object model, don\'t fight it.')
 
 
 # --- 10. Escape Hatches ---
@@ -413,6 +432,8 @@ def _():
                 ui.label('FastAPI')
             with nd.step(), ui.element().classes(box):
                 ui.label('Python')
+
+        lesson(7, 'Always provide a path to the layer below.')
 
 
 # --- 11. What Makes It "Nice" ---
