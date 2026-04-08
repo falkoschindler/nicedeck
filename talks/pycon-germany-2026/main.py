@@ -72,23 +72,25 @@ def _():
 
 # --- 2. The Question: JustPy vs NiceGUI ---
 @nd.slide('''
-    Let's start with *two pieces of code*.
+    Let's start with some *code*.
 
-    On the left, you see a Python UI framework called JustPy. It creates a card with a button and a label. When you click the button, the label text changes. *22 lines of code*.
+    This is *JustPy* — a Python UI framework. It creates a card with a button and a label. When you click the button, the label text changes. *22 lines of code*.
 
-    On the right — *the same app* in NiceGUI. *8 lines*. And it *runs* — you can click the button right here.
+    Five years ago, we were looking for a UI framework at *Zauberzeug* — that's the robotics company I work at, near Münster. We needed *dashboards* for our robots — motors, cameras, LEDs. And when we saw code like this, we thought: what if we build our own — one that's just... *nice*? What would that *look like*?
 
-    Both do *exactly the same thing*. One reads like a *to-do list* — create this, configure that, add it here, add it there. The other reads like *the UI it describes*.
+    ---
 
-    So what's the *difference*? It's not about which framework is "better." It's about which *Python features* the designer chose to use.
+    *(step to NiceGUI code + result)*
 
-    Look at the NiceGUI version. *"Readability counts"* — the code reads like the UI looks. *"Beautiful is better than ugly"* — the indentation *mirrors the hierarchy*. *"Simple is better than complex"* — 8 lines instead of 22. *"Flat is better than nested"* — no callback function just to set a text.
+    *This.* The same app. *8 lines*. And it *runs* — you can click the button right here.
 
-    These aren't my principles. They're from *the Zen of Python*. NiceGUI just takes them seriously.
+    One reads like a *to-do list* — create this, configure that, add it here. The other reads like *the UI it describes*.
 
-    We've been building NiceGUI for *5 years* now. And this talk is about what we *learned* — about which Python language features make great APIs, and *why*.
+    The difference? It's about which *Python features* you choose to use. *"Readability counts."* *"Simple is better than complex."* *"Beautiful is better than ugly."* The *Zen of Python* — we just took it seriously.
 
-    But first — I'm Falko Schindler, lead developer of NiceGUI. I work at *Zauberzeug*, a robotics company near Münster. We build agricultural robots, and NiceGUI started because we needed *dashboards for real hardware* — motors, cameras, LEDs.
+    Now — this part was *obvious* from day one. Lean into Python's features and the API almost designs itself. The *hard part* was everything else. How do you handle *events*? *State*? *Styling*? How do you make *100 elements discoverable*? How do you let people *escape* your abstractions?
+
+    Keeping it simple across 5 years and thousands of users — *that's* what this talk is about.
 ''')
 def _():
     with slide_layout('What Makes an API Feel Pythonic?'):
@@ -103,42 +105,74 @@ def _():
                         label = ui.label('Hello Darmstadt!')
 
 
-# --- 3. The Sweet Spot: Streamlit vs NiceGUI ---
+# --- 3. Who Am I ---
 @nd.slide('''
-    That was the *low-level* end — JustPy. Now let me show you the *other extreme*.
+    I'm *Falko Schindler*, lead developer of NiceGUI.
 
-    This is *Streamlit*. And honestly — for a quick hello world, *nothing beats it*. Four lines, and you have a label, a button, it runs. *Beautiful simplicity*.
+    I work at *Zauberzeug* — German for "magic tools" — a robotics company near Münster. We build *agricultural robots* like our Feldfreund here, and all the software to control them.
 
-    But now try the *same interaction* we just saw — a button that *persistently* changes a label.
+    NiceGUI started because we needed *dashboards for real hardware* — motors, cameras, LEDs — and nothing we found felt right.
+''')
+def _():
+    with slide_layout():
+        with ui.column().classes('gap-16 m-auto'):
+            with ui.row(align_items='center'):
+                ui.image('assets/falko.webp').classes('w-32 rounded-full')
+                with ui.column().classes('gap-2'):
+                    ui.label('Falko Schindler').classes(f'text-xl font-bold {TEXT_80}')
+                    ui.link('github.com/falko-schindler', 'https://github.com/falko-schindler') \
+                        .classes(f'text-lg {TEXT_60} no-underline')
+            with ui.row(wrap=False).classes(f'text-lg {TEXT_60}'):
+                with ui.column():
+                    ui.interactive_image('assets/office.webp').classes('h-60 shadow')
+                    with ui.row(align_items='center').classes('w-full'):
+                        ui.label('Zauberzeug, Münster, Germany')
+                with ui.column():
+                    ui.interactive_image('assets/field-friend.webp').classes('h-60 shadow')
+                    ui.label('Field Friend, our agricultural robot')
+
+
+# --- 4. The Sweet Spot: Streamlit vs NiceGUI ---
+@nd.slide('''
+    So JustPy was the *low-level* end. But there's also the *other extreme*.
+
+    This is *Streamlit*. For a quick hello world, *nothing beats it*. Four lines — a label, a button, it runs. *Beautiful simplicity*.
+
+    But try the *same interaction* we just saw — a button that *persistently* changes a label.
 
     ---
 
-    Suddenly you need `session_state` — just to remember *one text*. You need `st.rerun()` — to manually *trigger the update*. And the button itself? It's an *`if` statement*. Control flow *is* the event handling.
+    Suddenly you need `session_state` — just to remember *one text*. You need `st.rerun()` to *trigger the update*. And the button? It's an *`if` statement*. Control flow *is* the event handling.
 
-    Now — to be fair: Streamlit made this choice *deliberately*. For *data apps* where you want stateless dashboards, the rerun model makes sense. But for *interactive, stateful UIs* — the kind we need for controlling robots — the framework deciding when your code runs? That's *too much magic*.
+    To be fair: Streamlit made this choice *deliberately*. For *data apps* where you want stateless dashboards, the rerun model makes sense. But for *interactive, stateful UIs* — the kind we need for controlling robots — the framework deciding when your code runs? That's *too much magic*.
 
-    And JustPy was *too low-level*.
-
-    We wanted the *sweet spot*: *high-level components*, *explicit state*, *real Python*.
-
-    And this constraint — not too much magic, not too low-level — has guided *every API decision* we've made in the last 5 years.
+    We wanted the *sweet spot*: *high-level components*, *explicit state*, *real Python*. And this constraint — not too much magic, not too low-level — has guided every API decision since.
 ''')
 def _():
-    with slide_layout('The Sweet Spot?'):
-        with ui.grid(columns='auto auto').classes('gap-x-8 gap-y-4 w-[95%]'):
-            code_window('''
-                import streamlit as st
+    with slide_layout('The Sweet Spot'):
+        with ui.grid(columns='1fr 1fr 1fr').classes('gap-4 w-[95%] items-start'):
+            with ui.column().classes('gap-1'):
+                ui.label('too low-level').classes(f'text-sm {TEXT_60}')
+                code_window(SNIPPETS / 'intro_justpy.py')
+            with nd.step(min=2), ui.column().classes('gap-1'):
+                ui.label('sweet spot').classes(f'text-sm {TEXT_60}')
+                code_window('''
+                    from nicegui import ui
 
-                st.write('Hello Darmstadt!')
+                    with ui.card():
+                        with ui.row():
+                            ui.button('Click me', on_click=lambda:
+                                label.set_text('Hello World!'))
+                            label = ui.label('Hello Darmstadt!')
 
-                if st.button('Click me'):
-                    st.write('Hello World!')
-            ''')
-            with nd.step():
+                    ui.run()
+                ''').classes('border')
+            with nd.step(min=1), ui.column().classes('gap-1'):
+                ui.label('too much magic').classes(f'text-sm {TEXT_60}')
                 code_window(SNIPPETS / 'intro_streamlit.py')
 
 
-# --- 4. Context Managers Are the Layout API ---
+# --- 5. Context Managers Are the Layout API ---
 @nd.slide('''
     So let's talk about *specific lessons* we learned. The first one is probably the *biggest single insight* from 5 years of NiceGUI.
 
@@ -176,7 +210,7 @@ def _():
         lesson(1, 'The with statement is a "within" statement — code shape mirrors UI shape.')
 
 
-# --- 5. Method Chaining as Progressive Disclosure ---
+# --- 6. Method Chaining as Progressive Disclosure ---
 @nd.slide('''
     Second lesson: *progressive disclosure* through method chaining.
 
@@ -207,7 +241,7 @@ def _():
         lesson(2, 'Builder patterns add complexity without changing code structure.')
 
 
-# --- 6a. Lambdas & Callbacks ---
+# --- 7a. Lambdas & Callbacks ---
 @nd.slide('''
     Third lesson: *event handling should be obvious*.
 
@@ -229,7 +263,7 @@ def _():
             ui.button('Submit', on_click=lambda: ui.notify('Done.', type='positive'))
 
 
-# --- 6b. Async / Await ---
+# --- 7b. Async / Await ---
 @nd.slide('''
     And what if your handler needs to do something *slow*? An API call, an animation, a delay? Just make it *`async`*.
 
@@ -252,7 +286,7 @@ def _():
             ui.button('Click me', on_click=handle_click)
 
 
-# --- 6c. Auto-Context ---
+# --- 7c. Auto-Context ---
 @nd.slide('''
     Now here's something more subtle: *auto-context*.
 
@@ -278,7 +312,7 @@ def _():
         lesson(3, 'Callbacks should be as lightweight as the action they describe.')
 
 
-# --- 7. Decorators Make Patterns Declarative ---
+# --- 8. Decorators Make Patterns Declarative ---
 @nd.slide('''
     So callbacks are lightweight. But what about *larger patterns* that repeat across your app?
 
@@ -332,7 +366,7 @@ def _():
         lesson(4, 'Decorators like `@ui.refreshable` eliminate our users\' boilerplate.')
 
 
-# --- 8. Design for the IDE ---
+# --- 9. Design for the IDE ---
 @nd.slide('''
     Fifth lesson, and this one is about something you *don't see* at runtime.
 
@@ -386,7 +420,7 @@ def _():
         lesson(5, 'Your best documentation is the one users never have to open.')
 
 
-# --- 9. Binding ---
+# --- 10. Binding ---
 @nd.slide('''
     Sixth lesson: work with Python's *object model*, don't fight it.
 
@@ -436,7 +470,7 @@ def _():
         lesson(6, 'Work with Python\'s object model, don\'t fight it.')
 
 
-# --- 10. Escape Hatches ---
+# --- 11. Escape Hatches ---
 @nd.slide('''
     Now let's zoom out from individual features and talk about *architecture*.
 
@@ -484,7 +518,7 @@ def _():
         lesson(7, 'Always provide a path to the layer below.')
 
 
-# --- 11. What Makes It "Nice" ---
+# --- 12. What Makes It "Nice" ---
 @nd.slide('''
     We've been talking about *API design*. But niceness isn't just *technical*.
 
@@ -511,7 +545,7 @@ def _():
                     .classes('text-lg')
 
 
-# --- 12. Takeaways ---
+# --- 13. Takeaways ---
 @nd.slide('''
     So — what did we learn?
 
@@ -537,7 +571,7 @@ def _():
                 ui.markdown('_"Simple things should be simple, complex things should be possible."_ — Alan Kay')
 
 
-# --- 13. Thank You ---
+# --- 14. Thank You ---
 @nd.slide('''
     And to prove that point — here's *both* at the same time.
 
