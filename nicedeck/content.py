@@ -6,7 +6,7 @@ class Heading(ui.label):
 
     def __init__(self, text: str = '') -> None:
         super().__init__(text)
-        self.classes('absolute top-8 left-8 text-4xl text-gray-800 font-bold')
+        self.classes('absolute top-8 left-8 text-4xl text-black/80 dark:text-white/80 font-bold')
 
 
 class CenterHeading(ui.label):
@@ -14,7 +14,7 @@ class CenterHeading(ui.label):
 
     def __init__(self, text: str) -> None:
         super().__init__(text)
-        self.classes('absolute-center text-4xl text-gray-800 font-bold')
+        self.classes('absolute-center text-4xl text-black/80 dark:text-white/80 font-bold')
 
 
 class CenterRow(ui.row):

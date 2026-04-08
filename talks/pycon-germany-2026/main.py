@@ -13,6 +13,9 @@ from windows import code_window, demo
 
 SNIPPETS = Path(__file__).parent / 'snippets'
 
+TEXT_80 = 'text-black/80 dark:text-white/80'
+TEXT_60 = 'text-black/60 dark:text-white/60'
+
 
 def setup():
     class SolarizedLight(SolarizedLightStyle):
@@ -41,8 +44,8 @@ def slide_layout(heading: str | None = None, *, center_heading: str | None = Non
 def lesson(number: int, text: str) -> None:
     with nd.step():
         ui.markdown(f'Lesson {number}: {text}') \
-            .classes('absolute bottom-24 left-[50%] translate-x-[-50%] text-lg text-gray-600 border border-gray-500/20 '
-                     'p-4 rounded bg-white shadow-lg')
+            .classes('absolute bottom-24 left-[50%] translate-x-[-50%] text-lg p-4 rounded border border-gray-500/20 '
+                     f'bg-[#fff] dark:bg-black {TEXT_80} shadow-lg')
 
 
 # --- 1. Title Slide ---
@@ -53,13 +56,18 @@ def _():
     with nd.center_row():
         with ui.column().classes('absolute-center items-center text-center gap-4'):
             ui.markdown('# **5 Years of *NiceGUI***').classes('[&_em]:text-(--q-primary) [&_em]:not-italic')
-            ui.label('What We Learned About Designing Pythonic UIs').classes('text-3xl text-gray-800')
-            with ui.row().classes('gap-8 mt-8'):
-                ui.label('Falko Schindler').classes('text-lg text-gray-600')
-                ui.label('Zauberzeug').classes('text-lg text-gray-600')
-            with ui.row().classes('gap-8 mt-2'):
-                ui.label('nicegui.io').classes('text-lg text-gray-400')
-                ui.label('github.com/zauberzeug/nicegui').classes('text-lg text-gray-400')
+            ui.label('What We Learned About Designing Pythonic UIs').classes(f'text-3xl {TEXT_80}')
+            with ui.row(align_items='center').classes(f'mt-8 text-lg {TEXT_60}'):
+                ui.label('Falko Schindler')
+                ui.space().classes('w-8')
+                ui.interactive_image('assets/zauberzeug-logo.webp').classes('h-8 dark:invert')
+            with ui.row(align_items='center').classes(f'mt-2 text-lg {TEXT_60}'):
+                ui.icon('language')
+                ui.link('nicegui.io', 'https://nicegui.io').classes('text-current no-underline')
+                ui.space().classes('w-8')
+                ui.icon('commit')
+                ui.link('github.com/zauberzeug/nicegui', 'https://github.com/zauberzeug/nicegui') \
+                    .classes('text-current no-underline')
 
 
 # --- 2. The Question: JustPy vs NiceGUI ---
@@ -568,4 +576,5 @@ nd.run(
     time_limit=30 * 60,
     title='PyCon Germany 2026',
     uvicorn_reload_includes='*.py, *.css',
+    dark=None,
 )
