@@ -21,7 +21,7 @@ def setup():
     class SolarizedDark(SolarizedDarkStyle):
         styles = make_style({**DARK_COLORS, 'base0': '#edeff3', 'base01': '#9ba2ae'})
 
-    ui.add_css('.q-carousel__navigation-icon--active .q-icon {color:  # 78909c !important; }')
+    ui.add_css('.q-carousel__navigation-icon--active .q-icon {color:  #78909c !important; }')
     ui.add_css(f'''
         {HtmlFormatter(nobackground=True, style=SolarizedLight).get_style_defs('div.codehilite')}
         {HtmlFormatter(nobackground=True, style=SolarizedDark).get_style_defs('.body--dark div.codehilite')}
