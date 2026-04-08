@@ -352,7 +352,7 @@ def _():
                 @demo(mode='rows')
                 def _():
                     @ui.refreshable
-                    def show_temperature():
+                    def display():
                         if slider.value < 0:
                             ui.label(f'Freezing: {slider.value}°C').classes('text-blue')
                         elif slider.value < 10:
@@ -360,9 +360,8 @@ def _():
                         else:
                             ui.label(f'Warm: {slider.value}°C').classes('text-orange')
 
-                    slider = ui.slider(value=0, min=-10, max=20,
-                                       on_change=show_temperature.refresh)
-                    show_temperature()
+                    slider = ui.slider(value=0, min=-10, max=20, on_change=display.refresh)
+                    display()
 
         lesson(4, 'Decorators like `@ui.refreshable` eliminate our users\' boilerplate.')
 
