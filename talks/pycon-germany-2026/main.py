@@ -330,43 +330,50 @@ def _():
 
     Your API should be readable *before the user runs it*. In the *IDE*. In the *tooltip*. In the *auto-complete dropdown*.
 
-    First: a *flat namespace*. `ui.input` — not `ui.elements.input.TextInput`. Type `ui.` in your IDE and you can *browse everything*.
+    Look at this `Slider` class. Every parameter is *spelled out* — no `**kwargs`. The IDE can show you *exactly* what's available.
 
-    Second: JustPy passes most things as `**kwargs`. The IDE *can't help you*. You're on your own with the docs. NiceGUI *spells out every parameter*. It's more code to *maintain*, but that's what shows up in the *tooltip*.
+    Notice the *type hints* — `Handler`, `float | None` — that's what powers the whole IDE experience.
 
-    ---
+    And here's something I'm particularly proud of: *honest defaults*.
 
-    Notice the *type hints* — `Handler`, `str | None` — that's what powers the whole IDE experience. And here's something I'm particularly proud of: *honest defaults*.
+    Look at the `step` parameter: `DEFAULT_PROP | 1.0`. It tells you two things at once: this value *can be overridden globally*, and if it isn't, the fallback is *1.0*.
 
-    Look at what your IDE shows you for the `color` parameter: `DEFAULT_PROP | 'primary'`.
-
-    It tells you two things at once: this value *can be overridden globally*, and if it isn't, the fallback is *'primary'*.
-
-    How does that work? `DEFAULT_PROP` is a *sentinel* — a special placeholder object — with `__or__` overloaded, so the `| 'primary'` *shows up in the signature*. The `@resolve_defaults` decorator resolves it at *call time*.
+    How does that work? `DEFAULT_PROP` is a *sentinel* — a special placeholder object — with `__or__` overloaded, so the `| 1.0` *shows up in the signature*. The `@resolve_defaults` decorator resolves it at *call time*.
 
     A bit of *magic in the implementation* — but in service of a *crystal-clear API surface*.
+
+    On the right you see what this looks like in practice — the IDE tooltip shows the *full story*.
 
     The lesson: every design choice should survive the *IDE test*. Your best documentation is the one the user *never has to open*.
 ''')
 def _():
     with slide_layout('Design for the IDE'):
-        with ui.column().classes('gap-4 w-[95%]'):
-            with ui.row().classes('gap-8 text-xl'):
-                ui.label('ui.input').classes('font-mono')
-                ui.label('not').classes('text-gray-400')
-                ui.label('ui.elements.input.TextInput').classes('font-mono line-through text-gray-400')
-            with nd.step():
-                code_window('''
-                    class Button(...):
-                        @resolve_defaults
-                        def __init__(
-                            self,
-                            text: str = '', *,
-                            on_click: Handler[ClickEventArguments] | None = None,
-                            color: str | None = DEFAULT_PROP | 'primary',
-                            icon: str | None = DEFAULT_PROP | None,
-                        ) -> None:
-                ''')
+        with ui.grid(columns='1fr 1fr').classes('gap-x-8 gap-y-4 w-[95%] items-center'):
+            code_window('''
+                class Slider(ValueElement[float | None], DisableableElement):
+
+                    @resolve_defaults
+                    def __init__(
+                        self,
+                        *,
+                        min: float,
+                        max: float,
+                        step: float = DEFAULT_PROP | 1.0,
+                        value: float | None = DEFAULT_PROPS['model-value'] | None,
+                        on_change: Handler[ValueChangeEventArguments[float | None]] | None = None,
+                    ) -> None:
+                        """Slider
+
+                        This element is based on Quasar's `QSlider <https://quasar.dev/vue-components/slider>`_ component.
+
+                        :param min: lower bound of the slider
+                        :param max: upper bound of the slider
+                        :param step: step size
+                        :param value: initial value to set position of the slider
+                        :param on_change: callback which is invoked when the user releases the slider
+                        """
+            ''')
+            ui.interactive_image('assets/slider.png').classes('rounded shadow overflow-hidden')
 
         lesson(5, 'Your best documentation is the one users never have to open.')
 
