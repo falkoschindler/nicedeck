@@ -393,14 +393,30 @@ def _():
 ''')
 def _():
     with slide_layout('Binding'):
+        with ui.grid(columns='1fr 1fr').classes('gap-x-8 gap-y-4 w-[95%] items-start'):
 
-        @demo
-        def _():
-            number = ui.number(value=42)
+            @demo(mode='rows')
+            def _():
+                number = ui.number(value=42)
 
-            ui.label().bind_text_from(number, 'value', lambda v: f'T = {v:.0f}°C')
+                ui.label().bind_text_from(number, 'value', lambda v: f'T = {v:.0f}°C')
 
-            ui.slider(min=0, max=100).bind_value(number)
+                ui.slider(min=0, max=100).bind_value(number)
+
+            with nd.step():
+                @demo(mode='rows')
+                def _():
+                    from dataclasses import dataclass
+
+                    @dataclass
+                    class Temperature:
+                        value: float = 42
+
+                    temp = Temperature()
+
+                    ui.number().bind_value(temp, 'value')
+                    ui.label().bind_text_from(temp, 'value', lambda v: f'T = {v:.0f}°C')
+                    ui.slider(min=0, max=100).bind_value(temp, 'value')
 
         lesson(6, 'Work with Python\'s object model, don\'t fight it.')
 
