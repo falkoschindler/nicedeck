@@ -109,7 +109,7 @@ def _():
     And this constraint — not too much magic, not too low-level — has guided *every API decision* we've made in the last 5 years.
 ''')
 def _():
-    with slide_layout('The Sweet Spot'):
+    with slide_layout('The Sweet Spot?'):
         with ui.grid(columns='auto auto').classes('gap-x-8 gap-y-4 w-[95%]'):
             code_window('''
                 import streamlit as st
