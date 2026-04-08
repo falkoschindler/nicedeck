@@ -4,6 +4,8 @@ from .deck import Slide, deck
 from nicegui import events, ui
 import time
 
+NOTE_CLASSES = 'text-gray-400 [&_em]:text-black [&_em]:not-italic [&_em]:font-medium [&_code]:text-[90%]'
+
 
 def run(*, time_limit: float = 0, setup: Callable | None = None, classes: str = '', props: str = '', **kwargs) -> None:
 
@@ -64,7 +66,7 @@ def run(*, time_limit: float = 0, setup: Callable | None = None, classes: str = 
 
         @ui.refreshable
         def show_notes() -> None:
-            ui.markdown(deck.current_slide.notes).classes('text-xl')
+            ui.markdown(deck.current_slide.notes).classes(NOTE_CLASSES)
 
         if time_limit:
             show_timer()
@@ -88,7 +90,7 @@ def run(*, time_limit: float = 0, setup: Callable | None = None, classes: str = 
                 Slide.rendering = s
                 s.steps = 1
                 with ui.column().classes('w-full max-w-5xl overview-slide'):
-                    ui.markdown(s.notes)
+                    ui.markdown(s.notes).classes(NOTE_CLASSES)
                     with ui.card().props('bordered flat') \
                             .classes('w-full aspect-video bg-[#fafbfc] dark:bg-[#0f1117] relative overflow-hidden'):
                         s.func()
