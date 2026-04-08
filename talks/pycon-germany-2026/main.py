@@ -44,7 +44,7 @@ def slide_layout(heading: str | None = None, *, center_heading: str | None = Non
 ''')
 def _():
     with nd.center_row():
-        with ui.column().classes('absolute-center items-center gap-4'):
+        with ui.column().classes('absolute-center items-center text-center gap-4'):
             ui.markdown('# **5 Years of *NiceGUI***').classes('[&_em]:text-(--q-primary) [&_em]:not-italic')
             ui.label('What We Learned About Designing Pythonic UIs').classes('text-3xl text-gray-800')
             with ui.row().classes('gap-8 mt-8'):
