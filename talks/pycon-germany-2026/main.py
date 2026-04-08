@@ -40,7 +40,7 @@ def slide_layout(heading: str | None = None, *, center_heading: str | None = Non
 
 def lesson(number: int, text: str) -> None:
     with nd.step():
-        ui.label(f'Lesson {number}: {text}') \
+        ui.markdown(f'Lesson {number}: {text}') \
             .classes('absolute bottom-24 left-[50%] translate-x-[-50%] text-lg text-gray-600 border border-gray-500/20 '
                      'p-4 rounded bg-white shadow-lg')
 
@@ -288,23 +288,40 @@ def _():
 ''')
 def _():
     with slide_layout('Decorators'):
+        with ui.grid(columns='1fr 1fr').classes('gap-x-8 gap-y-4 w-[95%] items-start'):
+            @demo(mode='rows')
+            def _():
+                def update():
+                    container.clear()
+                    with container:
+                        if slider.value < 0:
+                            ui.label(f'Freezing: {slider.value}°C').classes('text-blue')
+                        elif slider.value < 10:
+                            ui.label(f'Cold: {slider.value}°C').classes('text-green')
+                        else:
+                            ui.label(f'Warm: {slider.value}°C').classes('text-orange')
 
-        @demo
-        def _():
-            @ui.refreshable
-            def show_temperature():
-                if slider.value < 0:
-                    ui.label(f'Freezing: {slider.value}°C').classes('text-blue')
-                elif slider.value < 10:
-                    ui.label(f'Cold: {slider.value}°C').classes('text-green')
-                else:
-                    ui.label(f'Warm: {slider.value}°C').classes('text-orange')
+                slider = ui.slider(value=0, min=-10, max=20, on_change=update)
+                container = ui.column()
+                update()
 
-            slider = ui.slider(value=0, min=-10, max=20,
-                               on_change=show_temperature.refresh)
-            show_temperature()
+            with nd.step():
+                @demo(mode='rows')
+                def _():
+                    @ui.refreshable
+                    def show_temperature():
+                        if slider.value < 0:
+                            ui.label(f'Freezing: {slider.value}°C').classes('text-blue')
+                        elif slider.value < 10:
+                            ui.label(f'Cold: {slider.value}°C').classes('text-green')
+                        else:
+                            ui.label(f'Warm: {slider.value}°C').classes('text-orange')
 
-        lesson(4, 'Same scaffolding, different logic — that\'s a decorator.')
+                    slider = ui.slider(value=0, min=-10, max=20,
+                                       on_change=show_temperature.refresh)
+                    show_temperature()
+
+        lesson(4, 'Decorators like `@ui.refreshable` eliminate our users\' boilerplate.')
 
 
 # --- 8. Design for the IDE ---
