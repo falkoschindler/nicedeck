@@ -44,7 +44,7 @@ def slide_layout(heading: str | None = None, *, center_heading: str | None = Non
 def lesson(number: int, text: str) -> None:
     with nd.step():
         ui.markdown(f'Lesson {number}: {text}') \
-            .classes('absolute bottom-24 left-[50%] translate-x-[-50%] text-lg p-4 rounded border border-gray-500/20 '
+            .classes('absolute bottom-24 left-[50%] translate-x-[-50%] w-max text-lg p-4 rounded border border-gray-500/20 '
                      f'bg-[#fff] dark:bg-black {TEXT_80} shadow-lg')
 
 
@@ -97,12 +97,13 @@ def _():
         with ui.grid(columns='auto auto').classes('gap-x-8 gap-y-4 w-[95%]'):
             code_window(SNIPPETS / 'intro_justpy.py')
 
-            @demo(mode='rows')
-            def _():
-                with ui.card():
-                    with ui.row():
-                        ui.button('Click me', on_click=lambda: label.set_text('Hello World!'))
-                        label = ui.label('Hello Darmstadt!')
+            with nd.step():
+                @demo(mode='rows')
+                def _():
+                    with ui.card():
+                        with ui.row():
+                            ui.button('Click me', on_click=lambda: label.set_text('Hello World!'))
+                            label = ui.label('Hello Darmstadt!')
 
 
 # --- 3. Who Am I ---
@@ -494,26 +495,22 @@ def _():
 ''')
 def _():
     with slide_layout('Escape Hatches'):
-        box = 'w-full border border-gray-500/20 h-12 column items-center justify-center text-xl rounded bg-gray-500/5 shadow'
-        with ui.grid(columns=8).classes('w-[90%] gap-2'):
-            with ui.element().classes(f'{box} col-span-8'):
-                ui.label('NiceGUI')
-            with nd.step(), ui.element().classes(box):
-                ui.label('HTML')
-            with nd.step(), ui.element().classes(box):
-                ui.label('CSS')
-            with nd.step(), ui.element().classes(box):
-                ui.label('JavaScript')
-            with nd.step(), ui.element().classes(box):
-                ui.label('Vue')
-            with nd.step(), ui.element().classes(box):
-                ui.label('Quasar')
-            with nd.step(), ui.element().classes(box):
-                ui.label('Tailwind')
-            with nd.step(), ui.element().classes(box):
-                ui.label('FastAPI')
-            with nd.step(), ui.element().classes(box):
-                ui.label('Python')
+        def hatch(name: str, code: str) -> None:
+            with nd.step():
+                with ui.element().classes('row items-center text-xl'):
+                    ui.label(name).classes('text-lg w-28')
+                    ui.code(code, language='python').classes('text-sm').copy_button.delete()
+
+        with ui.card():
+            ui.label('NiceGUI').classes('text-2xl')
+            ui.separator()
+            hatch('HTML', "ui.html('<div>Raw HTML</div>')")
+            hatch('CSS', "ui.element().classes('text-red')")
+            hatch('JavaScript', "ui.run_javascript('alert(\"Hello\")')")
+            hatch('Tailwind', "ui.label().classes('text-red')")
+            hatch('Quasar', "ui.button().props('outline')")
+            hatch('FastAPI', "app.get('/hello')")
+            hatch('Python', 'class MyCustomElement(ui.element): ...')
 
         lesson(7, 'Always provide a path to the layer below.')
 
