@@ -231,15 +231,28 @@ def _():
 ''')
 def _():
     with slide_layout('Method Chaining'):
+        with ui.grid(columns='1fr 1fr').classes('gap-x-8 gap-y-4 w-[95%] items-start'):
+            @demo(mode='rows')
+            def _():
+                with ui.card() as card:
+                    card.classes('m-auto')
+                    button = ui.button('Click me!', icon='face')
+                    button.props('outline')
+                    button.style('box-shadow: 0 0 1rem 0 rgba(0, 127, 255, 0.25)')
+                    button.on('mouseenter', lambda e: e.sender.classes('scale-125'))
+                    button.on('mouseleave', lambda e: e.sender.classes(remove='scale-125'))
+                    ui.label('What a mess!')
 
-        @demo
-        def _():
-            ui.button('Nice!', icon='face') \
-                .props('outline') \
-                .classes('m-auto') \
-                .style('box-shadow: 0 0 1rem 0 rgba(0, 127, 255, 0.25)') \
-                .on('mouseenter', lambda e: e.sender.classes('scale-125')) \
-                .on('mouseleave', lambda e: e.sender.classes(remove='scale-125'))
+            with nd.step():
+                @demo(mode='rows')
+                def _():
+                    with ui.card().classes('m-auto'):
+                        ui.button('Click me!', icon='face') \
+                            .props('outline') \
+                            .style('box-shadow: 0 0 1rem 0 rgba(0, 127, 255, 0.25)') \
+                            .on('mouseenter', lambda e: e.sender.classes('scale-125')) \
+                            .on('mouseleave', lambda e: e.sender.classes(remove='scale-125'))
+                        ui.label('What a nice button!')
 
         lesson(2, 'Builder patterns add complexity without changing code structure.')
 
