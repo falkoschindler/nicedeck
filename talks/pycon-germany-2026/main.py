@@ -411,50 +411,68 @@ def _():
 
     Your API should be readable *before the user runs it*. In the *IDE*. In the *tooltip*. In the *auto-complete dropdown*.
 
-    Look at this `Slider` class. Every parameter is *spelled out* — no `**kwargs`. The IDE can show you *exactly* what's available.
+    Here's a simple slider. The default step size is *1*. If I want a step size of *10*, I pass it explicitly. Easy.
 
-    Notice the *type hints* — `Handler`, `float | None` — that's what powers the whole IDE experience.
+    But NiceGUI also supports *default props* — a way to change defaults *globally*. So now `step` is *10* again, without passing it. But what if I *also* pass `step=1` explicitly? What wins — the global default or the explicit argument? It's... *unclear*.
 
-    And here's something I'm particularly proud of: *honest defaults*.
+    On the right, let's look at how the *signature* evolves. A naive approach: `step: float = None`. The IDE shows *nothing useful* — you don't know the actual default.
 
-    Look at the `step` parameter: `DEFAULT_PROP | 1.0`. It tells you two things at once: this value *can be overridden globally*, and if it isn't, the fallback is *1.0*.
+    Better: `step: float = DEFAULT`. Now you *see* there's a global default system — but you still don't know the *fallback value*.
 
-    How does that work? `DEFAULT_PROP` is a *sentinel* — a special placeholder object — with `__or__` overloaded, so the `| 1.0` *shows up in the signature*. The `@resolve_defaults` decorator resolves it at *call time*.
+    Here's what we landed on: `DEFAULT_PROP | 1.0`. This tells you *two things at once*: the value *can be overridden globally*, and if it isn't, the fallback is *1.0*. The `@resolve_defaults` decorator resolves it at *call time*.
 
-    A bit of *magic in the implementation* — but in service of a *crystal-clear API surface*.
+    How? `DEFAULT_PROP` is a *sentinel* with `__or__` overloaded, so `| 1.0` *shows up in the signature*. A bit of *magic in the implementation* — but in service of a *crystal-clear API surface*.
 
-    On the right you see what this looks like in practice — the IDE tooltip shows the *full story*.
+    And here's what that looks like in the IDE — the tooltip shows the *full story*. Every parameter *spelled out*, no `**kwargs`, with *type hints* and *honest defaults*.
 
     The lesson: every design choice should survive the *IDE test*. Your best documentation is the one the user *never has to open*.
 ''')
 def _():
     with slide_layout('Design for the IDE'):
-        with ui.grid(columns='1fr 1fr').classes('gap-x-8 gap-y-4 w-[95%] items-center'):
-            code_window('''
-                class Slider(ValueElement[float | None], DisableableElement):
+        with ui.grid(columns='1fr 1fr').classes('gap-x-8 gap-y-4 w-[90%] items-start'):
+            with ui.column().classes('gap-8'):
+                with nd.step().classes('gap-1'):
+                    ui.label('step = 1').classes(f'text-sm {TEXT_60}')
+                    code_window('''
+                        ui.slider(min=0, max=100)
+                    ''')
+                with nd.step().classes('gap-1'):
+                    ui.label('step = 10').classes(f'text-sm {TEXT_60}')
+                    code_window('''
+                        ui.slider(min=0, max=100, step=10)
+                    ''')
+                with nd.step().classes('gap-1'):
+                    ui.label('step = 10').classes(f'text-sm {TEXT_60}')
+                    code_window('''
+                        ui.slider.default_props('step=10')
+                        ui.slider(min=0, max=100)
+                    ''')
+                with nd.step().classes('gap-1'):
+                    ui.label('step = ?').classes(f'text-sm {TEXT_60}')
+                    code_window('''
+                        ui.slider.default_props('step=10')
+                        ui.slider(min=0, max=100, step=1)
+                    ''')
 
-                    @resolve_defaults
-                    def __init__(
-                        self,
-                        *,
-                        min: float,
-                        max: float,
-                        step: float = DEFAULT_PROP | 1.0,
-                        value: float | None = DEFAULT_PROPS['model-value'] | None,
-                        on_change: Handler[ValueChangeEventArguments[float | None]] | None = None,
-                    ) -> None:
-                        """Slider
-
-                        This element is based on Quasar's `QSlider <https://quasar.dev/vue-components/slider>`_ component.
-
-                        :param min: lower bound of the slider
-                        :param max: upper bound of the slider
-                        :param step: step size
-                        :param value: initial value to set position of the slider
-                        :param on_change: callback which is invoked when the user releases the slider
-                        """
-            ''')
-            ui.interactive_image('assets/slider.png').classes('rounded shadow overflow-hidden')
+            with ui.column():
+                with nd.step():
+                    code_window('''
+                        class Slider(...):
+                            def __init__(self, *, step: float = None, ...) -> None: ...
+                    ''')
+                with nd.step():
+                    code_window('''
+                        class Slider(...):
+                            def __init__(self, *, step: float = DEFAULT, ...) -> None: ...
+                    ''')
+                with nd.step():
+                    code_window('''
+                        class Slider(...):
+                            @resolve_defaults
+                            def __init__(self, *, step: float = DEFAULT_PROP | 1.0, ...) -> None: ...
+                    ''').classes('border')
+                with nd.step():
+                    ui.interactive_image('assets/slider.png').classes('rounded shadow overflow-hidden')
 
         takeaway(5, 'Your best documentation is the one users never have to open.')
 
