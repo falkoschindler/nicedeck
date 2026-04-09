@@ -139,11 +139,13 @@ def _():
 @nd.slide('''
     So JustPy was the *low-level* end. But there's also the *other extreme*.
 
-    This is *Streamlit*. For a quick hello world, *nothing beats it*. Four lines — a label, a button, it runs. *Beautiful simplicity*.
+    This is *Streamlit*. For a quick hello world, *nothing beats it*. A button, a label, it runs. *Beautiful simplicity*.
+
+    ---
 
     But try the *same interaction* we just saw — a button that *persistently* changes a label.
 
-    ---
+    *(step to stateful Streamlit code)*
 
     Suddenly you need `session_state` — just to remember *one text*. You need `st.rerun()` to *trigger the update*. And the button? It's an *`if` statement*. Control flow *is* the event handling.
 
@@ -157,7 +159,7 @@ def _():
             with ui.column().classes('gap-1'):
                 ui.label('too low-level').classes(f'text-sm {TEXT_60}')
                 code_window(SNIPPETS / 'intro_justpy.py')
-            with nd.step(min=2), ui.column().classes('gap-1'):
+            with nd.step(min=3), ui.column().classes('gap-1'):
                 ui.label('sweet spot').classes(f'text-sm {TEXT_60}')
                 code_window('''
                     from nicegui import ui
@@ -172,7 +174,9 @@ def _():
                 ''').classes('border')
             with nd.step(min=1), ui.column().classes('gap-1'):
                 ui.label('too much magic').classes(f'text-sm {TEXT_60}')
-                code_window(SNIPPETS / 'intro_streamlit.py')
+                code_window(SNIPPETS / 'simple_streamlit.py')
+                with nd.step(min=2).classes('mt-6'):
+                    code_window(SNIPPETS / 'intro_streamlit.py')
 
 
 # --- 5. Context Managers Are the Layout API ---
