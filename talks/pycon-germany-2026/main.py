@@ -41,7 +41,7 @@ def slide_layout(heading: str | None = None, *, center_heading: str | None = Non
         yield
 
 
-def lesson(number: int, text: str) -> None:
+def takeaway(number: int, text: str) -> None:
     with nd.step():
         with ui.row(wrap=False, align_items='center') \
             .classes('absolute bottom-24 left-[50%] translate-x-[-50%] w-max text-lg p-4 gap-2 rounded '
@@ -210,7 +210,7 @@ def _():
                         ui.label('Hello')
                         ui.label('world!')
 
-        lesson(1, 'The with statement is a "within" statement — code shape mirrors UI shape.')
+        takeaway(1, 'The with statement is a "within" statement — code shape mirrors UI shape.')
 
 
 # --- 6. Method Chaining as Progressive Disclosure ---
@@ -254,7 +254,7 @@ def _():
                             .on('mouseleave', lambda e: e.sender.classes(remove='scale-125'))
                         ui.label('What a nice button!')
 
-        lesson(2, 'Builder patterns add complexity without changing code structure.')
+        takeaway(2, 'A fluent API results in coherent expressions — preserving code shape.')
 
 
 # --- 7a. Lambdas & Callbacks ---
@@ -325,7 +325,7 @@ def _():
                 with ui.card():
                     ui.button(icon='add', on_click=lambda: ui.label('World'))
 
-        lesson(3, 'Callbacks should be as lightweight as the action they describe.')
+        takeaway(3, 'Callbacks should be as lightweight as the action they describe.')
 
 
 # --- 8. Decorators Make Patterns Declarative ---
@@ -378,7 +378,7 @@ def _():
                     slider = ui.slider(value=0, min=-10, max=20, on_change=display.refresh)
                     display()
 
-        lesson(4, 'Decorators like `@ui.refreshable` eliminate our users\' boilerplate.')
+        takeaway(4, 'Decorators like `@ui.refreshable` eliminate our users\' boilerplate.')
 
 
 # --- 9. Design for the IDE ---
@@ -432,7 +432,7 @@ def _():
             ''')
             ui.interactive_image('assets/slider.png').classes('rounded shadow overflow-hidden')
 
-        lesson(5, 'Your best documentation is the one users never have to open.')
+        takeaway(5, 'Your best documentation is the one users never have to open.')
 
 
 # --- 10. Binding ---
@@ -482,7 +482,7 @@ def _():
                     ui.label().bind_text_from(temp, 'value', lambda v: f'T = {v:.0f}°C')
                     ui.slider(min=0, max=100).bind_value(temp, 'value')
 
-        lesson(6, 'Work with Python\'s object model, don\'t fight it.')
+        takeaway(6, 'Work with Python\'s object model, don\'t fight it.')
 
 
 # --- 11. Escape Hatches ---
@@ -526,7 +526,7 @@ def _():
             hatch('FastAPI', "app.get('/hello')")
             hatch('Python', 'class MyCustomElement(ui.element): ...')
 
-        lesson(7, 'Always provide a path to the layer below.')
+        takeaway(7, 'Always provide a path to the layer below.')
 
 
 # --- 12. What Makes It "Nice" ---
