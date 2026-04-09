@@ -7,7 +7,7 @@ def hello_world():
     row = jp.Div(classes='flex gap-4')
 
     def handle_click(sender, msg):
-        label.text = 'Hello World!'
+        label.text = 'Hello PyCon! ❤️'
     button = jp.QButton(text='Click me')
     button.on('click', handle_click)
     row.add(button)

@@ -61,7 +61,7 @@ Frame as a design constraint, not a history lesson.
   st.write('Hello Darmstadt!')
 
   if st.button('Click me'):
-      st.write('Hello World!')
+      st.write('Hello PyCon! ❤️')
   ```
 
 - But try the same button interaction we just saw:
@@ -76,7 +76,7 @@ Frame as a design constraint, not a history lesson.
       col1, col2 = st.columns(2)
       with col1:
           if st.button("Click me"):
-              st.session_state.label_text = "Hello World!"
+              st.session_state.label_text = "Hello PyCon! ❤️"
               st.rerun()
       with col2:
           st.write(st.session_state.label_text)

@@ -102,7 +102,7 @@ def _():
                 def _():
                     with ui.card():
                         with ui.row():
-                            ui.button('Click me', on_click=lambda: label.set_text('Hello World!'))
+                            ui.button('Click me', on_click=lambda: label.set_text('Hello PyCon! ❤️'))
                             label = ui.label('Hello Darmstadt!')
 
 
@@ -163,7 +163,7 @@ def _():
                     with ui.card():
                         with ui.row():
                             ui.button('Click me', on_click=lambda:
-                                label.set_text('Hello World!'))
+                                label.set_text('Hello PyCon! ❤️'))
                             label = ui.label('Hello Darmstadt!')
 
                     ui.run()
