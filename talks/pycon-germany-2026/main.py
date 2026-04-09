@@ -450,37 +450,51 @@ def _():
     Yes, passing strings means you lose some *refactoring safety*. We accept that trade-off — because it lets you bind to *any Python object* without requiring a special base class.
 
     Here — a number input, a label, and a slider. *All bound together.* Drag the slider, and *everything updates*.
+''')
+def _():
+    with slide_layout('Binding'):
+        with ui.grid(rows='1fr 1fr').classes('gap-x-8 gap-y-4 w-[95%] items-start'):
 
+            @demo
+            def _():
+                number = ui.number(value=42, on_change=lambda e: label.set_text(f'T = {e.value:.0f}°C'))
+
+                label = ui.label(f'T = {number.value:.0f}°C')
+
+                ui.slider(min=0, max=100, value=number.value, on_change=lambda e: number.set_value(e.value))
+
+            with nd.step():
+                @demo
+                def _():
+                    number = ui.number(value=42)
+
+                    ui.label().bind_text_from(number, 'value', lambda v: f'T = {v:.0f}°C')
+
+                    ui.slider(min=0, max=100).bind_value(number)
+
+
+# --- 10b. Binding to Any Object ---
+@nd.slide('''
     Here I'm binding UI elements to each other, but this works the same with a `@dataclass` — a `Temperature` class with a `value` field, say. Dataclasses, plain classes, other UI elements — *anything with attributes*. No registration. Just *Python objects*.
 
     The lesson: don't force users to *restructure their data model* for your framework. Work with what Python *already gives you*.
 ''')
 def _():
     with slide_layout('Binding'):
-        with ui.grid(columns='1fr 1fr').classes('gap-x-8 gap-y-4 w-[95%] items-start'):
 
-            @demo(mode='rows')
-            def _():
-                number = ui.number(value=42)
+        @demo
+        def _():
+            from dataclasses import dataclass
 
-                ui.label().bind_text_from(number, 'value', lambda v: f'T = {v:.0f}°C')
+            @dataclass
+            class Temperature:
+                value: float = 42
 
-                ui.slider(min=0, max=100).bind_value(number)
+            temp = Temperature()
 
-            with nd.step():
-                @demo(mode='rows')
-                def _():
-                    from dataclasses import dataclass
-
-                    @dataclass
-                    class Temperature:
-                        value: float = 42
-
-                    temp = Temperature()
-
-                    ui.number().bind_value(temp, 'value')
-                    ui.label().bind_text_from(temp, 'value', lambda v: f'T = {v:.0f}°C')
-                    ui.slider(min=0, max=100).bind_value(temp, 'value')
+            ui.number().bind_value(temp, 'value')
+            ui.label().bind_text_from(temp, 'value', lambda v: f'T = {v:.0f}°C')
+            ui.slider(min=0, max=100).bind_value(temp, 'value')
 
         takeaway(6, 'Work with Python\'s object model, don\'t fight it.')
 
