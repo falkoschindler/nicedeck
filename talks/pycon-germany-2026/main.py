@@ -265,22 +265,42 @@ def _():
 @nd.slide('''
     Third lesson: *event handling should be obvious*.
 
-    Remember Streamlit's `if st.button(...)` pattern? Here's NiceGUI's answer:
+    On the left: the classic approach. You define *named functions* — `handle_change`, `handle_click` — import the event type, write the signature. It works, but there's a lot of *ceremony* for very little logic.
 
-    `on_click=lambda: ui.notify('Done.')` — *cause and effect in one line*.
+    ---
 
-    If your callback needs the *event object* — the value that changed, the element that was clicked — just add a *parameter*. NiceGUI looks at how many parameters your function takes and *passes what you need*.
+    *(step to lambda version)*
 
-    No special API. Just *Python lambdas*.
+    On the right: the *same behavior*, with lambdas. `on_change=lambda e: ...`, `on_click=lambda: ...`. *Cause and effect in one line.* No imports, no function names, no type annotations you don't need.
+
+    And notice: if your callback needs the *event object*, just add a parameter. NiceGUI inspects how many parameters your function takes and *passes what you need*. No special API. Just *Python*.
 ''')
 def _():
     with slide_layout('Lambdas & Callbacks'):
+        with ui.grid(columns='1fr 1fr').classes('gap-x-8 gap-y-4 w-[95%] items-start'):
 
-        @demo
-        def _():
-            ui.number(value=41, on_change=lambda e: ui.notify(f'New value: {e.value}'))
+            @demo(mode='rows')
+            def _():
+                from nicegui import events
 
-            ui.button('Submit', on_click=lambda: ui.notify('Done.', type='positive'))
+                def handle_change(e: events.ValueChangeEventArguments) -> None:
+                    ui.notify(f'New value: {e.value}')
+
+                def handle_click() -> None:
+                    label.set_text('Submitted 🚀')
+
+                with ui.row(align_items='center'):
+                    ui.number(value=41, on_change=handle_change)
+                    ui.button('Submit', on_click=handle_click)
+                    label = ui.label()
+
+            with nd.step():
+                @demo(mode='rows')
+                def _():
+                    with ui.row(align_items='center'):
+                        ui.number(value=41, on_change=lambda e: ui.notify(f'New value: {e.value}'))
+                        ui.button('Submit', on_click=lambda: label.set_text('Submitted 🚀'))
+                        label = ui.label()
 
 
 # --- 7b. Async / Await ---
