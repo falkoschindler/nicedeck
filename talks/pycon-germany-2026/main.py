@@ -524,21 +524,21 @@ def _():
 def _():
     with slide_layout('Escape Hatches'):
         def hatch(name: str, code: str) -> None:
-            with nd.step():
-                with ui.element().classes('row items-center text-xl'):
-                    ui.label(name).classes('text-lg w-28')
+            with ui.element().classes('row items-center text-xl'):
+                ui.label(name).classes('text-lg w-28')
+                with nd.step():
                     ui.code(code, language='python').classes('text-sm').copy_button.delete()
 
         with ui.card():
             ui.label('NiceGUI').classes('text-2xl')
             ui.separator()
             hatch('HTML', "ui.html('<div>Raw HTML</div>')")
-            hatch('CSS', "ui.element().classes('text-red')")
+            hatch('CSS', "label.style('color: red')")
+            hatch('Tailwind', "label.classes('text-red')")
+            hatch('Quasar', "button.props('outline')")
             hatch('JavaScript', "ui.run_javascript('alert(\"Hello\")')")
-            hatch('Tailwind', "ui.label().classes('text-red')")
-            hatch('Quasar', "ui.button().props('outline')")
             hatch('FastAPI', "app.get('/hello')")
-            hatch('Python', 'class MyCustomElement(ui.element): ...')
+            hatch('Python', 'class MyCustomButton(ui.button): ...')
 
         takeaway(7, 'Always provide a path to the layer below.')
 
