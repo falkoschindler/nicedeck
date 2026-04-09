@@ -43,9 +43,11 @@ def slide_layout(heading: str | None = None, *, center_heading: str | None = Non
 
 def lesson(number: int, text: str) -> None:
     with nd.step():
-        ui.markdown(f'Lesson {number}: {text}') \
-            .classes('absolute bottom-24 left-[50%] translate-x-[-50%] w-max text-lg p-4 rounded border border-gray-500/20 '
-                     f'bg-[#fff] dark:bg-black {TEXT_80} shadow-lg')
+        with ui.row(wrap=False, align_items='center') \
+            .classes('absolute bottom-24 left-[50%] translate-x-[-50%] w-max text-lg p-4 gap-2 rounded '
+                     f'border border-gray-500/20 bg-[#fff] dark:bg-black {TEXT_80} shadow-lg'):
+            ui.markdown(f'**Takeaway #{number}:**')
+            ui.markdown(text)
 
 
 # --- 1. Title Slide ---
