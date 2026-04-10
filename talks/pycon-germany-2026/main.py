@@ -609,22 +609,32 @@ def _():
 ''')
 def _():
     with slide_layout('Beyond UI'):
-        lessons = [
-            'Code shape should mirror domain shape',
-            'Fluent APIs preserve coherent expressions',
-            'Callbacks should be as lightweight as the action',
-            'Turn repeated scaffolding into decorators',
-            'Design for the IDE, not just runtime',
-            'Work with the language\'s object model',
-            'Always provide escape hatches',
+        groups = [
+            ('Structure', [
+                'Code shape should mirror domain shape',
+                'Fluent APIs preserve coherent expressions',
+            ]),
+            ('Events', [
+                'Callbacks should be as lightweight as the action',
+                'Turn repeated scaffolding into decorators',
+            ]),
+            ('Discoverability', [
+                'Design for the IDE, not just runtime',
+                'Work with the language\'s object model',
+            ]),
+            ('Trust', [
+                'Always provide escape hatches',
+            ]),
         ]
-        with ui.column().classes('gap-4 text-xl'):
-            for lesson in lessons:
-                with nd.step():
-                    ui.label(lesson)
+        with ui.column():
+            with ui.grid(columns='auto 1fr').classes('gap-x-8 gap-y-2 text-xl items-baseline'):
+                for group, lessons in groups:
+                    ui.label(group).classes(f'font-bold {TEXT_60}').style(f'grid-row: span {len(lessons)}')
+                    for lesson in lessons:
+                        ui.label(lesson)
             with nd.step():
                 ui.markdown("_These aren't UI lessons — they're **Python API design** lessons._") \
-                    .classes(f'{TEXT_60} mt-4')
+                    .classes(f'{TEXT_80} mt-8 text-xl')
 
 
 # --- 13. Beyond Code ---
