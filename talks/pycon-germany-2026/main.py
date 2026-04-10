@@ -41,12 +41,12 @@ def slide_layout(heading: str | None = None, *, center_heading: str | None = Non
         yield
 
 
-def takeaway(number: int, text: str) -> None:
+def takeaway(text: str) -> None:
     with nd.step():
         with ui.row(wrap=False, align_items='center') \
-            .classes('absolute bottom-24 left-[50%] translate-x-[-50%] w-max text-lg p-4 gap-2 rounded '
-                     f'border border-gray-500/20 bg-[#fff] dark:bg-black {TEXT_80} shadow-lg'):
-            ui.markdown(f'**Takeaway #{number}:**')
+            .classes('absolute bottom-24 left-[50%] translate-x-[-50%] w-max text-lg pl-0 pr-5 py-0 gap-4 rounded-xl '
+                     f'border border-blue-500/20 bg-blue-50 dark:bg-blue-950 {TEXT_80} shadow-lg overflow-hidden'):
+            ui.icon('lightbulb', size='sm').classes('bg-blue-500 text-white/90 size-12')
             ui.markdown(text)
 
 
@@ -214,7 +214,7 @@ def _():
                         ui.label('Hello')
                         ui.label('world!')
 
-        takeaway(1, 'The with statement is a "within" statement — code shape mirrors UI shape.')
+        takeaway('The with statement is a "within" statement — code shape mirrors UI shape.')
 
 
 # --- 6. Method Chaining as Progressive Disclosure ---
@@ -258,7 +258,7 @@ def _():
                             .on('mouseleave', lambda e: e.sender.classes(remove='scale-125'))
                         ui.label('What a nice button!')
 
-        takeaway(2, 'A fluent API results in coherent expressions — preserving code shape.')
+        takeaway('A fluent API results in coherent expressions — preserving code shape.')
 
 
 # --- 7a. Lambdas & Callbacks ---
@@ -349,7 +349,7 @@ def _():
                 with ui.card():
                     ui.button(icon='add', on_click=lambda: ui.label('World'))
 
-        takeaway(3, 'Callbacks should be as lightweight as the action they describe.')
+        takeaway('Callbacks should be as lightweight as the action they describe.')
 
 
 # --- 8. Decorators Make Patterns Declarative ---
@@ -402,7 +402,7 @@ def _():
                     slider = ui.slider(value=0, min=-10, max=20, on_change=display.refresh)
                     display()
 
-        takeaway(4, 'Decorators like `@ui.refreshable` eliminate our users\' boilerplate.')
+        takeaway('Decorators like `@ui.refreshable` eliminate our users\' boilerplate.')
 
 
 # --- 9. Design for the IDE ---
@@ -474,7 +474,7 @@ def _():
                 with nd.step():
                     ui.interactive_image('assets/button.png').classes('rounded shadow overflow-hidden')
 
-        takeaway(5, 'Your best documentation is the one users never have to open.')
+        takeaway('Your best documentation is the one users never have to open.')
 
 
 # --- 10. Binding ---
@@ -538,7 +538,7 @@ def _():
             ui.label().bind_text_from(temp, 'value', lambda v: f'T = {v:.0f}°C')
             ui.slider(min=0, max=100).bind_value(temp, 'value')
 
-        takeaway(6, 'Work with Python\'s object model, don\'t fight it.')
+        takeaway('Work with Python\'s object model, don\'t fight it.')
 
 
 # --- 11. Escape Hatches ---
@@ -582,7 +582,7 @@ def _():
             hatch('FastAPI', "app.get('/hello')")
             hatch('Python', 'class MyCustomButton(ui.button): ...')
 
-        takeaway(7, 'Always provide a path to the layer below.')
+        takeaway('Always provide a path to the layer below.')
 
 
 # --- 12. What Makes It "Nice" ---
