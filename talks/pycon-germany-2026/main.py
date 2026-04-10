@@ -432,47 +432,47 @@ def _():
         with ui.grid(columns='1fr 1fr').classes('gap-x-8 gap-y-4 w-[90%] items-start'):
             with ui.column().classes('gap-8'):
                 with nd.step().classes('gap-1'):
-                    ui.label('step = 1').classes(f'text-sm {TEXT_60}')
+                    ui.label('color = "primary"').classes(f'text-sm {TEXT_60}')
                     code_window('''
-                        ui.slider(min=0, max=100)
+                        ui.button('Click me')
                     ''')
                 with nd.step().classes('gap-1'):
-                    ui.label('step = 10').classes(f'text-sm {TEXT_60}')
+                    ui.label('color = "red"').classes(f'text-sm {TEXT_60}')
                     code_window('''
-                        ui.slider(min=0, max=100, step=10)
+                        ui.button('Click me', color='red')
                     ''')
                 with nd.step().classes('gap-1'):
-                    ui.label('step = 10').classes(f'text-sm {TEXT_60}')
+                    ui.label('color = "red"').classes(f'text-sm {TEXT_60}')
                     code_window('''
-                        ui.slider.default_props('step=10')
-                        ui.slider(min=0, max=100)
+                        ui.button.default_props('color=red')
+                        ui.button('Click me')
                     ''')
                 with nd.step().classes('gap-1'):
-                    ui.label('step = ?').classes(f'text-sm {TEXT_60}')
+                    ui.label('color = ?').classes(f'text-sm {TEXT_60}')
                     code_window('''
-                        ui.slider.default_props('step=10')
-                        ui.slider(min=0, max=100, step=1)
+                        ui.button.default_props('color=red')
+                        ui.button('Click me', color='primary')
                     ''')
 
             with ui.column():
                 with nd.step():
                     code_window('''
-                        class Slider(...):
-                            def __init__(self, *, step: float = None, ...) -> None: ...
+                        class Button(...):
+                            def __init__(self, ..., *, color: str = None, ...) -> None: ...
                     ''')
                 with nd.step():
                     code_window('''
-                        class Slider(...):
-                            def __init__(self, *, step: float = DEFAULT, ...) -> None: ...
+                        class Button(...):
+                            def __init__(self, ..., *, color: str = DEFAULT, ...) -> None: ...
                     ''')
                 with nd.step():
                     code_window('''
-                        class Slider(...):
+                        class Button(...):
                             @resolve_defaults
-                            def __init__(self, *, step: float = DEFAULT_PROP | 1.0, ...) -> None: ...
+                            def __init__(self, ..., *, color: str = DEFAULT_PROP | 'primary', ...) -> None: ...
                     ''').classes('border')
                 with nd.step():
-                    ui.interactive_image('assets/slider.png').classes('rounded shadow overflow-hidden')
+                    ui.interactive_image('assets/button.png').classes('rounded shadow overflow-hidden')
 
         takeaway(5, 'Your best documentation is the one users never have to open.')
 
