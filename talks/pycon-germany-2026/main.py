@@ -585,9 +585,51 @@ def _():
         takeaway('Always provide a path to the layer below.')
 
 
-# --- 12. What Makes It "Nice" ---
+# --- 12. Beyond UI ---
 @nd.slide('''
-    We've been talking about *API design*. But niceness isn't just *technical*.
+    So — let's step back.
+
+    We've seen *seven lessons*. But look at them again — stripped of all the NiceGUI specifics.
+
+    Code shape should mirror *domain shape*. That's context managers.
+
+    *Fluent APIs* preserve coherent expressions. That's the builder pattern.
+
+    Callbacks should be *lightweight*. That's lambdas and async.
+
+    Turn repeated scaffolding into *decorators*.
+
+    Design for the *IDE*, not just runtime.
+
+    Work with the language's *object model*.
+
+    Always provide *escape hatches* to the layer below.
+
+    These aren't *UI lessons*. They're *Python API design lessons*. Whether you're building a CLI, an ORM, a data pipeline — the same thinking applies.
+''')
+def _():
+    with slide_layout('Beyond UI'):
+        lessons = [
+            'Code shape should mirror domain shape',
+            'Fluent APIs preserve coherent expressions',
+            'Callbacks should be as lightweight as the action',
+            'Turn repeated scaffolding into decorators',
+            'Design for the IDE, not just runtime',
+            'Work with the language\'s object model',
+            'Always provide escape hatches',
+        ]
+        with ui.column().classes('gap-4 text-xl'):
+            for lesson in lessons:
+                with nd.step():
+                    ui.label(lesson)
+            with nd.step():
+                ui.markdown("_These aren't UI lessons — they're **Python API design** lessons._") \
+                    .classes(f'{TEXT_60} mt-4')
+
+
+# --- 13. Beyond Code ---
+@nd.slide('''
+    But good *design principles* only survive if your *culture* enforces them.
 
     The name — NiceGUI — is a *pun*. Nice GUI. Nice Guy. "A guy who tries to be *nice* to everyone and do things *right*."
 
@@ -597,77 +639,64 @@ def _():
 
     And when someone asks a question in our community, we reply with a *working code snippet*. Not just words. *Runnable code*. That's how we measure helpfulness.
 
-    5 years. 15,000+ stars. About 120 UI elements. Frequent releases. A growing *ecosystem*.
+    Every PR, every issue reply — that's where design principles are *sustained or lost*.
 ''')
 def _():
-    with slide_layout('What Makes It "Nice"'):
+    with slide_layout('Beyond Code'):
         with ui.column().classes('items-center gap-8'):
             ui.label('NiceGUI = Nice Guy').classes('text-3xl')
             with nd.step(), ui.column().classes('items-center gap-4 text-xl'):
-                ui.label('"Prefer simple solutions" — enforced, not aspirational')
-                ui.label('nicegui.io is built with NiceGUI')
-                ui.label('Respond with code, not just words')
-            with nd.step():
-                ui.label('5 years \u2022 15k+ stars \u2022 ~120 elements \u2022 frequent releases') \
-                    .classes('text-lg')
-
-
-# --- 13. Takeaways ---
-@nd.slide('''
-    So — what did we learn?
-
-    *Python's language features are API design tools.* Context managers, decorators, lambdas, async, type hints, the object model — use them *deliberately*, not accidentally.
-
-    *Find the sweet spot.* Not too much magic, not too low-level. The right abstraction lets your users think in *their domain*, not yours.
-
-    And these lessons *aren't about UI*. CLI tools, ORMs, data pipelines, testing frameworks — *any Python API* benefits from the same thinking.
-
-    *"Simple things should be simple. Complex things should be possible."* — Alan Kay.
-''')
-def _():
-    with slide_layout('Takeaways'):
-        with ui.column().classes('items-center gap-8 text-xl'):
-            ui.label('Python features are API design tools')
-            with nd.step():
-                ui.label('Context managers, decorators, lambdas, async, type hints')
-            with nd.step():
-                ui.label('Not too much magic, not too low-level')
-            with nd.step():
-                ui.label('These lessons apply beyond UI: CLIs, ORMs, data pipelines, ...').classes('text-gray-600')
-            with nd.step():
-                ui.markdown('_"Simple things should be simple, complex things should be possible."_ — Alan Kay')
+                ui.label('Always strive for simple solutions — for users and developers alike')
+                ui.label('Build the NiceGUI website with NiceGUI')
+                ui.label('Foster a welcoming open-source culture on GitHub and beyond')
 
 
 # --- 14. Thank You ---
 @nd.slide('''
-    And to prove that point — here's *both* at the same time.
+    And to close — let me *show* you what I mean.
 
     *(gesture to the 3D point cloud)*
 
-    A few lines of Python. An *animated 3D scene*. Simple things should be simple. Complex things should be *possible*.
+    A few lines of Python. An *animated 3D scene*. Context managers, lambdas, timers — everything we talked about.
 
-    Thank you!
+    *"Simple things should be simple. Complex things should be possible."* — Alan Kay.
 
-    You can find NiceGUI at *nicegui.io*, on *GitHub*, and on *Discord*. I'm happy to take *questions*.
+    Thank you! You can find NiceGUI at *nicegui.io*, on *GitHub*, and on *Discord*. I'm happy to take *questions*.
 ''')
 def _():
-    with nd.center_row():
+    with ui.column(align_items='center').classes('m-auto gap-16'):
+        with ui.column(align_items='center').classes('gap-4'):
 
-        @demo
-        def _():
-            from time import time
-            import numpy as np
+            @demo
+            def _():
+                from time import time
+                import numpy as np
 
-            def generate_data():
-                u, v = np.meshgrid(np.linspace(0, 1), np.linspace(0, 1))
-                w = np.sin(5 * u + time()) * np.cos(5 * v + time())
-                rgb = np.dstack([u, v, w / 2 + 0.5]).reshape(-1, 3)
-                return rgb * [6, 6, 2] - [3.5, 2, 0], rgb
+                def generate_data():
+                    u, v = np.meshgrid(np.linspace(0, 1), np.linspace(0, 1))
+                    w = np.sin(5 * u + time()) * np.cos(5 * v + time())
+                    rgb = np.dstack([u, v, w / 2 + 0.5]).reshape(-1, 3)
+                    return rgb * [6, 6, 2] - [3.5, 2, 0], rgb
 
-            with ui.scene(grid=False, background_color='white'):
-                wave = ui.scene.point_cloud([], point_size=0.1)
+                with ui.scene(grid=False, background_color='white'):
+                    wave = ui.scene.point_cloud([], point_size=0.1)
 
-            ui.timer(0.05, lambda: wave.set_points(*generate_data()))
+                ui.timer(0.05, lambda: wave.set_points(*generate_data()))
+
+            with nd.step():
+                ui.markdown('_"Simple things should be simple, complex things should be possible."_ — Alan Kay') \
+                    .classes('text-xl')
+
+        with nd.step().classes('items-center gap-8'):
+            ui.label('Thank you!').classes('text-3xl font-medium')
+            with ui.column(align_items='center').classes(f'gap-1 text-lg {TEXT_60}'):
+                with ui.row(align_items='center'):
+                    ui.icon('language')
+                    ui.link('nicegui.io', 'https://nicegui.io').classes('text-current no-underline')
+                with ui.row(align_items='center'):
+                    ui.icon('commit')
+                    ui.link('github.com/zauberzeug/nicegui', 'https://github.com/zauberzeug/nicegui') \
+                        .classes('text-current no-underline')
 
 
 nd.run(
