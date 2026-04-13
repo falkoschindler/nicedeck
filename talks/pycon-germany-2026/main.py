@@ -496,7 +496,84 @@ def _():
         insight('Decorators like `@ui.refreshable` eliminate our users\' boilerplate.')
 
 
-# --- 9. Design for the IDE ---
+# --- 9. Binding ---
+@nd.slide('''
+    Decorators handle one kind of repetition. Here's another:
+
+    - UI shows data.
+    - Data changes.
+    - UI must *update*. → The classic *two-way sync* nightmare.
+
+    Some frameworks say:
+
+    - Inherit from `Observable`.
+    - Use special `State` containers.
+    - *Wrap everything.*
+
+    ---
+
+    So NiceGUI's approach is *explicit* and *simple*:
+
+    - You pass the *object* and the *attribute name as a string*.
+    - Optionally you can also pass a *transformation function*, like a string interpolation.
+
+    Yes, passing strings means you lose some *refactoring safety*.
+
+    - We accept that trade-off — because it lets you bind to *any Python object* without requiring a special base class.
+
+    Here — a number input, a label, and a slider.
+    *All bound together.*
+    Drag the slider, and *everything updates*.
+''')
+def _():
+    with slide_layout('Binding'):
+        with ui.grid(rows='1fr 1fr').classes('gap-x-8 gap-y-4 w-[95%] items-start'):
+
+            @demo
+            def _():
+                number = ui.number(value=42, on_change=lambda e: label.set_text(f'T = {e.value:.0f}°C'))
+                label = ui.label(f'T = {number.value:.0f}°C')
+                ui.slider(min=0, max=100, value=number.value, on_change=lambda e: number.set_value(e.value))
+
+            with nd.step():
+                @demo
+                def _():
+                    number = ui.number(value=42)
+                    ui.label().bind_text_from(number, 'value', lambda v: f'T = {v:.0f}°C')
+                    ui.slider(min=0, max=100).bind_value(number)
+
+
+# --- 9b. Binding to Any Object ---
+@nd.slide('''
+    Here is an example with a `@dataclass` — a `Temperature` class with a `value` field.
+    Dataclasses, plain classes, other UI elements — *anything with attributes*. No registration. Just *Python objects*.
+
+    ---
+
+    The insight: don't force users to *restructure their data model* for your framework.
+    Work with what Python *already gives you*.
+''')
+def _():
+    with slide_layout('Binding'):
+
+        @demo
+        def _():
+            from dataclasses import dataclass
+
+            @dataclass
+            class Temperature:
+                value: float = 42
+
+            temp = Temperature()
+
+            ui.number().bind_value(temp, 'value')
+            ui.label().bind_text_from(temp, 'value', lambda v: f'T = {v:.0f}°C')
+            ui.slider(min=0, max=100).bind_value(temp, 'value')
+
+        insight('Work with Python\'s object model, don\'t fight it.')
+
+
+# --- 10. Design for the IDE ---
 @nd.slide('''
     For the next insight we're leaving the runtime and
     looking at something you *don't see* when you run the code — the *IDE experience*.
@@ -595,83 +672,31 @@ def _():
         insight('Your best documentation is the one users never have to open.')
 
 
-# --- 10. Binding ---
-@nd.slide('''
-    UI shows data. Data changes. UI must *update*. The classic *two-way sync* nightmare.
-
-    Some frameworks say: inherit from `Observable`. Use special `State` containers. *Wrap everything.*
-
-    We tried cleverer approaches — *beautiful syntax*, but they broke. *Too fragile* for a mature library.
-
-    So NiceGUI's approach is *explicit*. You pass the *object* and the *attribute name as a string*.
-
-    Yes, passing strings means you lose some *refactoring safety*. We accept that trade-off — because it lets you bind to *any Python object* without requiring a special base class.
-
-    Here — a number input, a label, and a slider. *All bound together.* Drag the slider, and *everything updates*.
-''')
-def _():
-    with slide_layout('Binding'):
-        with ui.grid(rows='1fr 1fr').classes('gap-x-8 gap-y-4 w-[95%] items-start'):
-
-            @demo
-            def _():
-                number = ui.number(value=42, on_change=lambda e: label.set_text(f'T = {e.value:.0f}°C'))
-                label = ui.label(f'T = {number.value:.0f}°C')
-                ui.slider(min=0, max=100, value=number.value, on_change=lambda e: number.set_value(e.value))
-
-            with nd.step():
-                @demo
-                def _():
-                    number = ui.number(value=42)
-                    ui.label().bind_text_from(number, 'value', lambda v: f'T = {v:.0f}°C')
-                    ui.slider(min=0, max=100).bind_value(number)
-
-
-# --- 10b. Binding to Any Object ---
-@nd.slide('''
-    Here I'm binding UI elements to each other, but this works the same with a `@dataclass` — a `Temperature` class with a `value` field, say. Dataclasses, plain classes, other UI elements — *anything with attributes*. No registration. Just *Python objects*.
-
-    The insight: don't force users to *restructure their data model* for your framework. Work with what Python *already gives you*.
-''')
-def _():
-    with slide_layout('Binding'):
-
-        @demo
-        def _():
-            from dataclasses import dataclass
-
-            @dataclass
-            class Temperature:
-                value: float = 42
-
-            temp = Temperature()
-
-            ui.number().bind_value(temp, 'value')
-            ui.label().bind_text_from(temp, 'value', lambda v: f'T = {v:.0f}°C')
-            ui.slider(min=0, max=100).bind_value(temp, 'value')
-
-        insight('Work with Python\'s object model, don\'t fight it.')
-
-
 # --- 11. Escape Hatches ---
 @nd.slide('''
     Now let's zoom out from individual features and talk about *architecture*.
 
     NiceGUI sits on top of a *stack*.
 
-    *(step through technologies one by one)*
-
-    HTML. CSS. JavaScript. *Vue* — that's the JavaScript framework that powers our frontend. *Quasar* — a component library built on Vue. *Tailwind* — utility-first CSS. *FastAPI* — the Python web framework underneath. And at the bottom: *Python*.
+    - HTML
+    - CSS
+    - JavaScript
+    - Quasar (component library built on Vue)
+    - Tailwind (utility-first CSS)
+    - FastAPI (Python web framework)
+    - Python
 
     Every one of these layers is something you can *reach into directly*.
 
-    `.classes('...')` gives you *Tailwind*. `.props('...')` gives you *Quasar*. `ui.html()` gives you *raw HTML*. `ui.run_javascript()` gives you *raw JavaScript* — need the browser's geolocation API? *One line*. And `app.routes` gives you the *full FastAPI*.
+    ...
 
-    We don't *hide* the web. We make it *optional*.
+    We don't *hide* the web.
+    We make it *optional*.
 
-    And this is the key insight: users will *trust your abstractions* only if they know they can *bypass them*.
+    And this is the key insight:
+    users will *trust your abstractions* only if they know they can *bypass them*.
 
-    The moment users feel *trapped* — the moment they hit a wall and there's no escape hatch — they *leave*.
+    ---
 
     Always provide a *path to the layer below*.
 ''')
@@ -701,23 +726,31 @@ def _():
 @nd.slide('''
     So — let's step back.
 
-    We've seen *seven insights*. But look at them again — stripped of all the NiceGUI specifics.
+    We've seen *seven insights*.
+    But look at them again — stripped of all the NiceGUI specifics.
 
-    Code shape should mirror *domain shape*. That's context managers.
+    1. Code shape should mirror *domain shape*.
+        That's *context managers*.
 
-    *Fluent APIs* let you configure an object in one statement. That's the builder pattern.
+    2. *Fluent APIs* let you create and configure an object in one statement.
+        That's *method chaining*.
 
-    Callbacks should be *lightweight*. That's lambdas and async.
+    3. Callbacks should be *lightweight*.
+        That's *lambdas and async*.
 
-    Turn repeated scaffolding into *decorators*.
+    4. Turn repeated scaffolding into *decorators*.
 
-    Design for the *IDE*, not just runtime.
+    5. Work with the language's *object model*.
 
-    Work with the language's *object model*.
+    6. Design for the *IDE*, not just runtime.
 
-    Always provide *escape hatches* to the layer below.
+    7. Always provide *escape hatches* to the layer below.
 
-    This isn't just about UI. It's about *Python API design*. Whether you're building a CLI, an ORM, a data pipeline — the same thinking applies.
+    ---
+
+    This isn't just about UI.
+    It's about *Python API design*.
+    Whether you're building a CLI, an ORM, a data pipeline — the same thinking applies.
 ''')
 def _():
     with slide_layout('Beyond UI'):
@@ -728,11 +761,13 @@ def _():
             ]),
             ('Events', [
                 'Callbacks should be as lightweight as the action',
+            ]),
+            ('State', [
                 'Turn repeated scaffolding into decorators',
+                "Work with the language's object model",
             ]),
             ('Discoverability', [
                 'Design for the IDE, not just runtime',
-                'Work with the language\'s object model',
             ]),
             ('Trust', [
                 'Always provide escape hatches',
@@ -740,10 +775,13 @@ def _():
         ]
         with ui.column():
             with ui.grid(columns='auto 1fr').classes('gap-x-8 gap-y-2 text-xl items-baseline'):
-                for group, insights in groups:
+                for i, (group, insights) in enumerate(groups):
+                    if i > 0:
+                        ui.separator().classes('col-span-2')
                     ui.label(group).classes(f'font-bold {TEXT_60}').style(f'grid-row: span {len(insights)}')
-                    for insight in insights:
-                        ui.label(insight)
+                    for insight_ in insights:
+                        with nd.step():
+                            ui.label(insight_)
             with nd.step():
                 ui.markdown("_This isn't just about UI — it's about **Python API design**._") \
                     .classes(f'{TEXT_80} mt-8 text-xl')
@@ -753,13 +791,28 @@ def _():
 @nd.slide('''
     But good *design principles* only survive if your *culture* enforces them.
 
-    The name — NiceGUI — is a *pun*. Nice GUI. Nice Guy. "A guy who tries to be *nice* to everyone and do things *right*."
+    The pun — NiceGUI — is intentional:
 
-    In our code review rules, *"prefer simple solutions"* is a *blocker*. Not a guideline. If a *simpler design* meets the requirements, the complex one is *rejected*. Full stop.
+    - A Nice Guy tries to be *nice* to everyone and do things *right*.
+    - NiceGUI tries to be *nice* to users as well as to developers.
 
-    We *dogfood relentlessly*. The entire nicegui.io website — documentation, live demos, interactive examples — is *built with NiceGUI*. We find our own bugs *before users do*.
+    ---
 
-    And when someone asks a question in our community, we reply with a *working code snippet*. Not just words. *Runnable code*. That's how we measure helpfulness.
+    In code review, the simpler solution wins —
+    even if the more complex one already works.
+
+    ---
+
+    The same care goes into our docs.
+    Every example on nicegui.io is a *running* NiceGUI app —
+    hundreds of interactive demos, just like the ones in this talk.
+    You don't have to imagine what the code does; you can *click it*.
+
+    ---
+
+    And when someone asks a question on GitHub,
+    we try to answer with a runnable snippet
+    that is easy to verify and easy to adapt.
 
     Every PR, every issue reply — that's where design principles are *sustained or lost*.
 ''')
@@ -767,23 +820,33 @@ def _():
     with slide_layout('Beyond Code'):
         with ui.column().classes('items-center gap-8'):
             ui.label('NiceGUI = Nice Guy').classes('text-3xl')
-            with nd.step(), ui.column().classes('items-center gap-4 text-xl'):
-                ui.label('Always strive for simple solutions — for users and developers alike')
-                ui.label('Build the NiceGUI website with NiceGUI')
-                ui.label('Foster a welcoming open-source culture on GitHub and beyond')
+            with ui.column().classes('items-center gap-4 text-xl'):
+                with nd.step():
+                    ui.label('Always strive for simple solutions — for users and developers alike')
+                with nd.step():
+                    ui.label('Build the NiceGUI website with NiceGUI')
+                with nd.step():
+                    ui.label('Foster a welcoming open-source culture on GitHub and beyond')
 
 
 # --- 14. Thank You ---
 @nd.slide('''
-    And to close — let me *show* you what I mean.
+    Let me close with *one final demo*
+    and a quote from *Alan Kay*,
+    a pioneer of *object-oriented programming* and the *personal computer*:
 
-    *(gesture to the 3D point cloud)*
+    ---
 
-    A few lines of Python. An *animated 3D scene*. Context managers, lambdas, timers — everything we talked about.
+    "Simple things should be simple.
+    Complex things should be possible."
 
-    *"Simple things should be simple. Complex things should be possible."* — Alan Kay.
+    ---
 
-    Thank you! You can find NiceGUI at *nicegui.io*, on *GitHub*, and on *Discord*. I'm happy to take *questions*.
+    Thank you!
+
+    You can find NiceGUI at *nicegui.io*, on *GitHub*, and on *Discord*.
+
+    I'm happy to take *questions*.
 ''')
 def _():
     with ui.column(align_items='center').classes('m-auto gap-16'):
