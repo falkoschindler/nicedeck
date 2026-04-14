@@ -58,7 +58,12 @@ def insight(text: str) -> None:
 
 # --- 1. Title Slide ---
 @nd.slide('''
-    (Wait for introduction by session chair.)
+    Hello everyone!
+
+    Talk serves two purposes:
+
+    1. show NiceGUI
+    2. share general insights
 ''')
 def _():
     ui.element().classes(
@@ -83,34 +88,48 @@ def _():
                     .classes('text-current no-underline')
 
 
-# --- 2. The Question: JustPy vs NiceGUI ---
+# --- 2. Who Am I ---
 @nd.slide('''
-    Hello everyone,
+    introduction
 
-    Let me ask you a question:
+    *Zauberzeug* — "magic tools"
 
-    - Which code would you prefer to review?
-    - Which code would you prefer to maintain?
-    - And what would Claude Code prefer?
+    *agricultural robots*, Feldfreund
+
+    needed *dashboards for real hardware*
+
+    5 years of development
+''')
+def _():
+    with slide_layout():
+        with ui.column().classes('gap-16 m-auto'):
+            with ui.row(align_items='center'):
+                ui.image('assets/falko.webp').classes('w-32 rounded-full')
+                with ui.column().classes('gap-2'):
+                    ui.label('Falko Schindler').classes(f'text-xl font-bold {TEXT_80}')
+                    ui.link('github.com/falko-schindler', 'https://github.com/falko-schindler') \
+                        .classes(f'text-lg {TEXT_60} no-underline')
+            with ui.row(wrap=False).classes(f'text-lg {TEXT_60}'):
+                with ui.column():
+                    ui.interactive_image('assets/office.webp').classes('h-60 shadow')
+                    with ui.row(align_items='center').classes('w-full'):
+                        ui.label('Zauberzeug, Münster, Germany')
+                with ui.column():
+                    ui.interactive_image('assets/field-friend.webp').classes('h-60 shadow')
+                    ui.label('Field Friend, our agricultural robot')
+
+
+# --- 3. The Question: JustPy vs NiceGUI ---
+@nd.slide('''
+    question: which code preferred?
 
     ---
 
-    Both do the same:
+    both do the same
 
-    - Card, row, button, label
-    - Click action
+    why one feel nicer?
 
-    Why does the right one feel nicer?
-
-    - hierarchical code layout (todo list vs. UI structure)
-    - method chaining
-    - no page definition needed
-    - lambda-friendly
-    - 5 lines vs. 17
-
-    This talk is about design decisions that make an API readable, Pythonic, and _nice_ to work with.
-
-    And we look into several language feature you can use for your own projects.
+    7 insights about designing Pythonic APIs
 ''')
 def _():
     with slide_layout('What Makes an API Feel Pythonic?'):
@@ -137,69 +156,26 @@ def _():
                                 label = ui.label('Hello Darmstadt!')
 
 
-# --- 3. Who Am I ---
-@nd.slide('''
-    Before we dive into the design insights, a quick introduction:
-
-    I'm *Falko Schindler*, lead developer of NiceGUI, a web UI framework for Python.
-
-    I work at a small robotics company near Münster called *Zauberzeug* — that's German for "magic tools".
-
-    We build *agricultural robots* like our Feldfreund here, and all the software to control them.
-
-    NiceGUI started because we needed *dashboards for real hardware* — motors, cameras, LEDs — and nothing we found felt right.
-
-    Over the time of 5 years, we not only created one of the most popular Python UI frameworks,
-    but continuously worked on refining its API to be more intuitive, more powerful, and more Pythonic.
-    And that's what I want to share with you today.
-''')
-def _():
-    with slide_layout():
-        with ui.column().classes('gap-16 m-auto'):
-            with ui.row(align_items='center'):
-                ui.image('assets/falko.webp').classes('w-32 rounded-full')
-                with ui.column().classes('gap-2'):
-                    ui.label('Falko Schindler').classes(f'text-xl font-bold {TEXT_80}')
-                    ui.link('github.com/falko-schindler', 'https://github.com/falko-schindler') \
-                        .classes(f'text-lg {TEXT_60} no-underline')
-            with ui.row(wrap=False).classes(f'text-lg {TEXT_60}'):
-                with ui.column():
-                    ui.interactive_image('assets/office.webp').classes('h-60 shadow')
-                    with ui.row(align_items='center').classes('w-full'):
-                        ui.label('Zauberzeug, Münster, Germany')
-                with ui.column():
-                    ui.interactive_image('assets/field-friend.webp').classes('h-60 shadow')
-                    ui.label('Field Friend, our agricultural robot')
-
-
 # --- 4. The Sweet Spot: Streamlit vs NiceGUI ---
 @nd.slide('''
-    JustPy - the library on the left - was one candidate we looked into at the *low-level* end.
+    JustPy: *low-level* end
 
     ---
 
-    On the other side: This is *Streamlit*.
-    For a quick hello world, *nothing beats it*.
-    A button, a label, it runs.
+    *Streamlit*: magically nice at first glance...
 
-    Look how they use the *`if` statement* to handle a click.
-    It works, but requires to *re-execute* the entire script on every interaction -
-    which breaks *state management* and makes it really hard to build more complex UIs.
+    if conditions...
 
     ---
 
-    Even our simple example becomes *unintuitive* when you want to
+    with state: too much magic
 
-    - let the button update the label text and
-    - put button and label in a row
+    ---
 
-    To be fair: Streamlit made this choice *deliberately*.
-    For *data apps* where you want stateless dashboards, the rerun model makes sense.
-    But for *interactive, stateful UIs* — the kind we need for controlling robots — it's *too much magic*.
-
-    We wanted the *sweet spot*:
+    We wanted *sweet spot*
     *high-level components*, *explicit state*, *real Python*.
-    And this constraint — *not too much magic, not too low-level* — has guided every API decision since.
+
+    guided every API decision
 ''')
 def _():
     with slide_layout('The Sweet Spot'):
@@ -229,40 +205,17 @@ def _():
 
 # --- 5. Context Managers Are the Layout API ---
 @nd.slide('''
-    So let's talk about *7 specific insights* from those 5 years.
+    UI has *hierarchy*
 
-    The first one is probably the obvious and most powerful:
-    UI has *hierarchy*.
+    *HTML*: tags
 
-    - Cards contain rows.
-    - Rows contain labels.
+    *NiceGUI*: with statements
 
-    Left: *HTML*.
-    Tags inside tags.
-    Indentation shows structure.
-    That's good!
-
-    Right: *NiceGUI*.
-    Same structure.
-    Same indentation.
-
-    But instead of tags, we use Python's *`with` statement*.
-    `with ui.card()` means: everything *within* this block is *inside* the card.
-    The *shape of the code* mirrors the *shape of the UI*.
-    And you can see it running right there.
+    "within"
 
     ---
 
-    So the `with` statement is really a *"within"* statement.
-
-    Now — this isn't just about UI.
-    *Any domain* that has hierarchy can benefit from this.
-
-    - File systems,
-    - config trees,
-    - document structures
-
-    Python *already has the syntax* for nesting. You just can *use it*.
+    not just UI: any domain with hierarchy
 ''')
 def _():
     with slide_layout('Context Managers Are the Layout API'):
@@ -288,29 +241,26 @@ def _():
 
 # --- 6. Method Chaining as Progressive Disclosure ---
 @nd.slide('''
-    But context managers are just the *start*.
-    When defining *UI* elements, you often have *many options* — styling, behavior, props for the underlying component library.
-    This can end up in a *sea of parameters* — especially if you want to keep the simple use case simple.
+    *UI* elements: *many options*
 
-    NiceGUI elements come with a handful of *parameters* and a *bunch of methods* for further configuration.
-    These methods return *self*, so you can *chain* them...
+    parameters + methods → messy
 
     ---
 
-    ...resulting in a *fluent API* that lets you create and configure a UI element in *one statement* without naming it.
+    return *self*,
+    *chain* them,
+    *fluent API*,
+    create and configure in *one statement*
 
     ---
 
-    - Now the *two child elements* are clearly visible,
-    - each line does *one thing* and one thing only, and
-    - we *don't have to name* the button, and
+    - *2 children*
+    - *one thing* per line,
+    - no name
 
-    Moreover: By splitting the API this way, we achieve *progressive disclosure*:
+    *progressive disclosure*
 
-    - Beginners see a *simple core* — just the parameters they need.
-    - Experts can add props, styling, and detailed behavior.
-
-    See the event handlers? They use *lambdas* — which leads us to the next insight...
+    lambdas...
 ''')
 def _():
     with slide_layout('Method Chaining'):
@@ -342,26 +292,18 @@ def _():
 
 # --- 7a. Lambdas & Callbacks ---
 @nd.slide('''
-    Code can get messy when you have to *name functions* for simple callbacks.
+    Left: classic, named functions
 
-    On the left we see the the classic approach.
-
-    - A label.
-    - A number that shows a notification on change.
-    - A button that updates a label on click.
-    - Two separate named functions for the event handlers.
-
-        It works, but there's a lot of *ceremony* for very little logic.
+    works, lot of *ceremony*
 
     ---
 
-    On the right: the *same behavior*, but with lambdas.
-    It defines *cause and effect in one line*.
+    Right: *same behavior*, lambdas
 
-    - Note this is only possible because NiceGUI offers methods like `set_text` that can be called within lambdas.
-    - Furthermore, NiceGUI allows you to add or omit an event parameter.
+    *cause and effect in one line*
 
-        It inspects how many parameters your function takes and *passes what you need*.
+    - `set_text`
+    - optional event parameter
 ''')
 def _():
     with slide_layout('Lambdas & Callbacks'):
@@ -391,9 +333,7 @@ def _():
 
 # --- 7b. Async / Await ---
 @nd.slide('''
-    Similarly, NiceGUI automatically handles *synchronous and asynchronous* handlers.
-    This can be an API call, an animation, a delay — *whatever* you need.
-    For *robotic applications as well as web apps*, async support is crucial for keeping the UI *responsive*.
+    *synchronous and asynchronous* handlers
 ''')
 def _():
     with slide_layout('Async / Await'):
@@ -412,23 +352,15 @@ def _():
 
 # --- 7c. Auto-Context ---
 @nd.slide('''
-    Now here's something more subtle:
+    something more subtle
 
-    We have two cards, each with a *plus button*.
+    action in right context
 
-    - When I click the left button, a label appears — *in the left card*.
-    - When I click the right button — *in the right card*.
+    multiple clients
 
-    I never told NiceGUI *where* to put those labels.
-    It knows, because it tracks the *context* — which element, which slot, which *client*.
+    ---
 
-    That last one matters: NiceGUI is a *web framework*.
-    Multiple users can visit the same app.
-    Each user's events affect *only their own UI*.
-
-    The insight from the last three slides:
-    Callbacks should be as *lightweight* as the action they describe.
-    If your event handling requires more *ceremony* than the event itself, *something is wrong*.
+    callback as *lightweight* as the action
 ''')
 def _():
     with slide_layout('Auto-Context'):
@@ -446,29 +378,15 @@ def _():
 
 # --- 8. Decorators Make Patterns Declarative ---
 @nd.slide('''
-    So callbacks are lightweight.
-    But what about *larger patterns* that repeat across your app?
+    common pattern: clear + refill
 
-    A common pattern we noticed in UI development:
-    You have a container, *state changes*, and you need to *clear it and rebuild* its contents.
-    That's tedious and *error-prone*.
+    ---
 
-    This is why we introduced the `@ui.refreshable` decorator.
-    You just *describe* what the UI should look like.
-    The decorator handles *clearing and rebuilding*.
+    `@ui.refreshable`: *describe* the UI
 
-    Here — I drag the slider.
+    ---
 
-    - Below zero: *"Freezing"* in blue.
-    - Above zero: *"Cold"* in green.
-    - Above ten: *"Warm"* in orange.
-
-    I didn't write any "clear container, then add label" logic.
-    The `@ui.refreshable` decorator *does that for me*.
-
-    The insight:
-    If you find yourself writing the *same scaffolding* around *different logic*,
-    it might be a good candidate for a *decorator*.
+    *same scaffolding* → decorator
 ''')
 def _():
     with slide_layout('Decorators'):
@@ -509,32 +427,15 @@ def _():
 
 # --- 9. Binding ---
 @nd.slide('''
-    Decorators handle one kind of repetition. Here's another:
+    another kind of repetition...
 
-    - UI shows data.
-    - Data changes.
-    - UI must *update*. → The classic *two-way sync* nightmare.
-
-    Some frameworks say:
-
-    - Inherit from `Observable`.
-    - Use special `State` containers.
-    - *Wrap everything.*
+    some frameworks: special `State` containers/wrappers
 
     ---
 
-    So NiceGUI's approach is *explicit* and *simple*:
+    NiceGUI: *explicit* and *simple*
 
-    - You pass the *object* and the *attribute name as a string*.
-    - Optionally you can also pass a *transformation function*, like a string interpolation.
-
-    Yes, passing strings means you lose some *refactoring safety*.
-
-    - We accept that trade-off — because it lets you bind to *any Python object* without requiring a special base class.
-
-    Here — a number input, a label, and a slider.
-    *All bound together.*
-    Drag the slider, and *everything updates*.
+    strings suboptimal... yes, but
 ''')
 def _():
     with slide_layout('Binding'):
@@ -556,13 +457,11 @@ def _():
 
 # --- 9b. Binding to Any Object ---
 @nd.slide('''
-    Here is an example with a `@dataclass` — a `Temperature` class with a `value` field.
-    Dataclasses, plain classes, other UI elements — *anything with attributes*. No registration. Just *Python objects*.
+    `@dataclass`
 
     ---
 
-    The insight: don't force users to *restructure their data model* for your framework.
-    Work with what Python *already gives you*.
+    *don't* force to restructure data models
 ''')
 def _():
     with slide_layout('Binding'):
@@ -586,52 +485,17 @@ def _():
 
 # --- 10. Design for the IDE ---
 @nd.slide('''
-    For the next insight we're leaving the runtime and
-    looking at something you *don't see* when you run the code — the *IDE experience*.
+    leaving runtime, *IDE experience*.
 
-    Here's a simple button.
+    [button coloring...]
 
-    - The default color is "primary" (your brand or signature color).
-    - If I want a red button, I pass it explicitly. Easy.
-    - But NiceGUI also supports *default props* — a way to change defaults *globally*.
+    [API design ideas...]
 
-        So the button has "primary" color again, without passing it.
-
-    - But what if I *also* pass "red" color explicitly?
-
-        What wins — the global default or the explicit argument? It's... *unclear*.
-        And how can NiceGUI notice that the user passed "primary" explicitly?
+    `DEFAULT_PROP`: *sentinel* with `__or__`, *`@resolve_defaults`*
 
     ---
 
-    So how do you design an API that clearly distinguishes default values, global overrides, and explicit arguments?
-
-    - A naive approach `None` as "use default value".
-
-        But this signature doesn't communicate the default value.
-
-        And sometimes `None` is a valid value — what if `None` is the default?
-
-    - Better: introduce a special `DEFAULT` sentinel object.
-
-        This avoids conflicts with `None`, but still doesn't communicate the actual default value.
-
-    - After a few other attempts, this is what we came up with.
-
-        This tells you *two things at once*: the value *can be overridden globally*,
-        and if it isn't, the fallback is *"primary*.
-
-    How?
-
-    - `DEFAULT_PROP` is a *sentinel* with `__or__` allowing to put the default into *the signature*.
-
-        A bit of *magic in the implementation* — but in service of a *more informative API surface*.
-        And here's what that looks like in the IDE.
-
-    - The *`@resolve_defaults`* decorator resolves it at *call time*.
-
-    The insight:
-    Your best documentation is the one the user *never has to open*.
+    *best documentation*: one that the user never has to open
 ''')
 def _():
     with slide_layout('Design for the IDE'):
@@ -685,29 +549,16 @@ def _():
 
 # --- 11. Escape Hatches ---
 @nd.slide('''
-    Now let's zoom out from individual features and talk about *architecture*.
+    zoom out, *architecture*
 
-    NiceGUI sits on top of a *stack*.
-
-    - HTML
-    - CSS
-    - JavaScript
-    - Quasar (component library built on Vue)
-    - Tailwind (utility-first CSS)
-    - FastAPI (Python web framework)
-    - Python
-
-    Every one of these layers is something you can *reach into directly*.
-
-    ...
+    [NiceGUI stack]
 
     We don't *hide* the web.
     We make it *optional*.
 
-    And this is the key insight:
-    users will *trust your abstractions* only if they know they can *bypass them*.
-
     ---
+
+    Users will *trust your abstractions* if they can *bypass them*.
 
     Always provide a *path to the layer below*.
 ''')
@@ -735,33 +586,11 @@ def _():
 
 # --- 12. Beyond UI ---
 @nd.slide('''
-    So — let's step back.
-
-    We've seen *seven insights*.
-    But look at them again — stripped of all the NiceGUI specifics.
-
-    1. Code shape should mirror *domain shape*.
-        That's *context managers*.
-
-    2. *Fluent APIs* let you create and configure an object in one statement.
-        That's *method chaining*.
-
-    3. Callbacks should be *lightweight*.
-        That's *lambdas and async*.
-
-    4. Turn repeated scaffolding into *decorators*.
-
-    5. Work with the language's *object model*.
-
-    6. Design for the *IDE*, not just runtime.
-
-    7. Always provide *escape hatches* to the layer below.
+    step back: *7 insights*
 
     ---
 
-    This isn't just about UI.
-    It's about *Python API design*.
-    Whether you're building a CLI, an ORM, a data pipeline — the same thinking applies.
+    not just about UI, but *Python API design*
 ''')
 def _():
     with slide_layout('Beyond UI'):
@@ -800,32 +629,21 @@ def _():
 
 # --- 13. Beyond Code ---
 @nd.slide('''
-    But good *design principles* only survive if your *culture* enforces them.
+    *culture*
 
-    The pun — NiceGUI — is intentional:
-
-    - A Nice Guy tries to be *nice* to everyone and do things *right*.
-    - NiceGUI tries to be *nice* to users as well as to developers.
+    intentional pun: try to be *nice* to everyone and do things *right*.
 
     ---
 
-    In code review, the simpler solution wins —
-    even if the more complex one already works.
+    code review: simple solution wins
 
     ---
 
-    The same care goes into our docs.
-    Every example on nicegui.io is a *running* NiceGUI app —
-    hundreds of interactive demos, just like the ones in this talk.
-    You don't have to imagine what the code does; you can *click it*.
+    docs: 100s live demos like in this talk
 
     ---
 
-    And when someone asks a question on GitHub,
-    we try to answer with a runnable snippet
-    that is easy to verify and easy to adapt.
-
-    Every PR, every issue reply — that's where design principles are *sustained or lost*.
+    GitHub: welcoming, answer with runnable snippets
 ''')
 def _():
     with slide_layout('Beyond Code'):
@@ -842,9 +660,11 @@ def _():
 
 # --- 14. Thank You ---
 @nd.slide('''
-    Let me close with *one final demo*
-    and a quote from *Alan Kay*,
-    a pioneer of *object-oriented programming* and the *personal computer*:
+    *one final demo*
+
+    quote from *Alan Kay* (object-oriented programming, personal computer)
+
+    captures the essence of this talk
 
     ---
 
@@ -855,9 +675,11 @@ def _():
 
     Thank you!
 
-    You can find NiceGUI at *nicegui.io*, on *GitHub*, and on *Discord*.
+    find NiceGUI at *nicegui.io* and on *GitHub*
 
-    I'm happy to take *questions*.
+    Fun fact: like the website, this talk was built with NiceGUI!
+
+    Now happy to take *questions*
 ''')
 def _():
     with ui.column(align_items='center').classes('m-auto gap-16'):
