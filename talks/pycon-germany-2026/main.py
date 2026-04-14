@@ -16,6 +16,8 @@ SNIPPETS = Path(__file__).parent / 'snippets'
 TEXT_80 = 'text-black/80 dark:text-white/80'
 TEXT_60 = 'text-black/60 dark:text-white/60'
 
+_FACE_SVG = (Path(__file__).parent / 'assets' / 'happy_face.svg').read_text()
+
 
 def setup():
     class SolarizedLight(SolarizedLightStyle):
@@ -25,6 +27,10 @@ def setup():
         styles = make_style({**DARK_COLORS, 'base0': '#edeff3', 'base01': '#9ba2ae'})
 
     ui.add_css('.q-carousel__navigation-icon--active .q-icon {color:  #78909c !important; }')
+    ui.add_css('''
+        @keyframes nicegui-blink { 0%, 90%, 100% { transform: scaleY(1) } 95% { transform: scaleY(0.1) } }
+        .svg_eye { animation: nicegui-blink 5s ease-in-out infinite; transform-box: fill-box; transform-origin: center }
+    ''')
     ui.add_css(f'''
         {HtmlFormatter(nobackground=True, style=SolarizedLight).get_style_defs('div.codehilite')}
         {HtmlFormatter(nobackground=True, style=SolarizedDark).get_style_defs('.body--dark div.codehilite')}
@@ -55,8 +61,13 @@ def insight(text: str) -> None:
     (Wait for introduction by session chair.)
 ''')
 def _():
+    ui.element().classes(
+        'absolute inset-0 pointer-events-none '
+        'bg-[radial-gradient(ellipse_at_50%_35%,color-mix(in_srgb,#5898d4_8%,transparent)_0%,transparent_60%)]'
+    )
     with nd.center_row():
         with ui.column().classes('absolute-center items-center text-center gap-4'):
+            ui.html(_FACE_SVG).classes('size-36 m-4')
             ui.markdown('# **5 Years of *NiceGUI***').classes('[&_em]:text-(--q-primary) [&_em]:not-italic')
             ui.label('What We Learned About Designing Pythonic UIs').classes(f'text-3xl {TEXT_80}')
             with ui.row(align_items='center').classes(f'mt-8 text-lg {TEXT_60}'):
