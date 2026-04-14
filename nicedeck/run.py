@@ -1,13 +1,14 @@
 from typing import Callable
 
 from .deck import Slide, deck
+from .timer import Timer
 from nicegui import events, ui
-import time
 
 NOTE_CLASSES = 'text-gray-400 [&_em]:text-black [&_em]:not-italic [&_em]:font-medium [&_code]:text-[90%]'
 
 
 def run(*, time_limit: float = 0, setup: Callable | None = None, classes: str = '', props: str = '', **kwargs) -> None:
+    timer = Timer(time_limit)
 
     @ui.page('/')
     def index():
@@ -48,29 +49,22 @@ def run(*, time_limit: float = 0, setup: Callable | None = None, classes: str = 
     @ui.page('/notes')
     def notes():
         ui.add_css('hr { border: 1px dashed gray }')
-        reference_time: float | None = None
 
-        @ui.refreshable
-        def show_timer() -> None:
-            nonlocal reference_time
-            with ui.row().classes('items-center text-bold text-lg'):
-                if reference_time is None:
-                    def start():
-                        nonlocal reference_time
-                        reference_time = int(time.time() + time_limit)
-                    ui.label(f'{time_limit // 60:.0f}:{time_limit % 60:02.0f}')
-                    ui.button('Start', icon='play_arrow', on_click=start).props('flat')
-                else:
-                    dt = reference_time - time.time()
-                    ui.label(f'{"-" if dt < 0 else ""}{abs(dt) // 60:.0f}:{abs(dt) % 60:02.0f}')
+        with ui.row(align_items='center'):
+            ui.label().classes('text-bold text-lg').bind_text_from(timer, 'display')
+            for state, icon, action in [
+                ('initial', 'play_arrow', timer.start),
+                ('running', 'pause', timer.pause),
+                ('paused', 'play_arrow', timer.resume),
+                ('paused', 'replay', timer.reset),
+            ]:
+                ui.button(icon=icon, on_click=action).props('flat round') \
+                    .bind_visibility_from(timer, 'state', value=state)
 
         @ui.refreshable
         def show_notes() -> None:
             ui.markdown(deck.current_slide.notes).classes(NOTE_CLASSES)
 
-        if time_limit:
-            show_timer()
-            ui.timer(1.0, show_timer.refresh)
         show_notes()
         deck.navigate.subscribe(show_notes.refresh)
 
