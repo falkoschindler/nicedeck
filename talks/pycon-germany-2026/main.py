@@ -118,45 +118,9 @@ def _():
                     ui.interactive_image('assets/field-friend.webp').classes('h-60 shadow')
                     ui.label('Field Friend, our agricultural robot')
 
-
-# --- 3. The Question: JustPy vs NiceGUI ---
-@nd.slide('''
-    question: which code preferred?
-
-    ---
-
-    both do the same
-
-    why one feel nicer?
-
-    7 insights about designing Pythonic APIs
-''')
-def _():
-    with slide_layout('What Makes an API Feel Pythonic?'):
-        with ui.grid(columns='1fr 1fr').classes('gap-x-8 gap-y-4 w-[95%]'):
-            code_window(SNIPPETS / 'intro_justpy.py')
-            with code_window('''
-                from nicegui import ui
-
-                with ui.card():
-                    with ui.row():
-                        ui.button('Click me') \\
-                            .on_click(lambda: label.set_text('Hello PyCon! ❤️'))
-                        label = ui.label('Hello Darmstadt!')
-
-                ui.run()
-            '''):
-                with nd.step().classes(r'relative grow left-4 bottom-4 w-[calc(100%-2rem)]'):
-                    @browser_window
-                    def _():
-                        with ui.card().classes('m-8'):
-                            with ui.row():
-                                ui.button('Click me') \
-                                    .on_click(lambda: label.set_text('Hello PyCon! ❤️'))
-                                label = ui.label('Hello Darmstadt!')
+# --- 3. The Sweet Spot: Streamlit vs NiceGUI ---
 
 
-# --- 4. The Sweet Spot: Streamlit vs NiceGUI ---
 @nd.slide('''
     JustPy: *low-level* end
 
@@ -178,32 +142,43 @@ def _():
     guided every API decision
 ''')
 def _():
-    with slide_layout('The Sweet Spot'):
+    with slide_layout('How to Write UI in Python?'):
         with ui.grid(columns='1fr 1fr 1fr').classes('gap-4 w-full items-start scale-95'):
-            with ui.column().classes('gap-1'):
+            with nd.step(min=1), ui.column().classes('gap-1'):
                 ui.label('too low-level').classes(f'text-sm {TEXT_60}')
                 code_window(SNIPPETS / 'intro_justpy.py')
-            with nd.step(min=3), ui.column().classes('gap-1'):
-                ui.label('sweet spot').classes(f'text-sm {TEXT_60}')
-                code_window('''
-                    from nicegui import ui
+            with ui.column():
+                with nd.step(min=4), ui.column().classes('gap-1'):
+                    ui.label('sweet spot').classes(f'text-sm {TEXT_60}')
+                    code_window('''
+                        from nicegui import ui
 
-                    with ui.card():
-                        with ui.row():
-                            ui.button('Click me', on_click=lambda:
-                                label.set_text('Hello PyCon! ❤️'))
-                            label = ui.label('Hello Darmstadt!')
+                        with ui.card():
+                            with ui.row():
+                                ui.button('Click me', on_click=lambda:
+                                    label.set_text('Hello PyCon! ❤️'))
+                                label = ui.label('Hello Darmstadt!')
 
-                    ui.run()
-                ''').classes('border')
-            with nd.step(min=1), ui.column().classes('gap-1'):
+                        ui.run()
+                    ''').classes('border')
+
+                with nd.step(min=0).classes('w-full'):
+                    @browser_window
+                    def _():
+                        with ui.card().classes('mb-30'):
+                            with ui.row():
+                                ui.button('Click me') \
+                                    .on_click(lambda: label.set_text('Hello PyCon! ❤️'))
+                                label = ui.label('Hello Darmstadt!')
+
+            with nd.step(min=2), ui.column().classes('gap-1'):
                 ui.label('too much magic').classes(f'text-sm {TEXT_60}')
                 code_window(SNIPPETS / 'simple_streamlit.py')
-                with nd.step(min=2).classes('mt-6'):
+                with nd.step(min=3).classes('mt-6'):
                     code_window(SNIPPETS / 'intro_streamlit.py')
 
 
-# --- 5. Context Managers Are the Layout API ---
+# --- 4. Context Managers Are the Layout API ---
 @nd.slide('''
     UI has *hierarchy*
 
@@ -239,7 +214,7 @@ def _():
         insight('The with statement is a "within" statement — code shape mirrors UI shape.')
 
 
-# --- 6. Method Chaining as Progressive Disclosure ---
+# --- 5. Method Chaining as Progressive Disclosure ---
 @nd.slide('''
     *UI* elements: *many options*
 
@@ -290,7 +265,7 @@ def _():
         insight('A fluent API lets you create and configure a UI element in one statement.')
 
 
-# --- 7a. Lambdas & Callbacks ---
+# --- 6a. Lambdas & Callbacks ---
 @nd.slide('''
     Left: classic, named functions
 
@@ -331,7 +306,7 @@ def _():
                     ui.button('Submit', on_click=lambda: label.set_text('Submitted 🚀'))
 
 
-# --- 7b. Async / Await ---
+# --- 6b. Async / Await ---
 @nd.slide('''
     *synchronous and asynchronous* handlers
 ''')
@@ -350,7 +325,7 @@ def _():
             ui.button('Click me', on_click=handle_click)
 
 
-# --- 7c. Auto-Context ---
+# --- 6c. Auto-Context ---
 @nd.slide('''
     something more subtle
 
@@ -376,7 +351,7 @@ def _():
         insight('Callbacks should be as lightweight as the action they describe.')
 
 
-# --- 8. Decorators Make Patterns Declarative ---
+# --- 7. Decorators Make Patterns Declarative ---
 @nd.slide('''
     common pattern: clear + refill
 
@@ -425,7 +400,7 @@ def _():
         insight('Decorators like `@ui.refreshable` eliminate our users\' boilerplate.')
 
 
-# --- 9. Binding ---
+# --- 8. Binding ---
 @nd.slide('''
     another kind of repetition...
 
@@ -483,7 +458,7 @@ def _():
         insight('Work with Python\'s object model, don\'t fight it.')
 
 
-# --- 10. Design for the IDE ---
+# --- 9. Design for the IDE ---
 @nd.slide('''
     leaving runtime, *IDE experience*.
 
@@ -547,7 +522,7 @@ def _():
         insight('Your best documentation is the one users never have to open.')
 
 
-# --- 11. Escape Hatches ---
+# --- 10. Escape Hatches ---
 @nd.slide('''
     zoom out, *architecture*
 
@@ -584,7 +559,7 @@ def _():
         insight('Always provide a path to the layer below.')
 
 
-# --- 12. Beyond UI ---
+# --- 11. Beyond UI ---
 @nd.slide('''
     step back: *7 insights*
 
@@ -627,7 +602,7 @@ def _():
                     .classes(f'{TEXT_80} mt-8 text-xl')
 
 
-# --- 13. Beyond Code ---
+# --- 12. Beyond Code ---
 @nd.slide('''
     *culture*
 
@@ -658,7 +633,7 @@ def _():
                     ui.label('Foster a welcoming open-source culture on GitHub and beyond')
 
 
-# --- 14. Thank You ---
+# --- 13. Thank You ---
 @nd.slide('''
     *one final demo*
 
