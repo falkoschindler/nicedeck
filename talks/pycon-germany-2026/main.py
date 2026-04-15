@@ -595,8 +595,7 @@ def _():
                         ui.separator().classes('col-span-2')
                     ui.label(group).classes(f'font-bold {TEXT_60}').style(f'grid-row: span {len(insights)}')
                     for insight_ in insights:
-                        with nd.step():
-                            ui.label(insight_)
+                        ui.label(insight_)
             with nd.step():
                 ui.markdown("_This isn't just about UI — it's about **Python API design**._") \
                     .classes(f'{TEXT_80} mt-8 text-xl')
@@ -628,9 +627,9 @@ def _():
                 with nd.step():
                     ui.label('Always strive for simple solutions — for users and developers alike')
                 with nd.step():
-                    ui.label('Build the NiceGUI website with NiceGUI')
-                with nd.step():
                     ui.label('Foster a welcoming open-source culture on GitHub and beyond')
+                with nd.step():
+                    ui.label('Built the NiceGUI website with NiceGUI')
 
 
 # --- 13. Thank You ---
