@@ -676,5 +676,4 @@ with nd.deck(time_limit=30 * 60) as deck:
                 .classes('text-4xl text-primary')
 
 
-ui.run(title='PyCon Ireland 2023', port=1239,
-       uvicorn_reload_includes='*.py, *.css')
+ui.run(title='PyCon Ireland 2023', uvicorn_reload_includes='*.py, *.css')
