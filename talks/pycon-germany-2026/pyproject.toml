@@ -5,6 +5,7 @@ requires-python = ">=3.10"
 dependencies = [
     "nicegui>=3.0.0,<4.0.0",
     "nicedeck==0.1.0",
+    "numpy>=2.2.6",
 ]
 
 [tool.uv.sources]

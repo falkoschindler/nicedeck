@@ -2,7 +2,7 @@ from typing import Optional, cast
 
 from nicegui import binding, ui
 
-from .slide import Slide
+from .deck import Slide, deck
 
 
 class Step(ui.column):
@@ -14,14 +14,15 @@ class Step(ui.column):
                  max: Optional[int] = None,  # pylint: disable=redefined-builtin
                  ) -> None:
         super().__init__()
-        assert Slide.current is not None, 'Step() must be used inside a slide'
+        assert Slide.rendering is not None, 'Step() must be used inside a slide'
+        slide = Slide.rendering
         if min != 0:
-            Slide.current.steps += 1
+            slide.steps += 1
         if min is None:
-            min = Slide.current.steps - 1
+            min = slide.steps - 1
         if max is None:
             max = 999
-        self.bind_visibility_from(Slide.current, 'step', lambda s: min <= s <= max)
+        self.bind_visibility_from(deck, 'slide_step', lambda s: min <= s <= max)
 
     def handle_visibility_change(self) -> None:
         """Called when the visibility of this step changes."""

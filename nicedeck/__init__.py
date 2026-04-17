@@ -5,10 +5,9 @@ from .content import CenterColumn as center_column
 from .content import CenterHeading as center_heading
 from .content import CenterRow as center_row
 from .content import Heading as heading
-from .deck import Deck as deck
-from .note import Note as note
-from .slide import Slide as slide
 from .step import Step as step
+from .run import run
+from .slide import slide
 
 __all__ = [
     'center_column',
@@ -16,10 +15,9 @@ __all__ = [
     'center_row',
     'code',
     'code_result',
-    'deck',
     'demo',
     'heading',
-    'note',
+    'run',
     'slide',
     'step',
 ]

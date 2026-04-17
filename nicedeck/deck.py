@@ -1,63 +1,37 @@
-import time
-from typing import Optional
+from __future__ import annotations
 
-from nicegui import app, events, ui
+from collections.abc import Callable
+from dataclasses import dataclass, field
+from typing import ClassVar
 
-from .slide import Slide
+from nicegui import Event, app, binding
 
 
-class Deck(ui.carousel):
-    """A deck of slides."""
-
-    def __init__(self, *, time_limit: float = 0) -> None:
-        super().__init__(on_value_change=self.show_notes.refresh)
-        self._props['fullscreen'] = True
-        self._props['navigation'] = True
-        self.bind_value(app.storage.general, 'slide_name')
-        ui.keyboard(self._handle_key)
-        self.reference_time: Optional[float] = None
-
-        @ui.page('/notes')
-        def notes() -> None:
-            ui.add_head_html('<style>hr { border: 1px dashed gray }</style>')
-            self.timer(time_limit)
-            ui.timer(1.0, self.timer.refresh)
-            self.show_notes()
-
-    @ui.refreshable_method
-    def show_notes(self) -> None:
-        with ui.column().classes('gap-0'):
-            for note in self.slide.notes:
-                ui.markdown(note.text).classes('text-xl')
-
-    @ui.refreshable_method
-    def timer(self, time_limit: float) -> None:
-        with ui.row().classes('items-center text-bold text-lg'):
-            if self.reference_time is None:
-                def start_timer() -> None:
-                    self.reference_time = int(time.time() + time_limit)
-                ui.label(f'{time_limit // 60:.0f}:{time_limit % 60:02.0f}')
-                ui.button('Start', icon='play_arrow', on_click=start_timer).props('flat')
-            else:
-                dt = self.reference_time - time.time()
-                ui.label(f'{"-" if dt < 0 else ""}{abs(dt) // 60:.0f}:{abs(dt) % 60:02.0f}')
+@dataclass
+class Deck:
+    """Data object holding all slides, current index, and navigate event."""
+    slides: list[Slide] = field(default_factory=list)
+    slide_index: int = app.storage.general.get('slide_index', 0)
+    slide_step: int = app.storage.general.get('slide_step', 0)
+    navigate: Event = field(default_factory=Event[[]])
 
     @property
-    def slide(self) -> Slide:
-        """The currently visible slide."""
-        index = int(self.value.split('_')[1]) - 1
-        element = self.default_slot.children[index]
-        assert isinstance(element, Slide)
-        return element
+    def current_slide(self) -> Slide:
+        return self.slides[self.slide_index]
 
-    def _handle_key(self, e: events.KeyEventArguments) -> None:
-        if e.action.keydown and e.key.arrow_left:
-            if self.slide.step > 0:
-                self.slide.step -= 1
-            else:
-                self.previous()
-        if e.action.keydown and e.key.arrow_right:
-            if self.slide.step < self.slide.steps - 1:
-                self.slide.step += 1
-            else:
-                self.next()
+    def __post_init__(self) -> None:
+        binding.bind_to(self, 'slide_index', app.storage.general, 'slide_index')
+        binding.bind_to(self, 'slide_step', app.storage.general, 'slide_step')
+
+
+@dataclass
+class Slide:
+    """Data object representing a slide in a deck."""
+    rendering: ClassVar[Slide | None] = None
+
+    func: Callable[[], None]
+    notes: str = ''
+    steps: int = field(default=1, init=False)
+
+
+deck = Deck()
