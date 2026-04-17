@@ -902,7 +902,7 @@ wheels = [
 
 [[package]]
 name = "nicedeck"
-version = "0.1.0"
+version = "0.2.0"
 source = { editable = "../../" }
 dependencies = [
     { name = "isort" },
@@ -912,7 +912,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "isort" },
-    { name = "nicegui", specifier = ">=1.4" },
+    { name = "nicegui", specifier = ">=3.0.0,<4.0.0" },
 ]
 
 [[package]]

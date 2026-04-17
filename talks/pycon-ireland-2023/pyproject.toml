@@ -8,4 +8,4 @@ dependencies = [
 ]
 
 [tool.uv.sources]
-nicedeck = { path = "../.." }
+nicedeck = { git = "https://github.com/falkoschindler/nicedeck.git", tag = "v0.1.0" }
