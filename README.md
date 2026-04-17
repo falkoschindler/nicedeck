@@ -16,7 +16,7 @@ A simple library for creating slideshows using the Python UI library [NiceGUI](h
 Install from GitHub:
 
 ```bash
-pip install nicedeck @ git+https://github.com/falkoschindler/nicedeck@v0.1.0
+pip install nicedeck @ git+https://github.com/falkoschindler/nicedeck@v0.2.0
 ```
 
 ## Getting Started
@@ -33,4 +33,4 @@ Open `/notes` in another tab or on another device to view the slide notes.
 ## Talks
 
 - [PyCon Ireland 2023](talks/pycon-ireland-2023/) — _NiceGUI — Inventing Python's Nicest UI Framework_
-- [PyCon Germany 2026](talks/pycon-germany-2026/) — _(in progress)_
+- [PyCon Germany 2026](talks/pycon-germany-2026/) — _5 Years of NiceGUI — What We Learned About Designing Pythonic UIs_

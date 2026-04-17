@@ -1,6 +1,6 @@
-# PyCon Germany 2026
+# 5 Years of NiceGUI — What We Learned About Designing Pythonic UIs
 
-_(Work in progress)_
+Talk given by Falko Schindler at **PyCon Germany 2026**.
 
 ## Running
 
